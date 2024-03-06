@@ -7,6 +7,7 @@ import ClientDetail from "../views/client-detail/ClientDetail";
 import { Client } from "../views/client/Client";
 import { Commande } from "../views/commande/Commande";
 import ErrorPage from "../views/notFound/ErrorPage";
+import PartenaireDetail from "../views/partenaire-detail/PartenaireDetail";
 import { Partenaire } from "../views/partenaire/Partenaire";
 import { ListeUtilisateur } from "../views/utilisateur/ListeUtilisateur";
 
@@ -31,6 +32,10 @@ export const AppRoute = createBrowserRouter([
       {
         path: "/partenaires",
         element: <Partenaire />,
+      },
+      {
+        path: "/detail-partenaire",
+        element: <PartenaireDetail />
       },
       {
         path: "/clients",

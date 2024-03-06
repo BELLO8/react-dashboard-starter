@@ -18,3 +18,7 @@ body {
 ::-webkit-scrollbar-thumb {
   @apply bg-gray-100 rounded-xl;
 }
+
+.custom-select {
+  min-height: auto !important;
+}

@@ -1,5 +1,5 @@
 import { Drawer } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -15,9 +15,9 @@ export const AddCategorySidebar = ({ setOpenSide, openSide }) => {
         setOpenSide(false)
         toast.success('Categorie de vehicule enregistrée')
     }
-    // useEffect(() => {
-    //     reset()
-    // }, [reset])
+    useEffect(() => {
+        reset()
+    }, [reset])
 
     return (
         <>
