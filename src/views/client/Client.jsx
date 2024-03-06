@@ -1,7 +1,6 @@
 import { Drawer } from "@mui/material";
-import React from "react";
-import { useState } from "react";
 import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const fakeClient = {
