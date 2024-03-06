@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 import { CategoryForm } from '../categorie/CategoryForm';
+import { UpdateFormVehicule } from '../categorie/updateFormVehicule';
 
 export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     const {
@@ -15,8 +16,10 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     const [recto, setRecto] = useState([]);
     const [verso, setVerso] = useState([]);
     const [photo, setPhoto] = useState([]);
-    const [vehicule, setVehicule] = useState([{ name: 'Toyota', cate: 'voiture', matricule: "13236647", img: 'https://www.carwale.com/maruti-suzuki-cars/fronx/images/fronx-right-front-three-quarter-538623/' }]);
+    const [vehicule, setVehicule] = useState([{ fullname: 'Toyota', cate: 'voiture', mat: "13236647", img: '' }]);
     const [open, setOpen] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [rowData, setRowData] = useState();
 
     const handleChangeRecto = (e) => {
         const selectedFiles = e.target.files;
@@ -58,12 +61,9 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     }
 
     const submitCar = (data) => {
-        const vehiculeData = []
-        vehiculeData.push(data)
-        console.log(vehiculeData);
         reset();
         setOpen(false)
-        setVehicule([data])
+        setVehicule(prev => [...prev, data])
         console.log(vehicule);
         toast.success('Categorie de vehicule enregistrer')
     }
@@ -82,14 +82,11 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                     </div>
 
                     <form onSubmit={handleSubmit(submit)}>
-                        <div className='my-12'>
-
-
+                        <div className='my-8'>
                             <input type="file" accept="image/jpeg, image/png " hidden id='photo' onChange={handleChangePhoto} />
-
-                            <div className='border rounded-full w-40 h-40 bg-slate-100'>
+                            <div className='border rounded-full w-28 h-28 bg-slate-100'>
                                 {photo?.map((file, index) => (
-                                    <div key={index} className='rounded-full w-40 h-40' style={{
+                                    <div key={index} className='rounded-full w-28 h-28' style={{
                                         background: "url('" + URL.createObjectURL(file) + "') no-repeat center/cover"
                                     }}>
                                         <button className='bg-white rounded text-rose-800 text-sm p-1 m-1' onClick={() => {
@@ -105,7 +102,6 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                 <div className='flex'>
                                     <UploadIcon />
                                 </div>
-
                                 <div>
                                     <p className='text-sm mx-1'>Ajouter une photo</p>
                                 </div>
@@ -218,12 +214,15 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                         <div className='rounded-lg w-16 h-14 bg-slate-200'>
                                         </div>
                                         <div className='mx-2 mt-1'>
-                                            <p className='text-sm font-semibold text-indigo-800'>{item.name} ({item.cate})</p>
-                                            <p className='text-sm text-gray-400'>{item.matricule}</p>
+                                            <p className='text-sm font-semibold text-indigo-800'>{item.fullname} ({item.cate})</p>
+                                            <p className='text-sm text-gray-400'>{item.mat}</p>
                                         </div>
                                         <div className='absolute right-8 mt-2'>
-                                            <button className='btn btn-sm text-xs'>modifier</button>
-                                            <button className='btn btn-sm mx-2 text-xs' onClick={() => setVehicule(vehicule.filter((car) => car.name !== item.name))}>supprimer</button>
+                                            <button className='btn btn-sm text-xs' onClick={() => {
+                                                setOpenUpdate(true)
+                                                setRowData(item)
+                                            }} >modifier</button>
+                                            <button className='btn btn-sm mx-2 text-xs' onClick={() => setVehicule(vehicule.filter((car) => car.fullname !== item.fullname))}>supprimer</button>
                                         </div>
                                     </div>
                                 ))
@@ -232,6 +231,11 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                             <Drawer open={open} onClose={() => setOpen(false)} anchor='right'>
                                 <CategoryForm submitCar={submitCar} />
                             </Drawer>
+
+                            <Drawer open={openUpdate} onClose={() => setOpenUpdate(false)} anchor='right'>
+                                <UpdateFormVehicule submitCar={submitCar} data={rowData} />
+                            </Drawer>
+
                             <button type='submit' className="btn btn-sm texte-xs hover:bg-gray-900 font-medium my-2 mx-1 w-full rounded-md border-0 text-white shadow-sm bg-[#04356B]">
                                 Ajouter un partenaire
                             </button>

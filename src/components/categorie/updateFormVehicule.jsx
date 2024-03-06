@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 
-export const CategoryForm = ({ submitCar }) => {
+export const UpdateFormVehicule = ({ submitCar, data }) => {
     const {
         register,
         handleSubmit, reset,
@@ -51,14 +51,14 @@ export const CategoryForm = ({ submitCar }) => {
                             <div>
                                 <label htmlFor="" className='text-sm font-medium'>Nom du vehicule<sup className='text-rose-600'>*</sup></label>
                             </div>
-                            <input type="text" placeholder="ex : toyo" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                            <input defaultValue={data.fullname} type="text" placeholder="ex : toyo" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                 {...register('fullname', { required: true })} />
                         </div>
                         <div className='my-2'>
                             <div>
                                 <label htmlFor="" className='text-sm font-medium'>Matricule<sup className='text-rose-600'>*</sup></label>
                             </div>
-                            <input type="text" placeholder="ex : A55588648" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                            <input defaultValue={data.mat} type="text" placeholder="ex : A55588648" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                 {...register('mat', { required: true })} />
                         </div>
                     </div>
