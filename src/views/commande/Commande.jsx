@@ -1,3 +1,4 @@
+import { Pagination } from '@mui/material';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import { PageTitle } from '../../components/PageTitle';
@@ -94,7 +95,7 @@ export const Commande = () => {
     return (
         <div>
             <div className='relative'>
-                <PageTitle title={'Liste des commandes'} />
+                <PageTitle title={'Commandes'} />
                 <div className='absolute inset-y-0 right-0'>
 
                 </div>
@@ -109,9 +110,11 @@ export const Commande = () => {
                     <DataTable
                         columns={columns}
                         data={data}
-                        pagination
                         className='border'
                     />
+                    <div className='my-3 flex justify-end'>
+                        <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                    </div>
                 </div>
 
             </div>

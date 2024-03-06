@@ -31,6 +31,7 @@ export const RowOptions = ({
                 <MoreVert />
             </IconButton>
             <Menu
+                keepMounted
                 anchorEl={anchorEl}
                 open={rowOptionsOpen}
                 onClose={handleRowOptionsClose}

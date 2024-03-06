@@ -1,8 +1,9 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Drawer, IconButton, Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import { PageTitle } from '../../components/PageTitle';
+import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 
 
 const data = [
@@ -124,20 +125,21 @@ export const Partenaire = () => {
     return (
         <div>
             <div className='relative'>
-                <PageTitle title={'Liste des partenaires'} />
+                <PageTitle title={'Partenaires'} />
                 <div className='absolute inset-y-0 right-0'>
                     <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
                         Ajouter un partenaire
                     </button>
-                    <Drawer open={openSide} onClose={toggleDrawer(false)} anchor='right'>
-                        <div className='bg-white w-96 px-8 mt-4'>
-                            <h1 className='text-lg font-semibold'>Ajouter un partenaire</h1>
-                        </div>
-                    </Drawer>
+                    <AddPartnerSidebar openSide={openSide} setOpenSide={setOpenSide} />
                 </div>
                 <div className='my-8 bg-white rounded-lg p-8 border border-[#E2E8F0] '>
-                    <input type="text" placeholder="Rechercher un partenaire..." className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                    />
+                    <div className='flex'>
+                        <input type="text" placeholder="Rechercher une categorie..." className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                        />
+                        <button className="px-3 my-2 mx-1 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
+                            Rechercher
+                        </button>
+                    </div>
                     <DataTable
                         columns={columns}
                         data={data}

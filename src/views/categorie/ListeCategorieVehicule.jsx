@@ -1,8 +1,10 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Drawer, IconButton, Menu, MenuItem } from '@mui/material';
-import React from 'react';
+import { IconButton, Menu, MenuItem, Pagination } from '@mui/material';
+import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { PageTitle } from '../../components/PageTitle';
+import { AddCategorySidebar } from '../../components/categorie/AddCategorySidebar';
+import { UpdateCategorySidebar } from '../../components/categorie/UpdateCategorySidebar';
 
 
 export const ListeCategorieVehicule = () => {
@@ -17,8 +19,9 @@ export const ListeCategorieVehicule = () => {
         setAnchorEl(null);
     };
 
-    const [openSide, setOpenSide] = React.useState(false);
-
+    const [openSide, setOpenSide] = useState(false);
+    const [openSideUpdate, setOpenSideUpdate] = useState(false);
+    const [rowData, setRowData] = useState(null)
     const toggleDrawer = (newOpen) => () => {
         setOpenSide(newOpen);
     };
@@ -66,9 +69,14 @@ export const ListeCategorieVehicule = () => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Modifier</MenuItem>
+                        <MenuItem onClick={() => {
+                            setAnchorEl(null)
+                            setOpenSideUpdate(true)
+                            setRowData(row)
+                        }}>Modifier</MenuItem>
                         <MenuItem onClick={handleClose}>Supprimer</MenuItem>
                     </Menu>
+                    <UpdateCategorySidebar rowData={rowData} openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} />
                 </div>
             ),
         },
@@ -82,11 +90,7 @@ export const ListeCategorieVehicule = () => {
                     <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
                         Ajouter une categorie
                     </button>
-                    <Drawer open={openSide} onClose={toggleDrawer(false)} anchor='right'>
-                        <div className='bg-white w-[438px] px-8 mt-4'>
-                            <h1 className='text-lg font-semibold'>Ajouter une categorie de vehicule</h1>
-                        </div>
-                    </Drawer>
+                    <AddCategorySidebar setOpenSide={setOpenSide} openSide={openSide} />
                 </div>
 
             </div>
@@ -104,9 +108,11 @@ export const ListeCategorieVehicule = () => {
                 <DataTable
                     columns={columns}
                     data={data}
-                    pagination
                     className='border'
                 />
+                <div className='my-3 flex justify-end'>
+                    <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                </div>
             </div>
 
         </div>

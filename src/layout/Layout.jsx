@@ -7,7 +7,7 @@ export const Layout = () => {
         <>
             <div className="flex bg-[#FAFAFA] ">
                 <SideBarMenu />
-                <main className="px-12 py-6 mb-3 w-14 grow min-h-screen">
+                <main className="p-6 mb-3 w-14 grow min-h-screen">
                     <Outlet />
                 </main>
             </div>

@@ -3,6 +3,7 @@ import { Layout } from "../layout/Layout";
 import { Home } from "../views/Home/Home";
 import { Login } from "../views/auth/login/Login";
 import { ListeCategorieVehicule } from "../views/categorie/ListeCategorieVehicule";
+import ClientDetail from "../views/client-detail/ClientDetail";
 import { Client } from "../views/client/Client";
 import { Commande } from "../views/commande/Commande";
 import ErrorPage from "../views/notFound/ErrorPage";
@@ -34,6 +35,10 @@ export const AppRoute = createBrowserRouter([
       {
         path: "/clients",
         element: <Client />,
+      },
+      {
+        path: "/detail-client",
+        element: <ClientDetail />
       },
       {
         path: "/commandes",
