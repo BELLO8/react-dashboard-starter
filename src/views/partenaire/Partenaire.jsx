@@ -6,13 +6,6 @@ import { PageTitle } from '../../components/PageTitle';
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
 
-const fakePartenaire = {
-    nom: "Steve",
-    prenoms: "Harvey",
-    telephone: "0708080808",
-    email: "steve@yxyz.com",
-};
-
 export const Partenaire = () => {
 
     const [openSide, setOpenSide] = useState(false);
@@ -130,7 +123,7 @@ export const Partenaire = () => {
                                             className="bg-main/80 w-full h-8 text-xs text-white font-semibold rounded-full flex items-center justify-center mt-4"
                                             onClick={() => openClientDetail(item)}
                                         >
-                                            Détail client <ArrowUpRight size={17} />
+                                            Détail partenaire <ArrowUpRight size={17} />
                                         </button>
                                     </div>
                                 ))}
