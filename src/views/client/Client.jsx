@@ -129,7 +129,7 @@ export const Client = () => {
                                 +225 0778812111
                             </p>
                             <button
-                                className="bg-main/80 w-full h-8 text-xs text-white font-semibold rounded-full flex items-center justify-center mt-4"
+                                className="bg-gray-100 w-full h-8 text-xs text-main font-semibold rounded-full flex items-center justify-center mt-4"
                                 onClick={() => openClientDetail(item)}
                             >
                                 Détail client <ArrowUpRight size={17} />
