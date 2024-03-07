@@ -1,7 +1,6 @@
 import { Drawer } from "@mui/material";
-import { ChevronLeft, Edit2, Eye, PenLine, Trash, User2, UserRound } from "lucide-react";
+import { ChevronLeft, Eye, PenLine, Trash, User2, UserRound } from "lucide-react";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 
 const ClientDetail = () => {
   const [openSidebarModal, setOpenSidebarModal] = useState(false);
@@ -76,20 +75,20 @@ const ClientDetail = () => {
       <div className="flex items-start gap-x-4">
         <div className="relative w-96 min-h-screen bg-white drop-shadow rounded- px-4 py-6">
           <div className="flex items-center justify-between">
-          <button
-            className="text-main w-fit px-3 h-7 rounded-full text-sm font-medium flex items-center justify-center gap-x-1"
-            onClick={() => openModalCreateEditUser()}
-          >
-            <ChevronLeft size={16} />
-            Retour
-          </button>
-          <button
-            className="bg-white text-main border w-fit px-3 h-7 rounded-full text-sm font-medium flex items-center justify-center gap-x-1"
-            onClick={() => openModalCreateEditUser()}
-          >
-            <PenLine size={16} />
-            Modifer
-          </button>
+            <button
+              className="text-main w-fit px-3 h-7 rounded-full text-sm font-medium flex items-center justify-center gap-x-1"
+              onClick={() => openModalCreateEditUser()}
+            >
+              <ChevronLeft size={16} />
+              Retour
+            </button>
+            <button
+              className="bg-white text-main border w-fit px-3 h-7 rounded-full text-sm font-medium flex items-center justify-center gap-x-1"
+              onClick={() => openModalCreateEditUser()}
+            >
+              <PenLine size={16} />
+              Modifer
+            </button>
           </div>
 
           <div className="mt-10 w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center">
