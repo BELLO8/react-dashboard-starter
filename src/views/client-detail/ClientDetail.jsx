@@ -1,7 +1,6 @@
 import { Drawer } from "@mui/material";
-import { ChevronLeft, Edit2, Eye, PenLine, Trash, User2, UserRound } from "lucide-react";
+import { ChevronLeft, Eye, PenLine, Trash, User2, UserRound } from "lucide-react";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 
 const ClientDetail = () => {
   const [openSidebarModal, setOpenSidebarModal] = useState(false);
