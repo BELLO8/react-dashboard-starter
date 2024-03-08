@@ -35,3 +35,27 @@ body {
 .sidebar-menu .active button img.gris {
   visibility: visible;
 }
+
+.custom-table {
+  border-collapse: separate;
+  border-spacing: 0; /* To ensure no additional spacing between cells */
+
+  /* Apply border radius to the whole table */
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  overflow: hidden; /* To clip the rounded corners */
+}
+
+.custom-table thead th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.custom-table thead .first-head th:first-child {
+  background-color: #000 !important;
+}
+
+.custom-table thead .second-head th {
+  background-color: #4b4b4b !important;
+  color: white !important;
+  border-right: 0.5px solid #d6d3d1;
+}

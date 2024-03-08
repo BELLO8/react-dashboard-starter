@@ -1,120 +1,236 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton, Menu, MenuItem, Pagination } from '@mui/material';
-import React, { useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { PageTitle } from '../../components/PageTitle';
-import { AddCategorySidebar } from '../../components/categorie/AddCategorySidebar';
-import { UpdateCategorySidebar } from '../../components/categorie/UpdateCategorySidebar';
-
+import { IconButton, Menu, MenuItem, Pagination } from "@mui/material";
+import React, { useState } from "react";
+import EditPenIcon from "./../../assets/icons/pen.svg";
+import TrashIcon from "./../../assets/icons/trash.svg";
+import { ThreeDots } from "react-loader-spinner";
 
 export const ListeCategorieVehicule = () => {
-
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     const [openSide, setOpenSide] = useState(false);
-    const [openSideUpdate, setOpenSideUpdate] = useState(false);
-    const [rowData, setRowData] = useState(null)
-    const toggleDrawer = (newOpen) => () => {
-        setOpenSide(newOpen);
+    const [addLoading, setAddLoading] = useState(false);
+    const [categorieInfo, setCategorieInfo] = useState(null);
+
+    const CategorieRowElement = () => {
+        return (
+            <tr>
+                <td className="border-b font-medium">Cy Ganderton</td>
+                <td className="border-b font-medium">Quality Control Specialist</td>
+                <td className="border-b">
+                    <div className="flex items-center gap-x-3">
+                        <div className="tooltip" data-tip="Modifier">
+                            <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center" onClick={() => document.getElementById('create_categorie').showModal()}>
+                                <img src={EditPenIcon} alt="icon" className="w-5" />
+                            </button>
+                        </div>
+                        <div className="tooltip" data-tip="Supprimer">
+                            <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" onClick={() => document.getElementById('delete_categorie').showModal()}>
+                                <img src={TrashIcon} alt="icon" className="w-5" />
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        );
     };
 
-    const columns = [
-        {
-            name: "Marque",
-            selector: (row) => row.marque,
-            sortable: true,
-        },
-        {
-            name: "Modèle",
-            selector: (row) => row.model,
-            sortable: true,
-        },
-        {
-            name: "Description",
-            selector: (row) => row.description,
-            sortable: true,
-        },
-        {
-            name: "Type de carburant",
-            selector: (row) => row.typeCarburant,
-        },
-        {
-            name: "Action",
-            cell: (row) => (
-                <div>
-                    <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={() => {
-                            setAnchorEl(null)
-                            setOpenSideUpdate(true)
-                            setRowData(row)
-                        }}>Modifier</MenuItem>
-                        <MenuItem onClick={handleClose}>Supprimer</MenuItem>
-                    </Menu>
-                    <UpdateCategorySidebar rowData={rowData} openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} />
-                </div>
-            ),
-        },
-    ];
-    const data = [{ marque: 'Toyota', model: 'Camry', description: 'Une description détaillée du véhicule', typeCarburant: 'essence' }]
     return (
-        <div>
-            <div className='relative'>
-                <PageTitle title={'Categorie de vehicule'} />
-                <div className='absolute inset-y-0 right-0'>
-                    <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
-                        Ajouter une categorie
-                    </button>
-                    <AddCategorySidebar setOpenSide={setOpenSide} openSide={openSide} />
-                </div>
+        <div className="p-3 pt-7">
+            <h1 className="text-3xl font-extrabold text-black">
+                Catégories de véhicule
+            </h1>
 
+            <div className="mt-10">
+                <div className="w-full flex items-end justify-between">
+                    <div className="flex items-end gap-x-3">
+                        <label className="form-control w-60">
+                            <div className="label">
+                                <span className="label-text text-xs font-medium -mb-1">
+                                    Rechercher
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Rechercher un élément..."
+                                className="input input-bordered w-full h-10 font-semibold"
+                            />
+                        </label>
+                        <button className="w-fit h-10 px-4 rounded-lg bg-main text-white text-sm font-semibold">
+                            Rechercher
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            className="w-fit h-10 px-4 rounded-lg bg-main text-white text-sm font-semibold"
+                            onClick={() => document.getElementById('create_categorie').showModal()}
+                        >
+                            Ajouter une catégorie
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div className='my-8 bg-white rounded-lg p-8 border border-[#E2E8F0] '>
-                <div className='flex'>
-                    <input type="text" placeholder="Rechercher une categorie..." className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+            <div className="mt-5 bg-white rounded-lg">
+                <div className="overflow-x-auto">
+                    <table className="custom-table table table-zebr">
+                        <thead>
+                            <tr className="bg-gray-100 text-main h-12">
+                                <th className="text-sm font-bold uppercase">Designation</th>
+                                <th className="text-sm font-bold uppercase">Description</th>
+                                <th className="text-sm font-bold uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {[0, 1, 2, 3, 4, 5, 6].map((item, index) => (
+                                <CategorieRowElement key={index} />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="my-3 flex justify-end">
+                    <Pagination
+                        count={8}
+                        variant="outlined"
+                        color="primary"
+                        shape="rounded"
                     />
-                    <button className="px-3 my-2 mx-1 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
-                        Rechercher
-                    </button>
-                </div>
-
-
-                <DataTable
-                    columns={columns}
-                    data={data}
-                    className='border'
-                />
-                <div className='my-3 flex justify-end'>
-                    <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
                 </div>
             </div>
 
+            {/* MODAL CREATE CATEGORIE */}
+            <dialog id="create_categorie" className="modal">
+                <div className="modal-box rounded-lg max-w-md">
+                    <h3 className="font-bold text-lg text-black">
+                        {categorieInfo === null
+                            ? "Ajouter une catégorie"
+                            : "Modifier cette catégorie"}
+                    </h3>
+                    <form method="dialog">
+                        <button className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
+                    </form>
+
+                    <div className="py-4">
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text text-sm font-semibold">Designation</span>
+                            </div>
+                            <input type="text" placeholder="Désignation de la catégorie" className="input input-bordered w-full h-12 font-medium" />
+                        </label>
+                        <label className="form-control w-full mt-2">
+                            <div className="label">
+                                <span className="label-text text-sm font-semibold">Description</span>
+                            </div>
+                            <input type="text" placeholder="Description de la catégorie" className="input input-bordered w-full h-12 font-medium" />
+                        </label>
+                    </div>
+
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {!addLoading ? (
+                                <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md cursor-pointer">
+                                    Annuler
+                                </button>
+                            ) : (
+                                <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md pointer-events-none">
+                                    Annuler
+                                </button>
+                            )}
+                        </form>
+                        {categorieInfo === null ? (
+                            <div
+                                disabled={addLoading}
+                                className="bg-main text-white text-sm font-semibold px-4 py-2 rounded-md flex items-center justify-center cursor-pointer"
+                            // onClick={ajoutNouvelUtilisateur}
+                            >
+                                {!addLoading ? (
+                                    <span>Enregistrer</span>
+                                ) : (
+                                    <ThreeDots
+                                        height="20"
+                                        width="40"
+                                        radius="9"
+                                        color="#000"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClassName=""
+                                        visible={addLoading}
+                                    />
+                                )}
+                            </div>
+                        ) : (
+                            <div
+                                disabled={addLoading}
+                                className="bg-main text-white text-sm font-semibold px-4 py-2 rounded-md flex items-center justify-center cursor-pointer"
+                            // onClick={modifierInfoUtilisateur}
+                            >
+                                {!addLoading ? (
+                                    <span>Modifier</span>
+                                ) : (
+                                    <ThreeDots
+                                        height="20"
+                                        width="40"
+                                        radius="9"
+                                        color="#000"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClassName=""
+                                        visible={addLoading}
+                                    />
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </dialog>
+
+
+            {/* MODAL SUPPRESSION CATEGORIE */}
+            <dialog id="delete_categorie" className="modal">
+                <div className="modal-box rounded-lg max-w-md">
+                    <h3 className="font-bold text-lg text-red-600">
+                        Supprimer cette catégorie
+                    </h3>
+                    <form method="dialog">
+                        <button className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
+                    </form>
+
+                    <div className="py-4">
+                        <p className="text-left font-medium">Cette action est irréversible et supprimera cette catégorie de la liste.</p>
+                    </div>
+
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {!addLoading ? (
+                                <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md cursor-pointer">
+                                    Annuler
+                                </button>
+                            ) : (
+                                <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md pointer-events-none">
+                                    Annuler
+                                </button>
+                            )}
+                        </form>
+                        <div
+                            disabled={addLoading}
+                            className="bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-md flex items-center justify-center cursor-pointer"
+                        // onClick={ajoutNouvelUtilisateur}
+                        >
+                            {!addLoading ? (
+                                <span>Supprimer</span>
+                            ) : (
+                                <ThreeDots
+                                    height="20"
+                                    width="40"
+                                    radius="9"
+                                    color="#000"
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={addLoading}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </dialog>
         </div>
-    )
-}
+    );
+};

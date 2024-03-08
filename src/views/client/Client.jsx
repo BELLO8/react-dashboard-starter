@@ -1,7 +1,8 @@
 import { Drawer } from "@mui/material";
 import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import ArrowTop from "./../../assets/icons/arrow-top.svg";
 
 const fakeClient = {
     nom: "Steve",
@@ -34,12 +35,34 @@ export const Client = () => {
         }
     };
 
-    const openClientDetail = (client) => {
-        navigate("/detail-client");
-    };
+    let backtoTopBtn = document.getElementById("bctBtn");
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+
+    useEffect(() => {
+        function scrollFunction() {
+            if (
+                document.body.scrollTop > 20 ||
+                document.documentElement.scrollTop > 20
+            ) {
+                backtoTopBtn.style.display = "block";
+            } else {
+                backtoTopBtn.style.display = "none";
+            }
+        }
+
+        window.addEventListener('scroll', scrollFunction);
+
+        return () => {
+            window.removeEventListener('scroll', scrollFunction);
+        };
+    }, []);
 
     return (
-        <div>
+        <div className="p-3 pt-7">
             <h1 className="text-3xl font-extrabold text-black">Clients</h1>
 
             <div className="mt-10">
@@ -71,13 +94,13 @@ export const Client = () => {
                                 <option>Inactif</option>
                             </select>
                         </label>
-                        <button className="w-fit h-10 px-4 rounded-md bg-main text-white text-sm font-semibold">
+                        <button className="w-fit h-10 px-4 rounded-lg bg-main text-white text-sm font-semibold">
                             Rechercher
                         </button>
                     </div>
                     <div>
                         <button
-                            className="w-fit h-10 px-4 rounded-md bg-orange-600 text-white text-sm font-semibold"
+                            className="w-fit h-10 px-4 rounded-lg bg-orange-600 text-white text-sm font-semibold"
                             onClick={() => openModalCreateEditUser()}
                         >
                             Ajouter un client
@@ -85,11 +108,13 @@ export const Client = () => {
                     </div>
                 </div>
 
-                <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
-                    {[0, 1, 2, 3, 4, 5, 6].map((item, index) => (
+                <div className="mt-7 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-6">
+                    {[
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+                    ].map((item, index) => (
                         <div
                             key={index}
-                            className="relative w-48 lg:w-56 h-fit rounded-lg shadow bg-white p-4 pb-6"
+                            className="relative w-full h-fit rounded-lg shadow bg-white p-3 pb-5"
                         >
                             <div className="dropdown dropdown-end absolute right-2 top-2">
                                 <div
@@ -119,21 +144,31 @@ export const Client = () => {
                                     </button>
                                 </ul>
                             </div>
-                            <div className="bg-gray-200 rounded-full w-20 h-20 mx-auto mt-5 flex items-center justify-center">
-                                <UserRound />
-                            </div>
-                            <h1 className="text-lg text-black text-center font-bold mt-2 truncate">
-                                N'da Adams Aimé Désiré Yao
-                            </h1>
-                            <p className="text-sm text-gray-500 text-center font-medium">
-                                +225 0778812111
-                            </p>
-                            <button
-                                className="bg-gray-100 w-full h-8 text-xs text-main font-semibold rounded-full flex items-center justify-center mt-4"
-                                onClick={() => openClientDetail(item)}
-                            >
-                                Détail client <ArrowUpRight size={17} />
-                            </button>
+                            <NavLink to="/detail-client">
+                                <div className="bg-gray-200 rounded-full w-16 h-16 mx-auto mt-5 flex items-center justify-center">
+                                    {/* <UserRound /> */}
+                                    <img
+                                        src="https://randomuser.me/api/portraits/men/75.jpg"
+                                        alt=""
+                                        className="rounded-full"
+                                    />
+                                </div>
+                                <h1 className="text-base text-black text-center font-bold mt-2 truncate">
+                                    N'da Adams Aimé Désiré Yao
+                                </h1>
+                                <p className="text-sm text-gray-500 text-center font-medium">
+                                    +225 0778812111
+                                </p>
+                                <p className="mt-1 text-xs text-gray-400 text-center font-medium">
+                                    Inscrit le: 24-01-2024
+                                </p>
+                                <div className="mt-4 w-full h-9 rounded-lg bg-green-50 flex items-center justify-center gap-x-2 px-2">
+                                    <p className="text-base text-green-600 font-extrabold">34</p>
+                                    <p className="text-xs font-medium truncate">
+                                        Courses effectuées
+                                    </p>
+                                </div>
+                            </NavLink>
                         </div>
                     ))}
                 </div>
@@ -141,7 +176,7 @@ export const Client = () => {
 
             {/* MODAL DESACTIVATION COMPTE UTILISATEUR */}
             <dialog id="disable_client" className="modal">
-                <div className="modal-box rounded-lg">
+                <div className="modal-box max-w-md rounded-lg">
                     <h3 className="font-extrabold text-xl text-red-600 text-center">
                         Attention
                     </h3>
@@ -241,12 +276,20 @@ export const Client = () => {
                         <button className="w-full h-10 bg-gray-200 text-sm text-gray-600 font-semibold flex items-center justify-center rounded-lg">
                             Annuler
                         </button>
-                        <button className="w-full h-10 bg-orange-600 text-sm text-white font-semibold flex items-center justify-center rounded-lg">
+                        <button className="w-full h-10 bg-main text-sm text-white font-semibold flex items-center justify-center rounded-lg">
                             Enregistrer
                         </button>
                     </div>
                 </div>
             </Drawer>
+
+            <button
+                id="bctBtn"
+                className="fixed right-10 bottom-10 hidden w-12 h-12 rounded-full bg-orange-600 text-white flex items-center justify-center"
+                onClick={topFunction}
+            >
+                <img src={ArrowTop} alt="" className="w-6 mx-auto" />
+            </button>
         </div>
     );
 };
