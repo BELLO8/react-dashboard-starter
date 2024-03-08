@@ -2,7 +2,6 @@ import { Drawer } from "@mui/material";
 import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { PageTitle } from '../../components/PageTitle';
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
 
@@ -30,9 +29,9 @@ export const Partenaire = () => {
     };
 
     return (
-        <div>
-            <div className='p-3 relative'>
-                <PageTitle title={'Partenaires'} />
+        <div className="p-3 pt-7">
+            <div className='relative'>
+                <h1 className="text-3xl font-extrabold text-black">Partenaires</h1>
                 <div className='absolute inset-y-0 right-4 top-3'>
                     <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
                         Ajouter un partenaire

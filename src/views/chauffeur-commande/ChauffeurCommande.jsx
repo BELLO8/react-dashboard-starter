@@ -1,5 +1,5 @@
 import { Pagination } from '@mui/material'
-import { ChevronLeft, Edit, MinusCircle } from 'lucide-react'
+import { ChevronLeft, MinusCircle, PenLine } from 'lucide-react'
 import React from 'react'
 import DataTable from 'react-data-table-component'
 import { NavLink } from 'react-router-dom'
@@ -14,21 +14,26 @@ export const ChauffeurCommande = () => {
                 <div className='sticky top-0 left-0 bg-white w-64 min-h-screen z-50'>
 
                     <div className='my-3 rounded-lg px-4'>
-
-                        <div className='flex items-center gap-x-3 mb-8'>
+                        <div className="flex items-center justify-between mb-12">
                             <NavLink to="/detail-partenaire">
-                                <button className='w-fit h-9 rounded-lg text-main text-sm font-medium flex items-center justify-center gap-x-1'><ChevronLeft size={18} /> Retour</button>
+                                <button
+                                    className="text-main w-fit h-7 rounded-full text-sm font-bold flex items-center justify-center gap-x-1"
+                                >
+                                    <ChevronLeft size={16} />
+                                    Retour
+                                </button>
                             </NavLink>
+                            <button
+                                className="bg-main text-white w-fit px-3 h-7 rounded-lg text-sm font-medium flex items-center justify-center gap-x-1">
+                                <PenLine size={16} />
+                                Modifer
+                            </button>
                         </div>
-                        <div className="relative w-26">
-                            <div className="absolute right-0">
-                                <button className="hover:bg-white btn btn-sm bg-white shadow-sm flex text-indigo-800 font-medium text-xs"><Edit size={17} /> modifier</button>
-                            </div>
+
+                        <div className="w-26">
                             <div className='rounded-full w-20 h-20' style={{ background: "url('https://www.shutterstock.com/image-photo/new-car-cheerful-black-man-260nw-1746419990.jpg') no-repeat center/cover" }}>
                             </div>
                         </div>
-
-
                         <div className="relative my-6 h-[430px]">
                             <div>
                                 <p className="text-sm font-semibold">Nom et prenoms</p>
@@ -55,30 +60,37 @@ export const ChauffeurCommande = () => {
                         </div>
                         <div className='absolute right-8 mt-2'>
                             {/* <button className='btn btn-sm text-xs' onClick={() => {
-                }} >modifier le profile</button> */}
+      }} >modifier le profile</button> */}
                         </div>
                     </div>
                 </div>
-
-                <div className="w-4/5 px-1 relative">
-
-                    <div className='my-6'>
-                        <div className="flex">
+                <div className="w-4/5 px-3 relative mt-2">
+                    <h1 className='font-medium mt-3 text-gray-400 text-lg '>Chauffeur</h1>
+                    <div className='mt-2 grid grid-cols-3 gap-2'>
+                        <div className="flex bg-white w-full p-4 rounded-lg shadow">
                             <div>
-                                <div className='rounded-full w-20 h-20' style={{ background: "url('https://info.drivedifferent.com/hubfs/SMI-BLOG-Ways-to-Improve-Drivers-Happiness%20%281%29.jpg') no-repeat center/cover" }}>
+                                <div className='rounded-full w-16 h-16' style={{ background: "url('https://info.drivedifferent.com/hubfs/SMI-BLOG-Ways-to-Improve-Drivers-Happiness%20%281%29.jpg') no-repeat center/cover" }}>
                                 </div>
                             </div>
-                            <div className='px-2'>
-                                <p className='text-lg font-bold'>N'da Adams Aimé Désiré Yao</p>
-                                <p className='text-sm bg-main/10 rounded-lg w-fit px-3 py-1 font-semibold text-main/80'>+225 0778812111</p>
-                                <p className='text-sm font-semibold text-gray-500'>Kulas Light,Gwenborough</p>
+                            <div className='px-4 w-10/12'>
+                                <p className='text-lg font-bold truncate '>N'da Adams Aimé Désiré Yao Kouame jean</p>
+                                <p className='text-xs font-semibold text-gray-500 mt-1'>+225 0778812111</p>
+                                <p className='text-xs font-semibold text-gray-500'>Kulas Light,Gwenborough</p>
                             </div>
                         </div>
+                        <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
+                            <p className=" text-2xl font-semibold">157 0000 Fr</p>
+                            <p className="text-sm text-gray-400 font-medium truncate">Revenue</p>
+                        </div>
+                        <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
+                            <p className=" text-2xl font-semibold">80</p>
+                            <p className="text-sm text-gray-400 font-medium truncate">Courses effectées</p>
+                        </div>
                     </div>
-                    <h1 className='p-3 text-lg font-semibold'>Commandes du chauffeur</h1>
-                    <div className=' bg-white rounded-lg p-8 border border-[#E2E8F0] '>
+                    <h1 className='mt-5 text-lg text-gray-400 font-medium'>Historique de commandes</h1>
+                    <div className='mt-2 bg-white rounded-lg p-4 shadow border border-[#E2E8F0] '>
                         <div className='flex'>
-                            <input type="text" placeholder="Rechercher une categorie..." className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                            <input type="text" placeholder="Recherche..." className="input input-bordered px-3 my-2 w-80 h-10 text-gray-900 placeholder:text-gray-400"
                             />
                             <button className="px-3 my-2 mx-1 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
                                 Rechercher
@@ -93,7 +105,6 @@ export const ChauffeurCommande = () => {
                             <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
                         </div>
                     </div>
-
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 import { Drawer } from "@mui/material";
-import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { MoreHorizontal, UserRound } from "lucide-react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import ArrowTop from "./../../assets/icons/arrow-top.svg";
 
@@ -42,24 +42,24 @@ export const Client = () => {
         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
 
-    useEffect(() => {
-        function scrollFunction() {
-            if (
-                document.body.scrollTop > 20 ||
-                document.documentElement.scrollTop > 20
-            ) {
-                backtoTopBtn.style.display = "block";
-            } else {
-                backtoTopBtn.style.display = "none";
-            }
-        }
+    // useEffect(() => {
+    //     function scrollFunction() {
+    //         if (
+    //             document.body.scrollTop > 20 ||
+    //             document.documentElement.scrollTop > 20
+    //         ) {
+    //             backtoTopBtn.style.display = "block";
+    //         } else {
+    //             backtoTopBtn.style.display = "none";
+    //         }
+    //     }
 
-        window.addEventListener('scroll', scrollFunction);
+    //     window.addEventListener('scroll', scrollFunction);
 
-        return () => {
-            window.removeEventListener('scroll', scrollFunction);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('scroll', scrollFunction);
+    //     };
+    // }, [backtoTopBtn]);
 
     return (
         <div className="p-3 pt-7">

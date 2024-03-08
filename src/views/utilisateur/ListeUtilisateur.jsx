@@ -1,11 +1,9 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton, Menu, MenuItem, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { PageTitle } from '../../components/PageTitle';
 import { AddUserSidebar } from '../../components/utilisateur/AddUserSidebar';
-import { UpdateUserSidebar } from '../../components/utilisateur/UpdateUserSidebar';
-
+import EditPenIcon from "./../../assets/icons/pen.svg";
+import TrashIcon from "./../../assets/icons/trash.svg";
 const users = [
     {
         "id": 1,
@@ -33,21 +31,7 @@ const users = [
 ]
 export const ListeUtilisateur = () => {
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-
-    };
-
     const [openSide, setOpenSide] = useState(false);
-    const [openSideUpdate, setOpenSideUpdate] = useState(false);
-
-    const [rowData, setRowData] = useState(null);
-
     const columns = [
         {
             name: "Nom et prenoms",
@@ -79,35 +63,17 @@ export const ListeUtilisateur = () => {
         {
             name: "Action",
             cell: (row) => (
-                <div>
-                    <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={() => {
-                            setAnchorEl(null)
-                            setOpenSideUpdate(true)
-                            setRowData(row)
-                        }}>Modifier</MenuItem>
-                        <MenuItem onClick={handleClose}>Supprimer</MenuItem>
-                        <MenuItem onClick={handleClose}>Desactiver</MenuItem>
-                    </Menu>
-                    <UpdateUserSidebar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} rowData={rowData} />
+                <div className="flex items-center gap-x-3">
+                    <div className="tooltip" data-tip="Modifier">
+                        <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center">
+                            <img src={EditPenIcon} alt="icon" className="w-5" />
+                        </button>
+                    </div>
+                    <div className="tooltip" data-tip="Supprimer">
+                        <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" >
+                            <img src={TrashIcon} alt="icon" className="w-5" />
+                        </button>
+                    </div>
                 </div>
             ),
         },
@@ -115,9 +81,9 @@ export const ListeUtilisateur = () => {
 
 
     return (
-        <div>
+        <div className='p-3 pt-7'>
             <div className='relative'>
-                <PageTitle title={'Utilisateurs'} />
+                <h1 className="text-3xl font-extrabold text-black">Utilisateur</h1>
                 <div className='absolute inset-y-0 right-0'>
                     <button onClick={() => {
                         setOpenSide(true)
@@ -129,9 +95,9 @@ export const ListeUtilisateur = () => {
 
             </div>
 
-            <div className='my-8 bg-white rounded-lg p-8 border border-[#E2E8F0] '>
+            <div className='my-8 bg-white rounded-lg p-3 border border-[#E2E8F0] '>
                 <div className='flex'>
-                    <input type="text" placeholder="Rechercher une categorie..." className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                    <input type="text" placeholder="Recherche..." className="input input-bordered px-3 my-2 w-80 h-10 text-gray-900 placeholder:text-gray-400"
                     />
                     <button className="px-3 my-2 mx-1 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
                         Rechercher

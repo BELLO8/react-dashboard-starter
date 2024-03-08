@@ -1,6 +1,6 @@
 import { Drawer, Pagination } from "@mui/material";
 import GoogleMapReact from 'google-map-react';
-import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, Edit, Map, MinusCircle, MoreHorizontal, UserRound } from "lucide-react";
+import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, Map, MinusCircle, MoreHorizontal, PenLine, UserRound } from "lucide-react";
 import React, { useState } from 'react';
 import toast from "react-hot-toast";
 import { NavLink } from 'react-router-dom';
@@ -15,6 +15,7 @@ const PartenaireDetail = () => {
   const [openSideUpdate, setOpenSideUpdate] = useState(false)
   const [openSideAddCar, setOpenSideAddCar] = useState(false);
   const [openSideCarUpdate, setOpenSideCarUpdate] = useState(false);
+  const activeTab = localStorage.getItem('activeTab');
 
   const tab = [
     {
@@ -46,21 +47,26 @@ const PartenaireDetail = () => {
         <div className='sticky top-0 left-0 bg-white w-64 min-h-screen z-50'>
 
           <div className='my-3 rounded-lg px-4'>
-
-            <div className='flex items-center gap-x-3 mb-8'>
+            <div className="flex items-center justify-between mb-12">
               <NavLink to="/partenaires">
-                <button className='w-fit h-9 rounded-lg text-main text-sm font-medium flex items-center justify-center gap-x-1'><ChevronLeft size={18} /> Retour</button>
+                <button
+                  className="text-main w-fit h-7 rounded-full text-sm font-bold flex items-center justify-center gap-x-1"
+                >
+                  <ChevronLeft size={16} />
+                  Retour
+                </button>
               </NavLink>
+              <button
+                className="bg-main text-white w-fit px-3 h-7 rounded-lg text-sm font-medium flex items-center justify-center gap-x-1">
+                <PenLine size={16} />
+                Modifer
+              </button>
             </div>
-            <div className="relative w-26">
-              <div className="absolute right-0">
-                <button className="hover:bg-white btn btn-sm bg-white shadow-sm flex text-indigo-800 font-medium text-xs"><Edit size={17} /> modifier</button>
-              </div>
+
+            <div className="w-26">
               <div className='rounded-full w-20 h-20' style={{ background: "url('https://www.shutterstock.com/image-photo/new-car-cheerful-black-man-260nw-1746419990.jpg') no-repeat center/cover" }}>
               </div>
             </div>
-
-
             <div className="relative my-6 h-[430px]">
               <div>
                 <p className="text-sm font-semibold">Nom et prenoms</p>
@@ -93,6 +99,28 @@ const PartenaireDetail = () => {
         </div>
 
         <div className="w-4/5 px-1 relative">
+          <div className="flex justify-between gap-x-2 pt-2">
+            <div className="px-3 py-3 w-full border border-dashed bg-blue-50 rounded-lg flex flex-col">
+              <p className=" text-2xl font-semibold">43 0000 Fr</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Revenue</p>
+            </div>
+
+            <div className="px-3 py-3 w-full border border-dashed bg-indigo-50 rounded-lg flex flex-col">
+              <p className=" text-2xl font-semibold">20</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Chauffeurs</p>
+            </div>
+
+            <div className="px-3 py-3 w-full border border-dashed bg-violet-50 rounded-lg flex flex-col">
+              <p className=" text-2xl font-semibold">17</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Vehicule</p>
+            </div>
+
+            <div className="px-3 py-3 w-full border border-dashed bg-teal-50 rounded-lg flex flex-col">
+              <p className=" text-2xl font-semibold">78</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Commandes</p>
+            </div>
+
+          </div>
           <div className="mt-2 bg-white w-fit px-2 py-1 rounded-lg space-x-4">
             {
               tab.map((item, index) => (
@@ -139,7 +167,7 @@ const PartenaireDetail = () => {
 
                       <div className="mt-6 grid grid-cols-4 gap-4">
                         {[0, 1, 2, 3, 4].map((item, index) => (
-                          <div className='bg-white border border-dashed rounded-lg relative'>
+                          <div className='bg-gray-50 border border-dashed rounded-lg relative'>
 
                             <div className="dropdown dropdown-end absolute right-1 top-1">
 
@@ -273,6 +301,9 @@ const PartenaireDetail = () => {
                             </p>
                             <NavLink to={'/chauffeur-commande'}
                               className="bg-gray-100 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
+                              onClick={() => {
+                                localStorage.setItem('activeTab', index)
+                              }}
                             >
                               Liste des commandes <ArrowUpRight size={17} />
                             </NavLink>
@@ -344,7 +375,7 @@ const PartenaireDetail = () => {
                                     </div>
                                   </div>
 
-                                  <div className="w-1 h-8 border-r-2 border-dashed px-1.4 border-indigo-700"></div>
+                                  <div className="w-1 h-8 border-r-2 border-dashed px-[2.8px] border-indigo-700"></div>
                                   <div className="flex items-center ">
                                     <div className="rounded-full w-3 h-3 bg-indigo-700">
                                     </div>
