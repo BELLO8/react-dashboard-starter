@@ -31,9 +31,9 @@ export const Partenaire = () => {
 
     return (
         <div>
-            <div className='relative'>
+            <div className='p-3 relative'>
                 <PageTitle title={'Partenaires'} />
-                <div className='absolute inset-y-0 right-0'>
+                <div className='absolute inset-y-0 right-4 top-3'>
                     <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
                         Ajouter un partenaire
                     </button>
@@ -120,7 +120,7 @@ export const Partenaire = () => {
                                             +225 0778812111
                                         </p>
                                         <button
-                                            className="bg-main/80 w-full h-8 text-xs text-white font-semibold rounded-full flex items-center justify-center mt-4"
+                                            className="bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
                                             onClick={() => openClientDetail(item)}
                                         >
                                             Détail partenaire <ArrowUpRight size={17} />

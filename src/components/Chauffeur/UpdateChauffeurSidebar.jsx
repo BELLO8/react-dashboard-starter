@@ -4,10 +4,8 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
-import { VehiculeForm } from '../categorie/VehiculeForm';
-import { UpdateFormVehicule } from '../categorie/updateFormVehicule';
 
-export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
+export const UpdateChauffeurSidebar = ({ setOpenSide, openSide }) => {
     const {
         register,
         handleSubmit, reset,
@@ -16,10 +14,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     const [recto, setRecto] = useState([]);
     const [verso, setVerso] = useState([]);
     const [photo, setPhoto] = useState([]);
-    const [vehicule, setVehicule] = useState([{ fullname: 'Toyota', cate: 'voiture', mat: "13236647", img: '' }]);
-    const [open, setOpen] = useState(false);
-    const [openUpdate, setOpenUpdate] = useState(false);
-    const [rowData, setRowData] = useState();
+    const [permisPhoto, setPermisPhoto] = useState([]);
 
     const handleChangeRecto = (e) => {
         const selectedFiles = e.target.files;
@@ -42,6 +37,17 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
         }
     }
 
+    const handleChangePermiPhoto = (e) => {
+        const selectedFiles = e.target.files;
+        if (permisPhoto.length <= 0) {
+            const newFiles = Array.from(selectedFiles)
+            setPermisPhoto(prevFiles => [...prevFiles, ...newFiles])
+        } else {
+            const newFiles = Array.from(selectedFiles)
+            setPermisPhoto(newFiles)
+        }
+    }
+
 
     const handleChangePhoto = (e) => {
         const selectedFiles = e.target.files;
@@ -57,16 +63,9 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     const submit = (data) => {
         reset();
         setOpenSide(false)
-        toast.success('Utilisateur enregistrer')
+        toast.success('Chauffeur enregistré')
     }
 
-    const submitCar = (data) => {
-        reset();
-        setOpen(false)
-        setVehicule(prev => [...prev, data])
-        console.log(vehicule);
-        toast.success('Categorie de vehicule enregistrer')
-    }
 
     useEffect(() => {
         reset()
@@ -76,7 +75,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                 <div className='bg-white w-[480px] px-8 mt-4'>
-                    <h1 className='text-lg font-semibold'>Création d'un partenaire</h1>
+                    <h1 className='text-lg font-semibold'>Ajouter un chauffeur</h1>
                     <div>
                         {errors.assurance && <span className="text-sm text-rose-600">Renseignez tout les champs</span>}
                     </div>
@@ -127,13 +126,13 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                 <input type="text" placeholder="ex : 002587663321" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('phone', { required: true })} />
                             </div>
-                            <div className='my-2'>
+                            {/* <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Email<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : kofi@yao.ee" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('email', { required: true })} />
-                            </div>
+                            </div> */}
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Numero de permis<sup className='text-rose-600'>*</sup></label>
@@ -141,13 +140,13 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                 <input type="text" placeholder="ex : 1234578894" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('permis', { required: true })} />
                             </div>
-                            <div className='my-2'>
+                            {/* <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Assurance<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : A55588648" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('assurance', { required: true })} />
-                            </div>
+                            </div> */}
                             <label className='text-sm font-medium'>Pièces d'identité</label>
                             <div className='grid grid-cols-2 gap-1'>
                                 {
@@ -205,37 +204,37 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                     )
                                 }
                             </div>
-                            <input type="file" accept="image/jpeg, image/png " hidden id='recto' onChange={handleChangeRecto} />
-                            <input type="file" accept="image/jpeg, image/png " hidden id='verso' onChange={handleChangeVerso} />
-                            <div className='bg-gray-100  mt-3 rounded p-2'> <p className='text-xs font-medium'>Liste des vehicules</p> </div>
+
+                            <label className='text-sm font-medium'>Permis de conduit</label>
                             {
-                                vehicule.map((item, index) => (
-                                    <div key={index} className='border mt-3 rounded-lg border-indigo-600 p-0.5 flex'>
-                                        <div className='rounded-lg w-16 h-14 bg-slate-200'>
+                                permisPhoto.length !== 0 ? (
+                                    permisPhoto.map((permis) => (
+                                        <div className="h-36 text-indigo-600 py-1 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md  py-2 text-gray-900 shadow-sm "
+                                            style={{
+                                                background: "url('" + URL.createObjectURL(permis) + "') no-repeat center/cover"
+                                            }}
+                                            onClick={() => document.getElementById('permis').click()}
+                                        >
                                         </div>
-                                        <div className='mx-2 mt-1'>
-                                            <p className='text-sm font-semibold text-indigo-800'>{item.fullname} ({item.cate})</p>
-                                            <p className='text-sm text-gray-400'>{item.mat}</p>
+                                    ))
+
+                                ) : (
+                                    <div className="text-indigo-600 py-8 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md text-gray-900 shadow-sm "
+                                        onClick={() => document.getElementById('permis').click()}
+                                    >
+                                        <div className='flex justify-center mb-3'>
+                                            <UploadIcon />
                                         </div>
-                                        <div className='absolute right-8 mt-2'>
-                                            <button className='btn btn-sm text-xs' onClick={() => {
-                                                setOpenUpdate(true)
-                                                setRowData(item)
-                                            }} >modifier</button>
-                                            <button className='btn btn-sm mx-2 text-xs' onClick={() => setVehicule(vehicule.filter((car) => car.fullname !== item.fullname))}>supprimer</button>
+
+                                        <div>
+                                            <p className='text-center text-sm mx-1'>Permis de conduit</p>
                                         </div>
                                     </div>
-                                ))
+                                )
                             }
-                            <button onClick={() => setOpen(true)} className='my-4 text-sm text-[#04356B] btn btn-sm'>Ajouter un vehicule</button>
-                            <Drawer open={open} onClose={() => setOpen(false)} anchor='right'>
-                                <VehiculeForm submitCar={submitCar} />
-                            </Drawer>
-
-                            <Drawer open={openUpdate} onClose={() => setOpenUpdate(false)} anchor='right'>
-                                <UpdateFormVehicule submitCar={submitCar} data={rowData} />
-                            </Drawer>
-
+                            <input type="file" accept="image/jpeg, image/png " hidden id='recto' onChange={handleChangeRecto} />
+                            <input type="file" accept="image/jpeg, image/png " hidden id='verso' onChange={handleChangeVerso} />
+                            <input type="file" accept="image/jpeg, image/png " hidden id='permis' onChange={handleChangePermiPhoto} />
                             <button type='submit' className="btn btn-sm texte-xs hover:bg-gray-900 font-medium my-2 mx-1 w-full rounded-md border-0 text-white shadow-sm bg-[#04356B]">
                                 Ajouter un partenaire
                             </button>

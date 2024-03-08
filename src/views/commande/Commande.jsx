@@ -94,7 +94,7 @@ export const Commande = () => {
 
     return (
         <div>
-            <div className='relative'>
+            <div className='p-3 relative'>
                 <PageTitle title={'Commandes'} />
                 <div className='absolute inset-y-0 right-0'>
 

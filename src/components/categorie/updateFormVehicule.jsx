@@ -32,7 +32,7 @@ export const UpdateFormVehicule = ({ submitCar, data }) => {
     return (
         <>
             <div className='bg-white w-[480px] px-8 mt-4'>
-                <h1 className='text-lg font-semibold'>Ajouter un vehicule</h1>
+                <h1 className='text-lg font-semibold'>Modifier un vehicule</h1>
                 {errors && <span className="text-sm text-rose-600">Renseignez tout les champs</span>}
                 <form onSubmit={handleSubmit(submitCar)}>
                     <div className='my-8'>

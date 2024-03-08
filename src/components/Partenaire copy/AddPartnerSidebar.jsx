@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
-import { VehiculeForm } from '../categorie/VehiculeForm';
+import { VehiculeForm } from '../categorie/CategoryForm';
 import { UpdateFormVehicule } from '../categorie/updateFormVehicule';
 
 export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {

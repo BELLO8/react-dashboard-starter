@@ -3,6 +3,7 @@ import { Layout } from "../layout/Layout";
 import { Home } from "../views/Home/Home";
 import { Login } from "../views/auth/login/Login";
 import { ListeCategorieVehicule } from "../views/categorie/ListeCategorieVehicule";
+import { ChauffeurCommande } from "../views/chauffeur-commande/ChauffeurCommande";
 import ClientDetail from "../views/client-detail/ClientDetail";
 import { Client } from "../views/client/Client";
 import { Commande } from "../views/commande/Commande";
@@ -48,6 +49,10 @@ export const AppRoute = createBrowserRouter([
       {
         path: "/commandes",
         element: <Commande />,
+      },
+      {
+        path: "/chauffeur-commande",
+        element: <ChauffeurCommande />,
       },
     ],
   },

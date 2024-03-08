@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
-import { CategoryForm } from '../categorie/CategoryForm';
+import { VehiculeForm } from '../categorie/VehiculeForm';
 import { UpdateFormVehicule } from '../categorie/updateFormVehicule';
 
 export const UpdatePartnerSidebar = ({ setOpenSide, openSide, data }) => {
@@ -229,7 +229,7 @@ export const UpdatePartnerSidebar = ({ setOpenSide, openSide, data }) => {
                             }
                             <button onClick={() => setOpen(true)} className='my-4 text-sm text-[#04356B] btn btn-sm'>Ajouter un vehicule</button>
                             <Drawer open={open} onClose={() => setOpen(false)} anchor='right'>
-                                <CategoryForm submitCar={submitCar} />
+                                <VehiculeForm submitCar={submitCar} />
                             </Drawer>
 
                             <Drawer open={openUpdate} onClose={() => setOpenUpdate(false)} anchor='right'>

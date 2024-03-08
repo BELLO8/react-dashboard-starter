@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 
-export const CategoryForm = ({ submitCar }) => {
+export const VehiculeForm = ({ submitCar }) => {
     const {
         register,
         handleSubmit, reset,
