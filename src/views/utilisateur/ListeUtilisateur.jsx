@@ -1,5 +1,5 @@
-import { Pagination } from '@mui/material';
-import React, { useState } from 'react';
+import { Pagination, Skeleton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { AddUserSidebar } from '../../components/utilisateur/AddUserSidebar';
 import EditPenIcon from "./../../assets/icons/pen.svg";
@@ -28,54 +28,160 @@ const users = [
             "bs": "harness real-time e-markets"
         }
     },
+    {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+                "lat": "-37.3159",
+                "lng": "81.1496"
+            }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets"
+        }
+    },
+    {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+                "lat": "-37.3159",
+                "lng": "81.1496"
+            }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets"
+        }
+    },
+    {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+                "lat": "-37.3159",
+                "lng": "81.1496"
+            }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets"
+        }
+    },
+    {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+                "lat": "-37.3159",
+                "lng": "81.1496"
+            }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets"
+        }
+    },
 ]
 export const ListeUtilisateur = () => {
 
     const [openSide, setOpenSide] = useState(false);
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true)
+        }, "2000")
+    }, [])
     const columns = [
         {
             name: "Nom et prenoms",
-            selector: (row) => row.name,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.name,
             sortable: true,
         },
         {
             name: "Username",
-            selector: (row) => row.username,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.username,
             sortable: true,
         },
         {
             name: "Email",
-            selector: (row) => row.email,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.email,
             sortable: true,
         },
         {
             name: "Adresse",
-            selector: (row) => row.address.street,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.address.street,
         },
         {
             name: "Numero telephone",
-            selector: (row) => row.phone,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.phone,
         },
         {
             name: "Site web",
-            selector: (row) => row.website,
+            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : row.website,
         },
         {
             name: "Action",
-            cell: (row) => (
-                <div className="flex items-center gap-x-3">
-                    <div className="tooltip" data-tip="Modifier">
-                        <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center">
-                            <img src={EditPenIcon} alt="icon" className="w-5" />
-                        </button>
+            cell: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                : (
+                    <div className="flex items-center gap-x-3">
+                        <div className="tooltip" data-tip="Modifier">
+                            <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center">
+                                <img src={EditPenIcon} alt="icon" className="w-5" />
+                            </button>
+                        </div>
+                        <div className="tooltip" data-tip="Supprimer">
+                            <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" >
+                                <img src={TrashIcon} alt="icon" className="w-5" />
+                            </button>
+                        </div>
                     </div>
-                    <div className="tooltip" data-tip="Supprimer">
-                        <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" >
-                            <img src={TrashIcon} alt="icon" className="w-5" />
-                        </button>
-                    </div>
-                </div>
-            ),
+                ),
         },
     ];
 
@@ -103,13 +209,14 @@ export const ListeUtilisateur = () => {
                         Rechercher
                     </button>
                 </div>
-                <DataTable
+                <div className=""><DataTable
                     columns={columns}
                     data={users}
                     className='border'
                 />
-                <div className='my-3 flex justify-end'>
-                    <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                    <div className='my-3 flex justify-end'>
+                        <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                    </div>
                 </div>
             </div>
         </div>

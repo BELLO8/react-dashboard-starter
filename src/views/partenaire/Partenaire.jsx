@@ -1,6 +1,6 @@
-import { Drawer } from "@mui/material";
+import { Drawer, Skeleton } from "@mui/material";
 import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
@@ -19,6 +19,14 @@ export const Partenaire = () => {
         email: "",
         telephone: "",
     });
+
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true)
+        }, "2000")
+    }, [])
+
     const toggleDrawer = (newOpen) => () => {
         setOpenSide(newOpen);
     };
@@ -74,56 +82,74 @@ export const Partenaire = () => {
                                         Rechercher
                                     </button>
                                 </div>
-                            </div>
-                            <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
-                                {[0, 1, 2, 3, 4, 5, 6].map((item, index) => (
+                            </div><div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
+                                {[0, 1, 2, 3, 4].map((item, index) => (
                                     <div
                                         key={index}
                                         className="relative w-48 lg:w-56 h-fit rounded-lg shadow bg-white p-4 pb-6"
                                     >
-                                        <div className="dropdown dropdown-end absolute right-2 top-2">
-                                            <div
-                                                tabIndex={0}
-                                                role="button"
-                                                className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50"
-                                            >
-                                                <MoreHorizontal size={20} />
-                                            </div>
-                                            <ul
-                                                tabIndex={0}
-                                                className="mt-1 dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-lg w-44"
-                                            >
-                                                <button
-                                                    className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
-                                                    onClick={() => setOpenSideUpdate(true)}
+                                        {
+                                            !loading ? '' : (<div className="dropdown dropdown-end absolute right-2 top-2">
+                                                <div
+                                                    tabIndex={0}
+                                                    role="button"
+                                                    className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50"
                                                 >
-                                                    Modifer
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        document.getElementById("disable_client").showModal()
-                                                    }
-                                                    className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
+                                                    <MoreHorizontal size={20} />
+                                                </div>
+                                                <ul
+                                                    tabIndex={0}
+                                                    className="mt-1 dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-lg w-44"
                                                 >
-                                                    Désactiver
-                                                </button>
-                                            </ul>
-                                        </div>
-                                        <div className="bg-gray-200 rounded-full w-20 h-20 mx-auto mt-5 flex items-center justify-center">
-                                            <UserRound />
-                                        </div>
+                                                    <button
+                                                        className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
+                                                        onClick={() => setOpenSideUpdate(true)}
+                                                    >
+                                                        Modifer
+                                                    </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            document.getElementById("disable_client").showModal()
+                                                        }
+                                                        className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
+                                                    >
+                                                        Désactiver
+                                                    </button>
+                                                </ul>
+                                            </div>)
+                                        }
+
+
+                                        {
+                                            !loading ? (
+                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="circular" width={80} height={80} />
+                                            ) : (
+                                                <div className="bg-gray-200 rounded-full w-20 h-20 mx-auto mt-5 flex items-center justify-center">
+                                                    <UserRound />
+                                                </div>)
+                                        }
+
                                         <h1 className="text-lg text-black text-center font-bold mt-2 truncate">
-                                            N'da Adams Aimé Désiré Yao
+                                            {!loading ? (
+                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={190} />
+                                            ) : " N'da Adams Aimé Désiré Yao"}
                                         </h1>
                                         <p className="text-sm text-gray-500 text-center font-medium">
-                                            +225 0778812111
+                                            {!loading ? (
+                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={80} />
+                                            ) : " +225 0778812111"}
                                         </p>
-                                        <button
-                                            className="bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
-                                            onClick={() => openClientDetail(item)}
-                                        >
-                                            Détail partenaire <ArrowUpRight size={17} />
-                                        </button>
+                                        {!loading ? (
+                                            <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="rounded" width={180} height={30} />
+                                        ) : (
+                                            <button
+                                                className="bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
+                                                onClick={() => openClientDetail(item)}
+                                            >
+                                                Détail partenaire <ArrowUpRight size={17} />
+                                            </button>
+                                        )}
+
                                     </div>
                                 ))}
                             </div>
@@ -243,6 +269,6 @@ export const Partenaire = () => {
 
             </div>
 
-        </div>
+        </div >
     )
 }

@@ -113,6 +113,17 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                 <input type="text" placeholder="ex : Yao kofff" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('name', { required: true })} />
                             </div>
+                            <div className="my-2">
+                                <div>
+                                    <label htmlFor="" className='text-sm font-medium'>Type de partenaire<sup className='text-rose-600'>*</sup></label>
+                                </div>
+                                <select className="select select-bordered w-full ">
+                                    <option disabled selected>Selectionnez un element</option>
+                                    <option>Particulier</option>
+                                    <option>Entreprise</option>
+                                </select>
+                            </div>
+
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Adresse<sup className='text-rose-600'>*</sup></label>

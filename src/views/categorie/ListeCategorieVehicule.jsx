@@ -1,32 +1,55 @@
-import { IconButton, Menu, MenuItem, Pagination } from "@mui/material";
-import React, { useState } from "react";
+import { Pagination, Skeleton } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import EditPenIcon from "./../../assets/icons/pen.svg";
 import TrashIcon from "./../../assets/icons/trash.svg";
-import { ThreeDots } from "react-loader-spinner";
 
 export const ListeCategorieVehicule = () => {
     const [openSide, setOpenSide] = useState(false);
     const [addLoading, setAddLoading] = useState(false);
     const [categorieInfo, setCategorieInfo] = useState(null);
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true)
+        }, "2000")
+    }, [])
 
     const CategorieRowElement = () => {
         return (
             <tr>
-                <td className="border-b font-medium">Cy Ganderton</td>
-                <td className="border-b font-medium">Quality Control Specialist</td>
+                <td className="border-b font-medium">
+                    {
+                        !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                            : "Cy Ganderton"
+                    }
+                </td>
+                <td className="border-b font-medium">
+
+                    {
+                        !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                            : "Quality Control Specialist"
+                    }
+
+                </td>
                 <td className="border-b">
-                    <div className="flex items-center gap-x-3">
-                        <div className="tooltip" data-tip="Modifier">
-                            <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center" onClick={() => document.getElementById('create_categorie').showModal()}>
-                                <img src={EditPenIcon} alt="icon" className="w-5" />
-                            </button>
-                        </div>
-                        <div className="tooltip" data-tip="Supprimer">
-                            <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" onClick={() => document.getElementById('delete_categorie').showModal()}>
-                                <img src={TrashIcon} alt="icon" className="w-5" />
-                            </button>
-                        </div>
-                    </div>
+                    {
+                        !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                            : (<div className="flex items-center gap-x-3">
+                                <div className="tooltip" data-tip="Modifier">
+                                    <button className="w-7 h-7 rounded-lg bg-main/30 flex items-center justify-center" onClick={() => document.getElementById('create_categorie').showModal()}>
+                                        <img src={EditPenIcon} alt="icon" className="w-5" />
+                                    </button>
+                                </div>
+                                <div className="tooltip" data-tip="Supprimer">
+                                    <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" onClick={() => document.getElementById('delete_categorie').showModal()}>
+                                        <img src={TrashIcon} alt="icon" className="w-5" />
+                                    </button>
+                                </div>
+                            </div>)
+                    }
+
                 </td>
             </tr>
         );
@@ -67,7 +90,6 @@ export const ListeCategorieVehicule = () => {
                     </div>
                 </div>
             </div>
-
             <div className="mt-5 bg-white rounded-lg">
                 <div className="overflow-x-auto">
                     <table className="custom-table table table-zebr">
@@ -94,6 +116,7 @@ export const ListeCategorieVehicule = () => {
                     />
                 </div>
             </div>
+
 
             {/* MODAL CREATE CATEGORIE */}
             <dialog id="create_categorie" className="modal">

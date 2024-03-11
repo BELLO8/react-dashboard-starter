@@ -1,30 +1,62 @@
-export const OrdersColumns = [
+import { Skeleton } from "@mui/material";
+
+export const OrdersColumns = (loading) => [
   {
     name: "Client",
-    selector: (row) => row.coordonnees_client.nom,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.coordonnees_client.nom
+      ),
     sortable: true,
   },
   {
     name: "Itinéraire ",
-    selector: (row) => row.itineraire.depart,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.itineraire.depart
+      ),
     sortable: true,
   },
   {
     name: "Type de véhicule",
-    selector: (row) => row.type_vehicule,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.type_vehicule
+      ),
     sortable: true,
   },
   {
     name: "Date de debut",
-    selector: (row) => row.date_debut_location,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.date_debut_location
+      ),
   },
   {
     name: "Date de fin",
-    selector: (row) => row.date_fin_location,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.date_fin_location
+      ),
   },
   {
     name: "Date de la commande",
-    selector: (row) => row.date_commande,
+    selector: (row) =>
+      !loading ? (
+        <Skeleton animation="wave" variant="text" width={80} />
+      ) : (
+        row.date_commande
+      ),
   },
   {
     name: "Action",

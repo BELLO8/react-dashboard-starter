@@ -6,7 +6,7 @@ import {
     Title,
     Tooltip
 } from 'chart.js';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -46,6 +46,14 @@ export const data = {
 };
 
 export const Home = () => {
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true)
+        }, "2000")
+    }, [])
+
     return (
         <div className="p-3 pt-7">
             <div className="">
@@ -58,39 +66,73 @@ export const Home = () => {
                 <div className="mt-8 grid grid-cols-4 gap-2">
                     <div className="p-4 w-72  border border-dashed bg-slate-100 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate ">Revenue global</p>
-                        <p className=" text-2xl font-bold">157 0000 Fr</p>
+                        {
+                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            ) : (<p className=" text-2xl font-bold">157 0000 Fr</p>
+                            )
+                        }
                     </div>
                     <div className="p-3 w-72  border border-dashed bg-sky-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Commandes</p>
-                        <p className="text-2xl font-bold">274</p>
+                        {
+                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            ) : (<p className=" text-2xl font-bold">274</p>
+                            )
+                        }
                         <div className='flex gap-x-4 mt-1'>
                             <div>
                                 <p className="text-[10px] font-medium text-gray-400 truncate">Commandes terminées</p>
-                                <p className="text-md font-bold">74</p>
+
+                                {
+                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    ) : (<p className="text-md font-bold">74</p>
+                                    )
+                                }
                             </div>
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium truncate">Commandes annulées</p>
-                                <p className="text-md font-bold">200</p>
+                                {
+                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    ) : (<p className="text-md font-bold">200</p>
+
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
                     <div className="p-3 w-72 border border-dashed bg-indigo-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Chauffeurs</p>
-                        <p className="text-2xl font-bold">54</p>
+                        {
+                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            ) : (<p className="text-2xl font-bold">54</p>
+                            )
+                        }
                         <div className='flex gap-4 mt-1'>
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium">Chauffeurs actifs</p>
-                                <p className="text-md font-bold">50</p>
+                                {
+                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    ) : (<p className="text-md font-bold">50</p>
+                                    )
+                                }
                             </div>
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium truncate">Chauffeurs inactifs</p>
-                                <p className="text-md font-bold">4</p>
+                                {
+                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    ) : (<p className="text-md font-bold">4</p>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
                     <div className="p-3 w-72 border border-dashed bg-blue-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Clients</p>
-                        <p className="text-2xl font-bold">974</p>
+                        {
+                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            ) : (<p className="text-2xl font-bold">974</p>
+                            )
+                        }
                     </div>
                 </div>
             </div>
@@ -106,8 +148,6 @@ export const Home = () => {
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }

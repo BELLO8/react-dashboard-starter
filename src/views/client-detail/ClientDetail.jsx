@@ -1,6 +1,6 @@
 import { Drawer } from "@mui/material";
 import { ChevronLeft, Eye, PenLine, Trash, User2, UserRound } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const ClientDetail = () => {
@@ -11,7 +11,13 @@ const ClientDetail = () => {
     email: "",
     telephone: "",
   });
+  const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(true)
+    }, "2000")
+  }, [])
   // TABLE CELL COMPONENT
   const CommandeComponent = () => {
     return (
@@ -66,80 +72,80 @@ const ClientDetail = () => {
 
   return (
     <div>
-      {/* <div className="flex items-center gap-x-3 bg-main/80 p-3 shadow rounded-xl">
-        
-          <button className="w-24 h-8 rounded-full bg-stone-100 text-main text-base font-bold flex items-center justify-center">
-            <ChevronLeft size={18} className="-ml-1" /> Retour
-          </button>
-        
-      </div> */}
-      <div className="flex items-start gap-x-4">
-        <div className="relative w-96 min-h-screen bg-white drop-shadow rounded- px-4 py-6">
-          <div className="flex items-center justify-between">
-            <NavLink to="/clients">
+      {
+        !loading ? (
+          <div className='flex justify-center my-8'>
+            <span className="loading loading-spinner loading-md"></span>
+          </div>
+        ) : (<div className="flex items-start gap-x-4">
+          <div className="relative w-96 min-h-screen bg-white drop-shadow rounded- px-4 py-6">
+            <div className="flex items-center justify-between">
+              <NavLink to="/clients">
+                <button
+                  className="text-main w-fit h-7 rounded-full text-sm font-bold flex items-center justify-center gap-x-1"
+                >
+                  <ChevronLeft size={16} />
+                  Retour
+                </button>
+              </NavLink>
               <button
-                className="text-main w-fit h-7 rounded-full text-sm font-bold flex items-center justify-center gap-x-1"
+                className="bg-main text-white w-fit px-3 h-7 rounded-lg text-sm font-medium flex items-center justify-center gap-x-1"
+                onClick={() => openModalCreateEditUser()}
               >
-                <ChevronLeft size={16} />
-                Retour
+                <PenLine size={16} />
+                Modifer
               </button>
-            </NavLink>
-            <button
-              className="bg-main text-white w-fit px-3 h-7 rounded-lg text-sm font-medium flex items-center justify-center gap-x-1"
-              onClick={() => openModalCreateEditUser()}
-            >
-              <PenLine size={16} />
-              Modifer
-            </button>
-          </div>
-
-          <div className="mt-10 w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center">
-            <User2 size={32} />
-          </div>
-
-          <div className="mt-3">
-            <p className="text-lg text-center text-black font-bold">N'da Adams Steve Harvey</p>
-            <p className="text-sm text-center text-stone-400 font-medium">+225077881211</p>
-            <p className="text-sm text-center text-stone-400 font-medium">steve-harvey@xyz.com</p>
-          </div>
-
-          <div className="flex items-center justify-between gap-x-2 border-t border-t-stone-100 pt-5 mt-5">
-            <div className="w-full h-16 bg-green-50 rounded-lg flex flex-col items-center justify-center">
-              <p className="text-center text-xl text-green-600 font-extrabold">43</p>
-              <p className="text-center text-xs text-green-600 truncate">Courses terminées</p>
             </div>
-            <div className="w-full h-16 bg-red-50 rounded-lg flex flex-col items-center justify-center">
-              <p className="text-center text-xl text-red-600 font-extrabold">12</p>
-              <p className="text-center text-xs text-red-600 truncate">Courses annulées</p>
+
+            <div className="mt-10 w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center">
+              <User2 size={32} />
+            </div>
+
+            <div className="mt-3">
+              <p className="text-lg text-center text-black font-bold">N'da Adams Steve Harvey</p>
+              <p className="text-sm text-center text-stone-400 font-medium">+225077881211</p>
+              <p className="text-sm text-center text-stone-400 font-medium">steve-harvey@xyz.com</p>
+            </div>
+
+            <div className="flex items-center justify-between gap-x-2 border-t border-t-stone-100 pt-5 mt-5">
+              <div className="w-full h-16 bg-green-50 rounded-lg flex flex-col items-center justify-center">
+                <p className="text-center text-xl text-green-600 font-extrabold">43</p>
+                <p className="text-center text-xs text-green-600 truncate">Courses terminées</p>
+              </div>
+              <div className="w-full h-16 bg-red-50 rounded-lg flex flex-col items-center justify-center">
+                <p className="text-center text-xl text-red-600 font-extrabold">12</p>
+                <p className="text-center text-xs text-red-600 truncate">Courses annulées</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-5 w-full h-96 bg-white drop-shadow rounded-xl p-4">
-          <h2 className="text-xl text-black font-bold">Historique commandes</h2>
+          <div className="mt-5 w-full h-96 bg-white drop-shadow rounded-xl p-4">
+            <h2 className="text-xl text-black font-bold">Historique commandes</h2>
 
-          <div className="mt-5">
-            <div className="overflow-x-auto">
-              <table className="table">
-                {/* head */}
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th>Véhicule</th>
-                    <th>Chauffeur</th>
-                    <th>Point départ</th>
-                    <th>Destination</th>
-                    <th>Durée trajet</th>
-                    <th>Heure</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <CommandeComponent />
-                </tbody>
-              </table>
+            <div className="mt-5">
+              <div className="overflow-x-auto">
+                <table className="table">
+                  {/* head */}
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th>Véhicule</th>
+                      <th>Chauffeur</th>
+                      <th>Point départ</th>
+                      <th>Destination</th>
+                      <th>Durée trajet</th>
+                      <th>Heure</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <CommandeComponent />
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>)
+      }
+
 
       <Drawer
         anchor={"right"}

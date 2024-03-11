@@ -1,6 +1,6 @@
-import { Drawer } from "@mui/material";
+import { Drawer, Skeleton } from "@mui/material";
 import { MoreHorizontal, UserRound } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import ArrowTop from "./../../assets/icons/arrow-top.svg";
 
@@ -20,6 +20,13 @@ export const Client = () => {
         email: "",
         telephone: "",
     });
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true)
+        }, "2000")
+    }, [])
 
     const openModalCreateEditUser = (user) => {
         setOpenSidebarModal(true);
@@ -107,71 +114,91 @@ export const Client = () => {
                         </button>
                     </div>
                 </div>
-
-                <div className="mt-7 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-6">
+                <div className="mt-7 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-x-4 gap-y-6">
                     {[
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
-                    ].map((item, index) => (
-                        <div
-                            key={index}
-                            className="relative w-full h-fit rounded-lg shadow bg-white p-3 pb-5"
-                        >
-                            <div className="dropdown dropdown-end absolute right-2 top-2">
-                                <div
-                                    tabIndex={0}
-                                    role="button"
-                                    className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50"
-                                >
-                                    <MoreHorizontal size={20} />
-                                </div>
-                                <ul
-                                    tabIndex={0}
-                                    className="mt-1 dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-lg w-44"
-                                >
-                                    <button
-                                        className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
-                                        onClick={() => openModalCreateEditUser(fakeClient)}
+                        0, 1, 2, 3, 4].map((item, index) => (
+                            <div
+                                key={index}
+                                className="relative w-full h-fit rounded-lg shadow bg-white p-3 pb-5"
+                            >
+                                <div className="dropdown dropdown-end absolute right-2 top-2">
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50"
                                     >
-                                        Modifer
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            document.getElementById("disable_client").showModal()
+                                        <MoreHorizontal size={20} />
+                                    </div>
+                                    <ul
+                                        tabIndex={0}
+                                        className="mt-1 dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-lg w-44"
+                                    >
+                                        <button
+                                            className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
+                                            onClick={() => openModalCreateEditUser(fakeClient)}
+                                        >
+                                            Modifer
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                document.getElementById("disable_client").showModal()
+                                            }
+                                            className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
+                                        >
+                                            Désactiver
+                                        </button>
+                                    </ul>
+                                </div>
+                                <NavLink to="/detail-client">
+                                    <div className="bg-gray-200 rounded-full w-16 h-16 mx-auto mt-5 flex items-center justify-center">
+                                        {
+                                            !loading ? <Skeleton className='mx-auto' animation='wave' variant='circular' width={62} height={62} />
+                                                : (
+                                                    <img
+                                                        src="https://randomuser.me/api/portraits/men/75.jpg"
+                                                        alt=""
+                                                        className="rounded-full"
+                                                    />
+                                                )
                                         }
-                                        className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
-                                    >
-                                        Désactiver
-                                    </button>
-                                </ul>
-                            </div>
-                            <NavLink to="/detail-client">
-                                <div className="bg-gray-200 rounded-full w-16 h-16 mx-auto mt-5 flex items-center justify-center">
-                                    {/* <UserRound /> */}
-                                    <img
-                                        src="https://randomuser.me/api/portraits/men/75.jpg"
-                                        alt=""
-                                        className="rounded-full"
-                                    />
-                                </div>
-                                <h1 className="text-base text-black text-center font-bold mt-2 truncate">
-                                    N'da Adams Aimé Désiré Yao
-                                </h1>
-                                <p className="text-sm text-gray-500 text-center font-medium">
-                                    +225 0778812111
-                                </p>
-                                <p className="mt-1 text-xs text-gray-400 text-center font-medium">
-                                    Inscrit le: 24-01-2024
-                                </p>
-                                <div className="mt-4 w-full h-9 rounded-lg bg-green-50 flex items-center justify-center gap-x-2 px-2">
-                                    <p className="text-base text-green-600 font-extrabold">34</p>
-                                    <p className="text-xs font-medium truncate">
-                                        Courses effectuées
+
+                                    </div>
+                                    <h1 className="text-base text-black text-center font-bold mt-2 truncate">
+                                        {
+                                            !loading ? <Skeleton className='mx-auto' animation='wave' variant='text' width={160} />
+                                                : "N'da Adams Aimé Désiré Yao"
+                                        }
+                                    </h1>
+                                    <p className="text-sm text-gray-500 text-center font-medium">
+                                        {
+                                            !loading ? <Skeleton className="mx-auto" animation='wave' variant='text' width={70} />
+                                                : "+225 0778812111"
+                                        }
                                     </p>
-                                </div>
-                            </NavLink>
-                        </div>
-                    ))}
+                                    <p className="mt-1 text-xs text-gray-400 text-center font-medium">
+                                        {
+                                            !loading ? <Skeleton className="text-center mx-auto" animation='wave' variant='text' width={100} />
+                                                : "Inscrit le: 24-01-2024"
+                                        }
+                                    </p>
+                                    {
+                                        !loading ? <Skeleton className="my-3 text-center mx-auto" animation='wave' variant='rounded' width={140} height={32} />
+                                            : (
+                                                <div className="mt-4 w-full h-9 rounded-lg bg-green-50 flex items-center justify-center gap-x-2 px-2">
+
+                                                    <p className="text-base text-green-600 font-extrabold">34</p>
+                                                    <p className="text-xs font-medium truncate">
+                                                        Courses effectuées
+                                                    </p>
+                                                </div>
+                                            )
+                                    }
+
+                                </NavLink>
+                            </div>
+                        ))}
                 </div>
+
             </div>
 
             {/* MODAL DESACTIVATION COMPTE UTILISATEUR */}
