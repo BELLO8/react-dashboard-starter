@@ -4,7 +4,7 @@ import DataTable from 'react-data-table-component';
 import { AddUserSidebar } from '../../components/utilisateur/AddUserSidebar';
 import EditPenIcon from "./../../assets/icons/pen.svg";
 import TrashIcon from "./../../assets/icons/trash.svg";
-const users = [
+export const users = [
     {
         "id": 1,
         "name": "Leanne Graham",

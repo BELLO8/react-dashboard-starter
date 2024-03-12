@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
+import { users } from "../utilisateur/ListeUtilisateur";
 
 export const Partenaire = () => {
 
@@ -83,7 +84,7 @@ export const Partenaire = () => {
                                     </button>
                                 </div>
                             </div><div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
-                                {[0, 1, 2, 3, 4].map((item, index) => (
+                                {users.map((item, index) => (
                                     <div
                                         key={index}
                                         className="relative w-48 lg:w-56 h-fit rounded-lg shadow bg-white p-4 pb-6"
@@ -132,12 +133,12 @@ export const Partenaire = () => {
                                         <h1 className="text-lg text-black text-center font-bold mt-2 truncate">
                                             {!loading ? (
                                                 <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={190} />
-                                            ) : " N'da Adams Aimé Désiré Yao"}
+                                            ) : item.name}
                                         </h1>
                                         <p className="text-sm text-gray-500 text-center font-medium">
                                             {!loading ? (
                                                 <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={80} />
-                                            ) : " +225 0778812111"}
+                                            ) : item.phone}
                                         </p>
                                         {!loading ? (
                                             <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="rounded" width={180} height={30} />

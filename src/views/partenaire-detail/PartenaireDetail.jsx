@@ -8,6 +8,7 @@ import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSide
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
 import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
+import { users } from "../utilisateur/ListeUtilisateur";
 
 const PartenaireDetail = () => {
   const [active, setActive] = useState(0);
@@ -317,7 +318,7 @@ const PartenaireDetail = () => {
                       </div>
 
                       <div className="mt-6 grid grid-cols-4 gap-4">
-                        {[0, 1, 2, 3, 4, 5, 6].map((item, index) => (
+                        {users.map((item, index) => (
                           <div
                             key={index}
                             className="relative h-fit rounded-lg border-2 border-dashed bg-white p-4 pb-6"
@@ -366,13 +367,13 @@ const PartenaireDetail = () => {
                             <h1 className="text-sm text-black text-center font-medium mt-2 truncate">
                               {
                                 !load ? <Skeleton animation='wave' variant='text' width={190} />
-                                  : "N'da Adams Aimé Désiré Yao"
+                                  : item.name
                               }
                             </h1>
                             <p className="text-xs  text-gray-500 text-center font-medium">
                               {
                                 !load ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='text' width={80} />
-                                  : "+225 0778812111"
+                                  : item.phone
                               }
                             </p>
                             {
