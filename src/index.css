@@ -60,3 +60,20 @@ body {
   color: white !important;
   border-right: 0.5px solid #d6d3d1;
 }
+
+.gmnoprint {
+  display: none !important;
+}
+
+/* Masquer uniquement les boutons de zoom */
+.gmnoprint > div[title="Zoom in"] {
+  display: none !important;
+}
+
+.gmnoprint > div[title="Zoom out"] {
+  display: none !important;
+}
+
+.gm-style-cc {
+  display: none !important;
+}

@@ -60,7 +60,30 @@ export const PositionVehicule = () => {
                 lng: -4.003752918579049
             },
         },
-
+        {
+            location: {
+                lat: 5.3345494689652275,
+                lng: -4.081085782576319
+            },
+        },
+        {
+            location: {
+                lat: 5.329314404303787,
+                lng: -4.081444158445839
+            },
+        },
+        {
+            location: {
+                lat: 5.322041539964159,
+                lng: -4.076193772991637
+            },
+        },
+        {
+            location: {
+                lat: 5.317781732711943,
+                lng: -4.0796587302979725
+            },
+        },
     ];
     if (value !== null) {
         geocodeByAddress(value.label)

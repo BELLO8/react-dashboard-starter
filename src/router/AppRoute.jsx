@@ -4,7 +4,7 @@ import { Home } from "../views/Home/Home";
 import { Login } from "../views/auth/login/Login";
 import { ListeCategorieVehicule } from "../views/categorie/ListeCategorieVehicule";
 import { ChauffeurCommande } from "../views/chauffeur-commande/ChauffeurCommande";
-import ClientDetail from "../views/client-detail/ClientDetail";
+import { ClientDetail } from "../views/client-detail/ClientDetail";
 import { Client } from "../views/client/Client";
 import { Commande } from "../views/commande/Commande";
 import { ModificationIdentifiant } from "../views/modification-identifiant/ModificationIdentifiant";

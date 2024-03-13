@@ -101,7 +101,6 @@ export const AutocompleteCustom = ({ onPlaceSelect }) => {
                                     {description}
                                 </button>
                             </div>
-
                         );
                     })}
                 </ul>

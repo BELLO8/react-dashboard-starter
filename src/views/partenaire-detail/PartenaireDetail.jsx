@@ -1,11 +1,12 @@
 import { Drawer, Pagination, Skeleton } from "@mui/material";
-import GoogleMapReact from 'google-map-react';
-import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, Map, MinusCircle, MoreHorizontal, PenLine, UserRound } from "lucide-react";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, MapIcon, MinusCircle, MoreHorizontal, PenLine, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { NavLink } from 'react-router-dom';
 import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSidebar";
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
+import Directions from "../../components/GoogleMap/Direction";
 import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
 import { users } from "../utilisateur/ListeUtilisateur";
@@ -511,12 +512,21 @@ const PartenaireDetail = () => {
                           {
                             !loadData ? <Skeleton animation='wave' variant='rectangular' width={580} height={200} />
                               : (<div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
-                                <GoogleMapReact
+                                <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
+                                  <Map
+                                    disableDefaultUI={true}
+                                    zoom={14}
+                                    center={defaultProps.center}
+                                    mapId={'<Your custom MapId here>'}>
+                                  </Map>
+                                  <Directions />
+                                </APIProvider>
+                                {/* <GoogleMapReact
                                   bootstrapURLKeys={{ key: "" }}
                                   defaultCenter={defaultProps.center}
                                   defaultZoom={defaultProps.zoom}
                                 >
-                                </GoogleMapReact>
+                                </GoogleMapReact> */}
                               </div>
 
                               )
@@ -526,7 +536,7 @@ const PartenaireDetail = () => {
                           <div className="grid grid-cols-3 my-2 gap-1">
                             <div class="text-left text-sm  bg-muted">
                               <div class=" gap-1">
-                                <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><Map size={17} /> Trajet  de la course</div>
+                                <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
                                 <div class="px-3 text-xs font-medium my-2">
                                   <div>
                                     <div className="flex items-center ">

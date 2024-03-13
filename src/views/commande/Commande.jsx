@@ -1,8 +1,9 @@
 import { Drawer, Pagination, Skeleton } from '@mui/material';
-import GoogleMapReact from 'google-map-react';
-import { BadgeSwissFranc, Clock, Eye, Map } from 'lucide-react';
+import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { BadgeSwissFranc, Clock, Eye, MapIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import Directions from '../../components/GoogleMap/Direction';
 
 const data = [
     {
@@ -229,17 +230,20 @@ export const Commande = () => {
                     <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                         <div className="w-[580px] mx-2 my-6">
                             <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
-                                <GoogleMapReact
-                                    bootstrapURLKeys={{ key: "" }}
-                                    defaultCenter={defaultProps.center}
-                                    defaultZoom={defaultProps.zoom}
-                                >
-                                </GoogleMapReact>
+                                <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
+                                    <Map
+                                        disableDefaultUI={true}
+                                        zoom={14}
+                                        center={defaultProps.center}
+                                        mapId={'<Your custom MapId here>'}>
+                                    </Map>
+                                    <Directions />
+                                </APIProvider>
                             </div>
                             <div className="grid grid-cols-3 my-2 gap-1">
                                 <div class="text-left text-sm  bg-muted">
                                     <div class=" gap-1">
-                                        <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><Map size={17} /> Trajet  de la course</div>
+                                        <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
                                         <div class="px-3 text-xs font-medium my-2">
                                             <div>
                                                 <div className="flex items-center ">
