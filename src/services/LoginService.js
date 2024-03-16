@@ -1,16 +1,6 @@
-import { BASE_URL } from "../Utils/constant";
+import { BASE_URL, LOGIN_ENDPOINT } from "../Utils/constant";
+import clientAxios from "./axios";
 
-export const Login = (data) => {
-  return fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "mor_2314",
-      password: "83r5^_",
-    }),
-  }).then((res) => {
-    res.json();
-  });
+export const loginUser = async (...data) => {
+  return await clientAxios.post(`${BASE_URL + LOGIN_ENDPOINT}`, ...data);
 };

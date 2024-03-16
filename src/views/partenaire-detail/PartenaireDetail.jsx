@@ -3,12 +3,15 @@ import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, MapIcon, MinusCircle, MoreHorizontal, PenLine, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useParams } from 'react-router-dom';
 import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSidebar";
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
 import Directions from "../../components/GoogleMap/Direction";
 import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
+import { partnerInfo } from "../../redux/store/partner";
+import { disablePartner } from "../../services/PartenaireService";
 import { users } from "../utilisateur/ListeUtilisateur";
 
 const PartenaireDetail = () => {
@@ -21,12 +24,17 @@ const PartenaireDetail = () => {
   const [loading, setLoading] = useState(false)
   const [load, setLoad] = useState(false)
   const [loadData, setLoadData] = useState(false)
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const partner = useSelector((state) => state.partner.infoPartner);
+
 
   useEffect(() => {
+    dispatch(partnerInfo(id))
     setTimeout(() => {
       setLoading(true)
-    }, "2000")
-  }, [])
+    }, "1000")
+  }, [dispatch, id])
 
   const tab = [
     {
@@ -50,6 +58,16 @@ const PartenaireDetail = () => {
   const submitCar = (data) => {
     setOpenSideAddCar(false)
     toast.success('vehicule enregistrer')
+  }
+  const handleDisableAccount = () => {
+    disablePartner(id).then((res) => {
+      if (res.status === 200) {
+        dispatch(partnerInfo(id))
+        toast.success('Compte desactivé')
+      }
+    }).catch((err) => {
+
+    })
   }
 
   return (
@@ -83,7 +101,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Steeve Harvez"
+                      : partner.nom + " " + partner.prenoms
                   }</p>
               </div>
 
@@ -92,7 +110,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Sincere@april.biz"
+                      : partner.email
                   }
                 </p>
               </div>
@@ -101,22 +119,32 @@ const PartenaireDetail = () => {
                 <p className="text-sm font-semibold">Contact</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">{
                   !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                    : "770-736-8031"
+                    : partner.numero
                 }</p>
               </div>
 
               <div className="my-6">
-                <p className="text-sm font-semibold">Adresse</p>
+                <p className="text-sm font-semibold">Type de partenaire</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Kulas Light,Gwenborough"
+                      : partner.typePartenaire ?? 'Particulier'
+                  }
+
+                </p>
+              </div>
+              <div className="my-6">
+                <p className="text-sm font-semibold">Etat du compte</p>
+                <p className="text-xs text-gray-600 font-medium mt-1">
+                  {
+                    !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                      : partner.enabled ? 'compte actif' : 'compte bloqué'
                   }
 
                 </p>
               </div>
               <div className="absolute bottom-0">
-                <button className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
+                <button onClick={handleDisableAccount} className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
               </div>
             </div>
             <div className='absolute right-8 mt-2'>

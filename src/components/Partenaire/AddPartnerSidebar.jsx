@@ -111,7 +111,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                     <label htmlFor="" className='text-sm font-medium'>Nom complet<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : Yao kofff" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('name', { required: true })} />
+                                    {...register('nom', { required: true })} />
                             </div>
                             <div className="my-2">
                                 <div>
@@ -129,20 +129,20 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                                     <label htmlFor="" className='text-sm font-medium'>Adresse<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : Palm ci" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('address', { required: true })} />
+                                    {...register('lieuHabitation', { required: true })} />
                             </div>
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Numéro de téléphone<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : 002587663321" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('phone', { required: true })} />
+                                    {...register('numero', { required: true })} />
                             </div>
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Email<sup className='text-rose-600'>*</sup></label>
                                 </div>
-                                <input type="text" placeholder="ex : kofi@yao.ee" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                <input type="email" placeholder="ex : kofi@yao.ee" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
                                     {...register('email', { required: true })} />
                             </div>
                             <div className='my-2'>

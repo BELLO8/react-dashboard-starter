@@ -1,7 +1,7 @@
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 
-export default function Directions() {
+export default function Directions({ origin, destination }) {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
     const [directionsService, setDirectionsService] = useState();
@@ -22,8 +22,8 @@ export default function Directions() {
 
         directionsService
             .route({
-                origin: 'feraille, Rue Abougnan Aboua, Marcory',
-                destination: "Place In'challah, Koumassi",
+                origin: origin ?? 'feraille, Rue Abougnan Aboua, Marcory',
+                destination: destination ?? "Place In'challah, Koumassi",
                 travelMode: window.google.maps.TravelMode.DRIVING,
                 provideRouteAlternatives: true
             })

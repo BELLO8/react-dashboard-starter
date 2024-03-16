@@ -1,8 +1,15 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { isLoggedIn } from '../Utils/Utils'
 import { SideBarMenu } from '../components/Menu/SideBarMenu'
 
 export const Layout = () => {
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!isLoggedIn()) {
+            navigate('/login')
+        }
+    }, [navigate])
     return (
         <div className="flex bg-[#FAFAFA] w-full min-h-screen ">
             <SideBarMenu />

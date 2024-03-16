@@ -1,7 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getUserProfil } from "../../Utils/Utils";
 import MapIcon from '../../assets/icons/map.svg';
 import logo from "../../assets/images/logo/logo.png";
+import { handleLogout } from "../../redux/auth";
 import AvatarIcon from './../../assets/icons/avatar.svg';
 import CategorieIcon from './../../assets/icons/categorie.svg';
 import PartenaireIcon from './../../assets/icons/client.svg';
@@ -13,6 +16,9 @@ import LogoutIcon from './../../assets/icons/logout.svg';
 import UtilisateurIcon from './../../assets/icons/user.svg';
 
 export const SideBarMenu = () => {
+    const user = getUserProfil();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const navs = [
         {
             name: "Tableau de bord",
@@ -87,11 +93,14 @@ export const SideBarMenu = () => {
                 <div className="mt-7 w-12 h-12 rounded-full bg-gray-600 shadow mx-auto flex items-center justify-center">
                     <img src={AvatarIcon} alt="" className="w-6 h-6" />
                 </div>
-                <p className="text-base font-bold text-black truncate text-center">Alex Charles Orier Blé Arnaud</p>
-                <NavLink to={'/login'} className="w-full h-9 flex items-center justify-center gap-x-2 bg-red-600 text-white text-sm font-semibold rounded-xl mt-2">
+                <p className="text-base font-bold text-black truncate text-center">{user?.nom ?? user?.email}</p>
+                <button className="w-full h-9 flex items-center justify-center gap-x-2 bg-red-600 text-white text-sm font-semibold rounded-xl mt-2" onClick={() => {
+                    dispatch(handleLogout())
+                    navigate('/login')
+                }}>
                     <img src={LogoutIcon} alt="" className="w-6 h-6" />
                     Déconnexion
-                </NavLink>
+                </button>
             </div>
         </div>
     );

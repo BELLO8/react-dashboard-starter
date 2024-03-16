@@ -2,19 +2,42 @@ import { Pagination, Skeleton } from '@mui/material'
 import { ChevronLeft, MinusCircle, PenLine } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { NavLink } from 'react-router-dom'
-import { data } from '../../Utils/data'
+import toast from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, useParams } from 'react-router-dom'
 import { OrdersColumns } from '../../Utils/dataColumn'
+import { customerInfo, getAllCustomerOrder } from '../../redux/store/customer'
+import { disableAccount } from '../../services/CustomerService'
 
 export const ClientDetail = () => {
 
   const [loading, setLoading] = useState(false)
+  const customer = useSelector((state) => state.customer.selectCustomer)
+  const order = useSelector((state) => state.customer.order)
+  const { id } = useParams()
+  const dispatch = useDispatch();
+  const handleDisableAccount = () => {
+    disableAccount(id).then((res) => {
+      if (res.status === 200) {
+        dispatch(customerInfo(id))
+        toast.success('Compte desactivé')
+      }
+    }).catch((err) => {
 
+    })
+  }
   useEffect(() => {
+    dispatch(customerInfo(id))
+    dispatch(getAllCustomerOrder({ id: id, page: 0, param: '', size: 10 }))
     setTimeout(() => {
       setLoading(true)
     }, "2000")
-  }, [])
+  }, [dispatch, id])
+
+  const more = async (page) => {
+    setLoading(true)
+    dispatch(getAllCustomerOrder({ id: id, page: page, param: '', size: 10 }))
+  }
 
   return (
     <div>
@@ -48,7 +71,7 @@ export const ClientDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Steeve Harvez"
+                      : customer?.nom ?? "Aucun nom"
                   }</p>
               </div>
 
@@ -57,7 +80,7 @@ export const ClientDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Sincere@april.biz"
+                      : customer?.email ?? "Aucun mail"
                   }
                 </p>
               </div>
@@ -66,22 +89,22 @@ export const ClientDetail = () => {
                 <p className="text-sm font-semibold">Contact</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">{
                   !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                    : "770-736-8031"
+                    : customer?.numero
                 }</p>
               </div>
 
               <div className="my-6">
-                <p className="text-sm font-semibold">Adresse</p>
+                <p className="text-sm font-semibold">Etat du compte</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "Kulas Light,Gwenborough"
+                      : customer.enabled ? 'compte actif' : 'compte bloqué'
                   }
 
                 </p>
               </div>
               <div className="absolute bottom-0">
-                <button className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
+                <button onClick={handleDisableAccount} className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
               </div>
             </div>
             <div className='absolute right-8 mt-2'>
@@ -135,7 +158,7 @@ export const ClientDetail = () => {
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">{
                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                  : "80"
+                  : customer?.nombreCourseEffectuees
               }</p>
               <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses</p>
             </div>
@@ -150,12 +173,13 @@ export const ClientDetail = () => {
               </button>
             </div>
             <DataTable
-              columns={OrdersColumns(loading)}
-              data={data}
+              columns={OrdersColumns(loading, () => { })}
+              data={order.courses}
               className='border'
             />
             <div className='my-3 flex justify-end'>
-              <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+              <Pagination onChange={(event, newValue) => more(newValue)}
+                onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
             </div>
           </div>
         </div>

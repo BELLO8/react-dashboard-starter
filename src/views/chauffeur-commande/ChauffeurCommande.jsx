@@ -23,7 +23,7 @@ export const ChauffeurCommande = () => {
 
                     <div className='my-3 rounded-lg px-4'>
                         <div className="flex items-center justify-between mb-12">
-                            <NavLink to="/partenaires">
+                            <NavLink to="/detail-partenaire">
                                 <button
                                     className="text-main w-fit h-7 rounded-full text-sm font-bold flex items-center justify-center gap-x-1"
                                 >

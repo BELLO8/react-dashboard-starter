@@ -37,7 +37,7 @@ export const AppRoute = createBrowserRouter([
         element: <Partenaire />,
       },
       {
-        path: "/detail-partenaire",
+        path: "/detail-partenaire/:id",
         element: <PartenaireDetail />
       },
       {
@@ -45,7 +45,7 @@ export const AppRoute = createBrowserRouter([
         element: <Client />,
       },
       {
-        path: "/detail-client",
+        path: "/detail-client/:id",
         element: <ClientDetail />
       },
       {

@@ -1,3 +1,4 @@
+import { Skeleton } from '@mui/material';
 import {
     BarElement,
     CategoryScale,
@@ -67,7 +68,7 @@ export const Home = () => {
                     <div className="p-4 w-72  border border-dashed bg-slate-100 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate ">Revenue global</p>
                         {
-                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            !loading ? (<Skeleton variant='text' width={80} height={40} animation="wave" />
                             ) : (<p className=" text-2xl font-bold">157 0000 Fr</p>
                             )
                         }
@@ -75,7 +76,7 @@ export const Home = () => {
                     <div className="p-3 w-72  border border-dashed bg-sky-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Commandes</p>
                         {
-                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                             ) : (<p className=" text-2xl font-bold">274</p>
                             )
                         }
@@ -84,7 +85,7 @@ export const Home = () => {
                                 <p className="text-[10px] font-medium text-gray-400 truncate">Commandes terminées</p>
 
                                 {
-                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                                     ) : (<p className="text-md font-bold">74</p>
                                     )
                                 }
@@ -92,7 +93,7 @@ export const Home = () => {
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium truncate">Commandes annulées</p>
                                 {
-                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                                     ) : (<p className="text-md font-bold">200</p>
 
                                     )
@@ -103,7 +104,7 @@ export const Home = () => {
                     <div className="p-3 w-72 border border-dashed bg-indigo-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Chauffeurs</p>
                         {
-                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                             ) : (<p className="text-2xl font-bold">54</p>
                             )
                         }
@@ -111,7 +112,7 @@ export const Home = () => {
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium">Chauffeurs actifs</p>
                                 {
-                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                                     ) : (<p className="text-md font-bold">50</p>
                                     )
                                 }
@@ -119,7 +120,7 @@ export const Home = () => {
                             <div>
                                 <p className="text-[10px] text-gray-400 font-medium truncate">Chauffeurs inactifs</p>
                                 {
-                                    !loading ? (<span className="loading loading-dots loading-xs"></span>
+                                    !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                                     ) : (<p className="text-md font-bold">4</p>
                                     )
                                 }
@@ -129,7 +130,7 @@ export const Home = () => {
                     <div className="p-3 w-72 border border-dashed bg-blue-50 rounded-[15px] flex flex-col">
                         <p className="text-sm text-gray-400 font-medium truncate">Clients</p>
                         {
-                            !loading ? (<span className="loading loading-dots loading-xs"></span>
+                            !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                             ) : (<p className="text-2xl font-bold">974</p>
                             )
                         }

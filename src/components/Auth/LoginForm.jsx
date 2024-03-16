@@ -1,17 +1,39 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Login } from "../../services/LoginService";
-
+import { handleLogin } from "../../redux/auth";
+import { loginUser } from "../../services/LoginService";
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+
   const onSubmit = async (data) => {
-    Login(data).then((res) => {
-      navigate('/')
-      setIsSubmit(true);
+    setIsSubmit(true)
+    loginUser(data).then((res) => {
+      const Token = res.data.accessToken
+      if (res.data) {
+        const data = {
+          ...res.data,
+          accessToken: Token,
+        }
+        dispatch(handleLogin(data))
+        navigate('/')
+      }
+    }).catch((err) => {
+      console.log(err);
+      setIsSubmit(false)
+      if (err.code === "ERR_BAD_REQUEST") {
+        toast.error('Verifier vos identifiants')
+      } else if (err.code === "ERR_NETWORK") {
+        toast.error('Problème de connexion')
+      } else {
+        toast.error("Une erreur s'est produite")
+      }
     })
 
   };
@@ -57,12 +79,13 @@ export const LoginForm = () => {
 
               <button
                 type="submit"
+                disabled={isSubmit ? true : false}
                 className={`${!isSubmit
                   ? "text-white bg-indigo-900"
                   : "text-slate-800 bg-slate-200 "
                   } w-full  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
               >
-                {!isSubmit ? "Se connecter" : "Veuillez patientez..."}{" "}
+                {isSubmit ? "Veuillez patientez... " : "Se connecter"}{" "}
                 {isSubmit ? (
                   <span className="loading loading-dots loading-xs"></span>
                 ) : null}

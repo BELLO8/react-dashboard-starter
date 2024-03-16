@@ -1,6 +1,19 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getUserProfil, isLoggedIn } from "../../../Utils/Utils";
 import { LoginForm } from "../../../components/Auth/LoginForm";
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const user = getUserProfil();
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/')
+    } else {
+      navigate('/login')
+    }
+  }, [user, navigate])
+
   return (
     <div className="isolate bg-white px-6 ">
       <div

@@ -3,144 +3,23 @@ import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { BadgeSwissFranc, Clock, Eye, MapIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import { useDispatch, useSelector } from 'react-redux';
 import Directions from '../../components/GoogleMap/Direction';
+import { getAllOrder } from '../../redux/store/order';
 
-const data = [
-    {
-        "date_commande": "2024-02-22",
-        "date_debut_location": "2024-03-01",
-        "date_fin_location": "2024-03-05",
-        "heure_debut_location": "10:00",
-        "heure_fin_location": "18:00",
-        "duree_location": "5 jours",
-        "type_vehicule": "Minibus",
-        "nombre_passagers": 10,
-        "itineraire": {
-            "depart": "Aéroport de Paris-Charles-de-Gaulle",
-            "arrivee": "Hôtel Le Méridien, Paris"
-        },
-        "options_supplementaires": ["Siège bébé", "Chauffeur supplémentaire"],
-        "coordonnees_client": {
-            "nom": "Jeanne Dupont",
-            "telephone": "+33 6 12 34 56 78",
-            "email": "jeanne.dupont@example.com"
-        },
-        "coordonnees_contact_urgence": {
-            "nom": "Marie Dupont",
-            "telephone": "+33 6 98 76 54 32"
-        },
-        "instructions_speciales": "Le véhicule doit être équipé de sièges enfants pour les passagers."
-    },
-    {
-        "date_commande": "2024-02-22",
-        "date_debut_location": "2024-03-01",
-        "date_fin_location": "2024-03-05",
-        "heure_debut_location": "10:00",
-        "heure_fin_location": "18:00",
-        "duree_location": "5 jours",
-        "type_vehicule": "Minibus",
-        "nombre_passagers": 10,
-        "itineraire": {
-            "depart": "Aéroport de Paris-Charles-de-Gaulle",
-            "arrivee": "Hôtel Le Méridien, Paris"
-        },
-        "options_supplementaires": ["Siège bébé", "Chauffeur supplémentaire"],
-        "coordonnees_client": {
-            "nom": "Jeanne Dupont",
-            "telephone": "+33 6 12 34 56 78",
-            "email": "jeanne.dupont@example.com"
-        },
-        "coordonnees_contact_urgence": {
-            "nom": "Marie Dupont",
-            "telephone": "+33 6 98 76 54 32"
-        },
-        "instructions_speciales": "Le véhicule doit être équipé de sièges enfants pour les passagers."
-    },
-    {
-        "date_commande": "2024-02-22",
-        "date_debut_location": "2024-03-01",
-        "date_fin_location": "2024-03-05",
-        "heure_debut_location": "10:00",
-        "heure_fin_location": "18:00",
-        "duree_location": "5 jours",
-        "type_vehicule": "Minibus",
-        "nombre_passagers": 10,
-        "itineraire": {
-            "depart": "Aéroport de Paris-Charles-de-Gaulle",
-            "arrivee": "Hôtel Le Méridien, Paris"
-        },
-        "options_supplementaires": ["Siège bébé", "Chauffeur supplémentaire"],
-        "coordonnees_client": {
-            "nom": "Jeanne Dupont",
-            "telephone": "+33 6 12 34 56 78",
-            "email": "jeanne.dupont@example.com"
-        },
-        "coordonnees_contact_urgence": {
-            "nom": "Marie Dupont",
-            "telephone": "+33 6 98 76 54 32"
-        },
-        "instructions_speciales": "Le véhicule doit être équipé de sièges enfants pour les passagers."
-    },
-    {
-        "date_commande": "2024-02-22",
-        "date_debut_location": "2024-03-01",
-        "date_fin_location": "2024-03-05",
-        "heure_debut_location": "10:00",
-        "heure_fin_location": "18:00",
-        "duree_location": "5 jours",
-        "type_vehicule": "Minibus",
-        "nombre_passagers": 10,
-        "itineraire": {
-            "depart": "Aéroport de Paris-Charles-de-Gaulle",
-            "arrivee": "Hôtel Le Méridien, Paris"
-        },
-        "options_supplementaires": ["Siège bébé", "Chauffeur supplémentaire"],
-        "coordonnees_client": {
-            "nom": "Jeanne Dupont",
-            "telephone": "+33 6 12 34 56 78",
-            "email": "jeanne.dupont@example.com"
-        },
-        "coordonnees_contact_urgence": {
-            "nom": "Marie Dupont",
-            "telephone": "+33 6 98 76 54 32"
-        },
-        "instructions_speciales": "Le véhicule doit être équipé de sièges enfants pour les passagers."
-    }, {
-        "date_commande": "2024-02-22",
-        "date_debut_location": "2024-03-01",
-        "date_fin_location": "2024-03-05",
-        "heure_debut_location": "10:00",
-        "heure_fin_location": "18:00",
-        "duree_location": "5 jours",
-        "type_vehicule": "Minibus",
-        "nombre_passagers": 10,
-        "itineraire": {
-            "depart": "Aéroport de Paris-Charles-de-Gaulle",
-            "arrivee": "Hôtel Le Méridien, Paris"
-        },
-        "options_supplementaires": ["Siège bébé", "Chauffeur supplémentaire"],
-        "coordonnees_client": {
-            "nom": "Jeanne Dupont",
-            "telephone": "+33 6 12 34 56 78",
-            "email": "jeanne.dupont@example.com"
-        },
-        "coordonnees_contact_urgence": {
-            "nom": "Marie Dupont",
-            "telephone": "+33 6 98 76 54 32"
-        },
-        "instructions_speciales": "Le véhicule doit être équipé de sièges enfants pour les passagers."
-    }
-
-]
 export const Commande = () => {
     const [openSide, setOpenSide] = useState(false)
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch();
+    const order = useSelector((state) => state.order.order)
+    const [selectRow, setSelectRow] = useState();
 
     useEffect(() => {
+        dispatch(getAllOrder({ page: 0, param: '', size: 10 }))
         setTimeout(() => {
             setLoading(true)
         }, "2000")
-    }, [])
+    }, [dispatch])
 
     const defaultProps = {
         center: {
@@ -150,57 +29,124 @@ export const Commande = () => {
         zoom: 11
     };
 
-
-    const columns = [
+    const OrdersColumns = [
         {
-            name: "Client",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.coordonnees_client.nom,
+            name: "Chauffeur",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.driver === null ? 'en attente...' :
+                        row?.driver?.nom + " " + row?.driver?.prenoms
+                ),
             sortable: true,
         },
         {
-            name: "Itinéraire ",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.itineraire.depart,
+            name: "Cient",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.client?.nom + " " + row?.client?.prenoms
+                ),
             sortable: true,
         },
         {
-            name: "Type de véhicule",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.type_vehicule,
-            sortable: true,
+            name: "Categori de vehicule",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.categorieVehicule
+                ),
         },
         {
-            name: "Date de debut",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.date_debut_location,
+            name: "Distance",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.distance
+                ),
         },
         {
-            name: "Date de fin",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.date_fin_location,
+            name: "Montant",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.montant
+                ),
         },
         {
-            name: "Date de la commande",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.date_commande,
+            name: "Depart",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.lieuDepart
+                ),
+        },
+        {
+            name: "Destination",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.lieuDestination
+                ),
+        },
+        {
+            name: "Durée du trajet",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    row?.duree
+                ),
+        },
+        {
+            name: "Status",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status}</p>
+                ),
+        },
+        {
+            name: "Date de la course",
+            selector: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
+                    new Date(row?.dateCreation).toLocaleString()
+                ),
         },
         {
             name: "Action",
-            cell: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : (
+            cell: (row) =>
+                !loading ? (
+                    <Skeleton animation="wave" variant="text" width={80} />
+                ) : (
                     <div>
-
                         <div>
-                            <button className='btn btn-sm' onClick={() => { setOpenSide(true) }}><Eye size={15} /></button>
+                            <button className="btn btn-sm" onClick={() => {
+                                setSelectRow(row);
+                                console.log(row);
+                                setOpenSide(true)
+                            }}>
+                                <Eye size={15} />
+                            </button>
                         </div>
-
                     </div>
-
                 ),
         },
     ];
-
+    const more = async (page) => {
+        setLoading(true)
+        dispatch(getAllOrder({ page: page, param: '', size: 10 }))
+    }
     return (
         <div className='p-3 pt-7'>
             <div className='relative'>
@@ -218,13 +164,15 @@ export const Commande = () => {
                     </div>
                     <div className="">
                         <DataTable
-                            columns={columns}
-                            data={data}
+                            columns={OrdersColumns}
+                            onRowClicked={(row) => console.log(row)}
+                            data={order.courses}
                             className='border'
                             noDataComponent='Aucune données'
                         />
                         <div className='my-3 flex justify-end'>
-                            <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                            <Pagination onChange={(event, newValue) => more(newValue)}
+                                onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
                         </div>
                     </div>
                     <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
@@ -237,7 +185,7 @@ export const Commande = () => {
                                         center={defaultProps.center}
                                         mapId={'<Your custom MapId here>'}>
                                     </Map>
-                                    <Directions />
+                                    <Directions origin={selectRow?.lieuDepart} destination={selectRow?.lieuDestination} />
                                 </APIProvider>
                             </div>
                             <div className="grid grid-cols-3 my-2 gap-1">
@@ -250,8 +198,8 @@ export const Commande = () => {
                                                     <div className="rounded-full w-3 h-3 bg-indigo-700">
                                                     </div>
                                                     <div className="ml-2">
-                                                        <p className="text-sm font-semibold">Kulas Light</p>
-                                                        <p className="text-sm text-gray-400">07/03/2024 16:40</p>
+                                                        <p className="text-sm font-semibold">{selectRow?.lieuDepart}</p>
+                                                        <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateDebutCourse).toLocaleString() : ''}</p>
                                                     </div>
                                                 </div>
 
@@ -260,8 +208,8 @@ export const Commande = () => {
                                                     <div className="rounded-full w-3 h-3 bg-indigo-700">
                                                     </div>
                                                     <div className="ml-2">
-                                                        <p className="text-sm font-semibold">Gwenborough</p>
-                                                        <p className="text-sm text-gray-400">07/03/2024 18:40</p>
+                                                        <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
+                                                        <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,7 +220,7 @@ export const Commande = () => {
                                     <div class=" gap-1">
                                         <div class="rounded-lg bg-gray-200 p-3 font-semibold flex gap-1 text-xs"><Clock size={17} />Durée de la course</div>
                                         <div class="px-3 text-lg font-semibold my-2">
-                                            1 heure 45 mins
+                                            {selectRow?.duree}
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +229,7 @@ export const Commande = () => {
                                     <div class=" gap-1">
                                         <div class="text-xs font-semibold flex rounded-lg bg-gray-200 p-3 gap-1"><BadgeSwissFranc size={17} />Prix de la course</div>
                                         <div class="px-3 text-lg font-semibold my-2">
-                                            4 200 Fr
+                                            {selectRow?.montant + ' Fr'}
                                         </div>
                                     </div>
                                 </div>
@@ -291,17 +239,17 @@ export const Commande = () => {
                                 <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
                                 <div>
                                     <p className="text-xs font-semibold">Nom et prenoms</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">Steeve Harvez</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
                                 </div>
 
                                 <div className="my-3">
                                     <p className="text-xs font-semibold">Email</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">Sincere@april.biz</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
                                 </div>
 
                                 <div className="">
                                     <p className="text-xs font-semibold">Contact</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">770-736-8031</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
                                 </div>
                             </div>
 
@@ -309,17 +257,17 @@ export const Commande = () => {
                                 <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
                                 <div>
                                     <p className="text-xs font-semibold">Nom et prenoms</p>
-                                    <p className="text-md text-gray-900 font-bold  mt-1">Steeve Harvez</p>
+                                    <p className="text-md text-gray-900 font-bold  mt-1">{selectRow?.client?.nom + " " + selectRow?.client?.prenoms}</p>
                                 </div>
 
                                 <div className="my-3">
                                     <p className="text-xs font-semibold">Email</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">Sincere@april.biz</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.email}</p>
                                 </div>
 
                                 <div className="my-3">
                                     <p className="text-sm font-semibold">Contact</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">770-736-8031</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.numero}</p>
                                 </div>
                             </div>
                         </div>

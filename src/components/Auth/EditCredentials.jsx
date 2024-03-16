@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Login } from "../../services/LoginService";
+import toast from "react-hot-toast";
+import { editCredentials } from "../../services/UserService";
 
 
 export const EditCredentials = () => {
   const { register, handleSubmit } = useForm();
   const [isSubmit, setIsSubmit] = useState(false);
-  const navigate = useNavigate()
   const onSubmit = async (data) => {
-    Login(data).then((res) => {
-      navigate('/')
-      setIsSubmit(true);
-    })
+    setIsSubmit(true)
+    editCredentials(data).then((res) => {
+      setIsSubmit(false);
+      if (res.status === 200) {
+        toast.success('Mise à jour de vos identifés')
+      }
+      console.log(res);
 
+    }).catch((err) => {
+      setIsSubmit(false)
+      console.log(err);
+      if (err.response.status === 500) {
+        toast.error(err.response.data)
+      }
+    })
   };
   return (
     <>
@@ -30,18 +39,6 @@ export const EditCredentials = () => {
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Email ou username
-                </label>
-                <input
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Renseigner votre username"
-                  {...register("username", {
-                    required: true,
-                  })}
-                />
-              </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Mot de passe actuel
@@ -62,7 +59,7 @@ export const EditCredentials = () => {
                 <input
                   type="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  {...register("password", {
+                  {...register("newPassword", {
                     required: true,
                   })}
                 />
@@ -75,13 +72,14 @@ export const EditCredentials = () => {
                 <input
                   type="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  {...register("password", {
+                  {...register("passwordConfirm", {
                     required: true,
                   })}
                 />
               </div>
               <button
                 type="submit"
+                disabled={isSubmit ? true : false}
                 className={`${!isSubmit
                   ? "text-white bg-indigo-900"
                   : "text-slate-800 bg-slate-200 "
