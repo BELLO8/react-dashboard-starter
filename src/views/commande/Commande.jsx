@@ -52,7 +52,7 @@ export const Commande = () => {
             sortable: true,
         },
         {
-            name: "Categori de vehicule",
+            name: "Categorie de vehicule",
             selector: (row) =>
                 !loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
@@ -111,7 +111,7 @@ export const Commande = () => {
                 !loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
-                    <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status}</p>
+                    <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : 'en attente'}</p>
                 ),
         },
         {
@@ -165,10 +165,16 @@ export const Commande = () => {
                     <div className="">
                         <DataTable
                             columns={OrdersColumns}
-                            onRowClicked={(row) => console.log(row)}
                             data={order.courses}
                             className='border'
                             noDataComponent='Aucune données'
+                            customStyles={{
+                                rows: {
+                                    style: {
+                                        width: '1900px'
+                                    },
+                                },
+                            }}
                         />
                         <div className='my-3 flex justify-end'>
                             <Pagination onChange={(event, newValue) => more(newValue)}

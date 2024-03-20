@@ -104,9 +104,11 @@ export const Client = () => {
                     </div>
                 </div>
                 {customer.clients?.length === 0 || customer.length === 0 ?
-                    (<div className="py-3">
-                        <p>Aucune donnée</p>
-                    </div>) : null}
+                    (
+                        <div className="py-3 flex justify-center">
+                            <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" srcset="" />
+                        </div>
+                    ) : null}
                 <div className="mt-7 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-x-4 gap-y-6">
                     {customer.clients?.map((item, index) => (
                         <div
@@ -149,7 +151,7 @@ export const Client = () => {
                                         loading ? <Skeleton className='mx-auto' animation='wave' variant='circular' width={62} height={62} />
                                             : (
                                                 <img
-                                                    src="https://randomuser.me/api/portraits/men/75.jpg"
+                                                    src={`https://randomuser.me/api/portraits/men/7${index}.jpg`}
                                                     alt=""
                                                     className="rounded-full"
                                                 />

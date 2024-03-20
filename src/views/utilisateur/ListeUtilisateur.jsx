@@ -1,7 +1,11 @@
 import { Pagination, Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddUserSidebar } from '../../components/utilisateur/AddUserSidebar';
+import { getAllUser } from '../../redux/store/user';
+import { disableUser } from '../../services/UserService';
 import EditPenIcon from "./../../assets/icons/pen.svg";
 import TrashIcon from "./../../assets/icons/trash.svg";
 export const users = [
@@ -125,21 +129,29 @@ export const ListeUtilisateur = () => {
 
     const [openSide, setOpenSide] = useState(false);
     const [loading, setLoading] = useState(false)
-
+    const dispatch = useDispatch();
+    const users = useSelector((state) => state.user.users);
     useEffect(() => {
+        dispatch(getAllUser({ page: 0, param: '', size: 10 }))
         setTimeout(() => {
             setLoading(true)
         }, "2000")
-    }, [])
+    }, [dispatch])
+
+    const more = async (page) => {
+        setLoading(true)
+        dispatch(getAllUser({ page: page, param: '', size: 10 }))
+    }
+
     const columns = [
         {
             name: "Nom et prenoms",
             selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.name,
+                : row.nom,
             sortable: true,
         },
         {
-            name: "Username",
+            name: "Nom d'utilisateur",
             selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : row.username,
             sortable: true,
@@ -151,19 +163,14 @@ export const ListeUtilisateur = () => {
             sortable: true,
         },
         {
-            name: "Adresse",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.address.street,
-        },
-        {
             name: "Numero telephone",
             selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.phone,
+                : row.numero,
         },
         {
-            name: "Site web",
+            name: "Etat du compte",
             selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                : row.website,
+                : <p className={`text-xs  ${row?.enabled ? 'bg-green-100 text-green-800 font-semibold' : 'bg-rose-100 text-rose-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.enabled ? 'Actif' : 'Inactif'}</p>
         },
         {
             name: "Action",
@@ -175,8 +182,17 @@ export const ListeUtilisateur = () => {
                                 <img src={EditPenIcon} alt="icon" className="w-5" />
                             </button>
                         </div>
-                        <div className="tooltip" data-tip="Supprimer">
-                            <button className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" >
+                        <div>
+                            <button onClick={() => {
+                                disableUser(row.id).then((res) => {
+                                    if (res.status === 200) {
+                                        dispatch(getAllUser({ page: 0, param: '', size: 10 }))
+                                        toast.success('Compte supprimé')
+                                    }
+                                }).catch((err) => {
+
+                                })
+                            }} className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center" >
                                 <img src={TrashIcon} alt="icon" className="w-5" />
                             </button>
                         </div>
@@ -209,13 +225,16 @@ export const ListeUtilisateur = () => {
                         Rechercher
                     </button>
                 </div>
-                <div className=""><DataTable
-                    columns={columns}
-                    data={users}
-                    className='border'
-                />
+                <div className="">
+                    <DataTable
+                        columns={columns}
+                        data={users.users}
+                        className='border'
+                        noDataComponent='Aucune donnée'
+                    />
                     <div className='my-3 flex justify-end'>
-                        <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                        <Pagination onChange={(event, newValue) => more(newValue)}
+                            onSelect={selectedPage => more(selectedPage)} count={users.totalPages} variant="outlined" color='primary' shape="rounded" />
                     </div>
                 </div>
             </div>

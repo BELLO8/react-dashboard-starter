@@ -1,7 +1,10 @@
 import { Drawer } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { getAllUser } from '../../redux/store/user';
+import { addUser } from '../../services/UserService';
 
 export const AddUserSidebar = ({ setOpenSide, openSide }) => {
     const {
@@ -9,12 +12,30 @@ export const AddUserSidebar = ({ setOpenSide, openSide }) => {
         handleSubmit, reset,
         formState: { errors },
     } = useForm()
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const dispatch = useDispatch();
 
     const submit = (data) => {
-        reset();
-        setOpenSide(false)
-        toast.success('Utilisateur enregistrer')
+        setIsSubmit(true)
+        addUser(data).then((res) => {
+            setIsSubmit(false);
+            if (res.status === 200) {
+                dispatch(getAllUser({ page: 0, param: '', size: 10 }))
+                reset();
+                setOpenSide(false)
+                toast.success('Utilisateur ajouté ')
+            }
+
+        }).catch((err) => {
+            setIsSubmit(false)
+            console.log(err);
+            if (err.response.status === 500) {
+                toast.error(err.response.data)
+            }
+        })
     }
+
     useEffect(() => {
         reset()
     }, [reset])
@@ -29,8 +50,8 @@ export const AddUserSidebar = ({ setOpenSide, openSide }) => {
                             <div className='my-2'>
                                 <label htmlFor="" className='text-sm font-medium'>Nom et prenoms</label>
                                 <input type="text" placeholder="ex : Yao kofff" className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('name', { required: true })} />
-                                {errors.name && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
+                                    {...register('nom', { required: true })} />
+                                {errors.nom && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
                             </div>
                             <div className='my-2'>
                                 <label htmlFor="" className='text-sm font-medium'>Username</label>
@@ -44,20 +65,32 @@ export const AddUserSidebar = ({ setOpenSide, openSide }) => {
                                     {...register('email', { required: true })} />
                                 {errors.email && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
                             </div>
-                            <div className='my-2'>
-                                <label htmlFor="" className='text-sm font-medium'>Adresse</label>
-                                <input type="text" placeholder="ex : Palm ci" className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('address', { required: true })} />
-                                {errors.address && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
-                            </div>
+
                             <div className='my-2'>
                                 <label htmlFor="" className='text-sm font-medium'>Numéro de téléphone</label>
                                 <input type="text" placeholder="ex : 002587663321" className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('phone', { required: true })} />
-                                {errors.phone && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
+                                    {...register('numero', { required: true })} />
+                                {errors.numero && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
                             </div>
-                            <button className="btn btn-sm texte-xs hover:bg-gray-900 font-medium my-2 mx-1 w-80 rounded-md border-0 text-white shadow-sm bg-[#04356B]">
-                                Ajouter l'utilisateur
+
+                            <div className='my-2'>
+                                <label htmlFor="" className='text-sm font-medium'>Mot de passe</label>
+                                <input type="password" placeholder="ex : Palm ci" className="px-3 my-2 w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                    {...register('password', { required: true })} />
+                                {errors.password && <span className="text-sm text-rose-600">Ce champs est obligatoire</span>}
+                            </div>
+
+                            <button type='submit'
+                                disabled={isSubmit ? true : false}
+                                className={`${!isSubmit
+                                    ? "text-white bg-indigo-900"
+                                    : "text-slate-800 bg-slate-200 "
+                                    } w-full my-3 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                            >
+                                {!isSubmit ? "Ajouter un utilisateur" : "Veuillez patientez..."}{" "}
+                                {isSubmit ? (
+                                    <span className="loading loading-dots loading-xs"></span>
+                                ) : null}
                             </button>
                         </div>
                     </form>

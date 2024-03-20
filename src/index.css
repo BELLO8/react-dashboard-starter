@@ -13,11 +13,11 @@ body {
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 1px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-100 rounded-xl;
+  @apply bg-gray-200 rounded-xl;
 }
 
 .custom-select {

@@ -1,16 +1,18 @@
-import { Pagination, Skeleton } from '@mui/material'
-import { ChevronLeft, MinusCircle, PenLine } from 'lucide-react'
+import { Drawer, Pagination, Skeleton } from '@mui/material'
+import { APIProvider, Map } from '@vis.gl/react-google-maps'
+import { BadgeSwissFranc, ChevronLeft, Clock, Eye, MapIcon, MinusCircle, PenLine } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
-import { OrdersColumns } from '../../Utils/dataColumn'
+import Directions from '../../components/GoogleMap/Direction'
 import { customerInfo, getAllCustomerOrder } from '../../redux/store/customer'
 import { disableAccount } from '../../services/CustomerService'
 
 export const ClientDetail = () => {
-
+  const [selectRow, setSelectRow] = useState();
+  const [openSide, setOpenSide] = useState(false)
   const [loading, setLoading] = useState(false)
   const customer = useSelector((state) => state.customer.selectCustomer)
   const order = useSelector((state) => state.customer.order)
@@ -38,6 +40,108 @@ export const ClientDetail = () => {
     setLoading(true)
     dispatch(getAllCustomerOrder({ id: id, page: page, param: '', size: 10 }))
   }
+  const defaultProps = {
+    center: {
+      lat: 5.3707356,
+      lng: -3.9572473
+    },
+    zoom: 11
+  };
+  const OrdersColumns = [
+    {
+      name: "Chauffeur",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.driver === null ? 'en attente...' :
+            row?.driver?.nom + " " + row?.driver?.prenoms
+        ),
+      sortable: true,
+    },
+    {
+      name: "Distance",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.distance
+        ),
+    },
+    {
+      name: "Montant",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.montant
+        ),
+    },
+    {
+      name: "Depart",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.lieuDepart
+        ),
+    },
+    {
+      name: "Destination",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.lieuDestination
+        ),
+    },
+    {
+      name: "Durée du trajet",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          row?.duree
+        ),
+    },
+    {
+      name: "Status",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : 'en attente'}</p>
+        ),
+    },
+    {
+      name: "Date de la course",
+      selector: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          new Date(row?.dateCreation).toLocaleString()
+        ),
+    },
+    {
+      name: "Action",
+      cell: (row) =>
+        !loading ? (
+          <Skeleton animation="wave" variant="text" width={80} />
+        ) : (
+          <div>
+            <div>
+              <button className="btn btn-sm" onClick={() => {
+                setSelectRow(row);
+                console.log(row);
+                setOpenSide(true)
+              }}>
+                <Eye size={15} />
+              </button>
+            </div>
+          </div>
+        ),
+    },
+  ];
 
   return (
     <div>
@@ -104,7 +208,7 @@ export const ClientDetail = () => {
                 </p>
               </div>
               <div className="absolute bottom-0">
-                <button onClick={handleDisableAccount} className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
+                <button onClick={handleDisableAccount} className={`btn btn-ghost btn-sm ${!customer.enabled ? 'hover:bg-green-50 text-green-500' : 'hover:bg-red-50 text-red-500'}  flex  font-medium text-sm`}><MinusCircle size={20} />{customer.enabled ? 'Desactiver le compte' : 'Activer le compte'} </button>
               </div>
             </div>
             <div className='absolute right-8 mt-2'>
@@ -116,36 +220,7 @@ export const ClientDetail = () => {
         <div className="w-4/5 px-3 relative mt-2">
           <h1 className='font-medium mt-3 text-gray-400 text-lg '>Client</h1>
           <div className='mt-2 grid grid-cols-3 gap-2'>
-            <div className="flex bg-white w-full p-4 rounded-lg shadow">
-              <div>
-                {
-                  !loading ? <Skeleton animation='wave' variant='circular' width={60} height={60} />
-                    : (<div className='rounded-full w-16 h-16' style={{ background: "url('https://info.drivedifferent.com/hubfs/SMI-BLOG-Ways-to-Improve-Drivers-Happiness%20%281%29.jpg') no-repeat center/cover" }}>
-                    </div>)
-                }
 
-              </div>
-              <div className='px-4 w-10/12'>
-                <p className='text-lg font-bold truncate '>
-                  {
-                    !loading ? <Skeleton animation='wave' variant='text' width={170} />
-                      : " N'da Adams Aimé Désiré Yao Kouame jean"
-                  }
-                </p>
-                <p className='text-xs font-semibold text-gray-500 mt-1'>
-                  {
-                    !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                      : "  +225 0778812111"
-                  }
-                </p>
-                <p className='text-xs font-semibold text-gray-500'>
-                  {
-                    !loading ? <Skeleton animation='wave' variant='text' width={120} />
-                      : "Kulas Light,Gwenborough"
-                  }
-                </p>
-              </div>
-            </div>
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">
                 {
@@ -160,6 +235,13 @@ export const ClientDetail = () => {
                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
                   : customer?.nombreCourseEffectuees
               }</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses annulé</p>
+            </div>
+            <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
+              <p className=" text-2xl font-semibold">{
+                !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                  : customer?.nombreCourseAnnulees
+              }</p>
               <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses</p>
             </div>
           </div>
@@ -173,19 +255,105 @@ export const ClientDetail = () => {
               </button>
             </div>
             <DataTable
-              columns={OrdersColumns(loading, () => { })}
+              columns={OrdersColumns}
               data={order.courses}
               className='border'
+              noDataComponent='Aucune données'
+              customStyles={{
+                rows: {
+                  style: {
+                    width: '1400px'
+                  },
+                },
+              }}
             />
             <div className='my-3 flex justify-end'>
               <Pagination onChange={(event, newValue) => more(newValue)}
                 onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
             </div>
+            <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
+              <div className="w-[580px] mx-2 my-6">
+                <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
+                  <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
+                    <Map
+                      disableDefaultUI={true}
+                      zoom={14}
+                      center={defaultProps.center}
+                      mapId={'<Your custom MapId here>'}>
+                    </Map>
+                    <Directions origin={selectRow?.lieuDepart} destination={selectRow?.lieuDestination} />
+                  </APIProvider>
+                </div>
+                <div className="grid grid-cols-3 my-2 gap-1">
+                  <div class="text-left text-sm  bg-muted">
+                    <div class=" gap-1">
+                      <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
+                      <div class="px-3 text-xs font-medium my-2">
+                        <div>
+                          <div className="flex items-center ">
+                            <div className="rounded-full w-3 h-3 bg-indigo-700">
+                            </div>
+                            <div className="ml-2">
+                              <p className="text-sm font-semibold">{selectRow?.lieuDepart}</p>
+                              <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateDebutCourse).toLocaleString() : ''}</p>
+                            </div>
+                          </div>
+
+                          <div className="w-1 h-4 border-r-2  px-[3px] border-indigo-700"></div>
+                          <div className="flex items-center ">
+                            <div className="rounded-full w-3 h-3 bg-indigo-700">
+                            </div>
+                            <div className="ml-2">
+                              <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
+                              <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-left text-sm  bg-muted">
+                    <div class=" gap-1">
+                      <div class="rounded-lg bg-gray-200 p-3 font-semibold flex gap-1 text-xs"><Clock size={17} />Durée de la course</div>
+                      <div class="px-3 text-lg font-semibold my-2">
+                        {selectRow?.duree}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="text-left text-sm  bg-muted">
+                    <div class=" gap-1">
+                      <div class="text-xs font-semibold flex rounded-lg bg-gray-200 p-3 gap-1"><BadgeSwissFranc size={17} />Prix de la course</div>
+                      <div class="px-3 text-lg font-semibold my-2">
+                        {selectRow?.montant + ' Fr'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-3 py-6">
+                  <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
+                  <div>
+                    <p className="text-xs font-semibold">Nom et prenoms</p>
+                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
+                  </div>
+
+                  <div className="my-3">
+                    <p className="text-xs font-semibold">Email</p>
+                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
+                  </div>
+
+                  <div className="">
+                    <p className="text-xs font-semibold">Contact</p>
+                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
+                  </div>
+                </div>
+              </div>
+
+            </Drawer>
           </div>
         </div>
       </div>
-
-
     </div>
   )
 }

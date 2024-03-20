@@ -10,7 +10,8 @@ import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffe
 import Directions from "../../components/GoogleMap/Direction";
 import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
-import { partnerInfo } from "../../redux/store/partner";
+import { getCategory } from "../../redux/store/categoryCar";
+import { getAllPartnerCar, partnerInfo } from "../../redux/store/partner";
 import { disablePartner } from "../../services/PartenaireService";
 import { users } from "../utilisateur/ListeUtilisateur";
 
@@ -20,17 +21,20 @@ const PartenaireDetail = () => {
   const [openSideUpdate, setOpenSideUpdate] = useState(false)
   const [openSideAddCar, setOpenSideAddCar] = useState(false);
   const [openSideCarUpdate, setOpenSideCarUpdate] = useState(false);
-  const activeTab = localStorage.getItem('activeTab');
   const [loading, setLoading] = useState(false)
   const [load, setLoad] = useState(false)
   const [loadData, setLoadData] = useState(false)
+  const [search, setSearch] = useState();
   const { id } = useParams();
   const dispatch = useDispatch();
   const partner = useSelector((state) => state.partner.infoPartner);
+  const partnerCars = useSelector((state) => state.partner.cars);
 
 
   useEffect(() => {
+    dispatch(getCategory({ page: 0, param: '', size: 10 }))
     dispatch(partnerInfo(id))
+    dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))
     setTimeout(() => {
       setLoading(true)
     }, "1000")
@@ -144,7 +148,7 @@ const PartenaireDetail = () => {
                 </p>
               </div>
               <div className="absolute bottom-0">
-                <button onClick={handleDisableAccount} className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
+                <button onClick={handleDisableAccount} className={`btn btn-ghost btn-sm ${!partner.enabled ? 'hover:bg-green-50 text-green-500' : 'hover:bg-red-50 text-red-500'}  flex  font-medium text-sm`}><MinusCircle size={20} />{partner.enabled ? 'Desactiver le compte' : 'Activer le compte'} </button>
               </div>
             </div>
             <div className='absolute right-8 mt-2'>
@@ -181,7 +185,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                    : "17"
+                    : partner.nombreVehicules
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Vehicule</p>
@@ -227,7 +231,7 @@ const PartenaireDetail = () => {
                         </div>
                       </div>
                       <Drawer open={openSideAddCar} onClose={() => setOpenSideAddCar(false)} anchor='right'>
-                        <VehiculeForm submitCar={submitCar} />
+                        <VehiculeForm />
                       </Drawer>
 
                       <div className="flex items-end gap-x-3">
@@ -238,18 +242,28 @@ const PartenaireDetail = () => {
                             </span>
                           </div>
                           <input
+                            onChange={(e) => setSearch(e.target.value)}
                             type="text"
                             placeholder="Rechercher un élément..."
                             className="input input-bordered w-60 h-8 text-sm"
                           />
                         </label>
-                        <button className="w-fit h-8 px-4 rounded-lg bg-main text-white text-xs font-medium">
+                        <button
+                          onClick={() => {
+                            dispatch(getAllPartnerCar({ id: id, page: 0, param: search, size: 10 }))
+                          }}
+                          className="w-fit h-8 px-4 rounded-lg bg-main text-white text-xs font-medium">
                           Rechercher
                         </button>
                       </div>
-
+                      {partnerCars?.vehicules?.length === 0 ?
+                        (
+                          <div className="py-3 flex justify-center">
+                            <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
+                          </div>
+                        ) : null}
                       <div className="mt-6 grid grid-cols-4 gap-4">
-                        {[0, 1, 2, 3, 4].map((item, index) => (
+                        {partnerCars?.vehicules?.map((item, index) => (
                           <div className='bg-gray-50 border border-dashed rounded-lg relative'>
 
                             <div className="dropdown dropdown-end absolute right-1 top-1">
@@ -295,13 +309,13 @@ const PartenaireDetail = () => {
                                 <p className='text-sm font-semibold truncate'>
                                   {
                                     !loading ? <Skeleton animation='wave' variant='text' width={120} />
-                                      : "Toyota Mustang"
+                                      : item.marque + ' ' + item.modele
                                   }
                                 </p>
                                 <p className='text-xs text-gray-300 font-semibold bg-blue-100 text-indigo-800 rounded-md px-2 w-fit'>
                                   {
                                     !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                                      : "Am12087k0"
+                                      : item.numeroMatriculation ?? '7552AE5'
                                   }
 
                                 </p>

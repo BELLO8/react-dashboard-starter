@@ -1,10 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getPartnerInfo, getPartners } from "../../services/PartenaireService";
+import {
+  getCarByPartner,
+  getPartnerInfo,
+  getPartners,
+} from "../../services/PartenaireService";
 
 export const getAllPartner = createAsyncThunk(
   "partner/getAllPartner",
   async (param) => {
     const response = await getPartners({
+      page: param.page,
+      param: param.param,
+      size: param.size,
+    });
+    return response.data;
+  }
+);
+
+export const getAllPartnerCar = createAsyncThunk(
+  "partner/getAllPartnerCar",
+  async (param) => {
+    const response = await getCarByPartner({
+      id: param.id,
       page: param.page,
       param: param.param,
       size: param.size,
@@ -26,6 +43,7 @@ export const partnerSlice = createSlice({
   initialState: {
     partner: [],
     infoPartner: {},
+    cars: [],
     isloading: false,
   },
   reducers: {},
@@ -37,6 +55,10 @@ export const partnerSlice = createSlice({
       })
       .addCase(partnerInfo.fulfilled, (state, action) => {
         state.infoPartner = action.payload;
+        state.isloading = true;
+      })
+      .addCase(getAllPartnerCar.fulfilled, (state, action) => {
+        state.cars = action.payload;
         state.isloading = true;
       });
   },

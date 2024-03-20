@@ -50,6 +50,11 @@ export const Partenaire = () => {
 
         })
     }
+
+    const more = async (page) => {
+        dispatch(getAllPartner({ page: page, param: '', size: 10 }))
+    }
+
     return (
         <div className="p-3 pt-7">
             <div className='relative'>
@@ -101,9 +106,11 @@ export const Partenaire = () => {
                                 </div>
                             </div>
                             {partner.partenaires?.length === 0 || partner.length === 0 ?
-                                (<div className="py-3">
-                                    <p>Aucune donnée</p>
-                                </div>) : null}
+                                (
+                                    <div className="py-3 flex justify-center">
+                                        <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
+                                    </div>
+                                ) : null}
                             <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
                                 {partner.partenaires?.map((item, index) => (
                                     <div
@@ -149,7 +156,11 @@ export const Partenaire = () => {
                                                 <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="circular" width={80} height={80} />
                                             ) : (
                                                 <div className="bg-gray-200 rounded-full w-20 h-20 mx-auto mt-5 flex items-center justify-center">
-                                                    <UserRound />
+                                                    <img
+                                                        src={`https://randomuser.me/api/portraits/men/8${index}.jpg`}
+                                                        alt=""
+                                                        className="rounded-full"
+                                                    />
                                                 </div>)
                                         }
 
@@ -184,7 +195,9 @@ export const Partenaire = () => {
 
                             </div>
                             <div className='my-3 flex justify-end'>
-                                <Pagination count={partner.totalPages} variant="outlined" color='primary' shape="rounded" />
+
+                                <Pagination onChange={(event, newValue) => more(newValue)}
+                                    onSelect={selectedPage => more(selectedPage)} count={partner.totalPages} variant="outlined" color='primary' shape="rounded" />
                             </div>
                         </div>
                         <UpdatePartnerSidebar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />

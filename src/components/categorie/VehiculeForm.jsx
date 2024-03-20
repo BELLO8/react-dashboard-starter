@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import Select from 'react-select';
+import { addCar } from '../../services/CarService';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 
-export const VehiculeForm = ({ submitCar }) => {
+export const VehiculeForm = () => {
     const {
         register,
         handleSubmit, reset,
         formState: { errors },
     } = useForm()
-
+    const [category, setCategory] = useState();
     const [assurance, setAssurance] = useState([]);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const carCategory = useSelector((state) => state.categoryCar.categoryCar);
+    const { id } = useParams()
+    const carCategoryOption = []
+
+    carCategory?.categoriesVehicule?.map((item) => {
+        return carCategoryOption.push({ value: item.id, label: item.designation, description: item.description })
+    })
 
     const handleChangeImageAssurance = (e) => {
         const selectedFiles = e.target.files;
@@ -23,11 +35,32 @@ export const VehiculeForm = ({ submitCar }) => {
         }
     }
 
-    const vehiculeCategorie = [{ name: 'Toyota' }];
-
     useEffect(() => {
         reset()
     }, [reset])
+
+    const submitCar = (data) => {
+        const categories = [];
+        category?.map((item) => {
+            return categories.push(item.value)
+        })
+        console.log({ ...data, categories: categories, partenaireId: id, fichier: assurance[0] });
+        setIsSubmit(true)
+        addCar({ ...data, categories: categories, partenaireId: id, fichier: assurance[0] }).then((res) => {
+            setIsSubmit(false);
+            if (res.status === 200) {
+                toast.success('Vehicule ajouté ')
+            }
+            console.log(res);
+        }).catch((err) => {
+            setIsSubmit(false)
+            console.log(err);
+            if (err.response.status === 500) {
+                toast.error(err.response.data)
+            }
+        })
+
+    }
 
     return (
         <>
@@ -38,28 +71,49 @@ export const VehiculeForm = ({ submitCar }) => {
                     <div className='my-8'>
                         <div>
                             <label htmlFor="" className='text-sm font-medium'>Categorie de vehicule</label>
-                            <label className="form-control w-full min-w-xs">
-                                <select className="select rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300">
-                                    <option disabled selected>Selectionnez une categorie vehicule</option>
-                                    {vehiculeCategorie.map((item) => (
-                                        <option>{item.name}</option>
-                                    ))}
-                                </select>
-                            </label>
+                            <Select
+                                closeMenuOnSelect={false}
+                                isMulti
+                                options={carCategoryOption}
+                                onChange={(e) => { setCategory(e); }}
+                            />
                         </div>
                         <div className='my-2'>
                             <div>
-                                <label htmlFor="" className='text-sm font-medium'>Nom du vehicule<sup className='text-rose-600'>*</sup></label>
+                                <label htmlFor="" className='text-sm font-medium'>Couleur<sup className='text-rose-600'>*</sup></label>
                             </div>
-                            <input type="text" placeholder="ex : toyo" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                {...register('fullname', { required: true })} />
+                            <input type="text" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                {...register('couleur', { required: true })} />
                         </div>
                         <div className='my-2'>
                             <div>
-                                <label htmlFor="" className='text-sm font-medium'>Matricule<sup className='text-rose-600'>*</sup></label>
+                                <label htmlFor="" className='text-sm font-medium'>Marque<sup className='text-rose-600'>*</sup></label>
                             </div>
-                            <input type="text" placeholder="ex : A55588648" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                {...register('mat', { required: true })} />
+                            <input type="text" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                {...register('marque', { required: true })} />
+                        </div>
+                        <div className='my-2'>
+                            <div>
+                                <label htmlFor="" className='text-sm font-medium'>Modele<sup className='text-rose-600'>*</sup></label>
+                            </div>
+                            <input type="text" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                {...register('modele', { required: true })} />
+                        </div>
+
+                        <div className='my-2'>
+                            <div>
+                                <label htmlFor="" className='text-sm font-medium'>Numero de chassis<sup className='text-rose-600'>*</sup></label>
+                            </div>
+                            <input type="text" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                {...register('numeroChassis', { required: true })} />
+                        </div>
+
+                        <div className='my-2'>
+                            <div>
+                                <label htmlFor="" className='text-sm font-medium'>Numero de Matriculation<sup className='text-rose-600'>*</sup></label>
+                            </div>
+                            <input type="text" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                {...register('numeroMatriculation', { required: true })} />
                         </div>
                     </div>
 
@@ -89,8 +143,17 @@ export const VehiculeForm = ({ submitCar }) => {
                         ))}
                     </div>
 
-                    <button type='submit' className="btn btn-sm texte-xs hover:bg-gray-900 font-medium my-2 mx-1 w-full rounded-md border-0 text-white shadow-sm bg-[#04356B]">
-                        Ajouter un vehicule
+                    <button type='submit'
+                        disabled={isSubmit ? true : false}
+                        className={`${!isSubmit
+                            ? "text-white bg-indigo-900"
+                            : "text-slate-800 bg-slate-200 "
+                            } w-full my-3 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                    >
+                        {!isSubmit ? "Ajouter un vehicule" : "Veuillez patientez..."}{" "}
+                        {isSubmit ? (
+                            <span className="loading loading-dots loading-xs"></span>
+                        ) : null}
                     </button>
                 </form>
             </div>
