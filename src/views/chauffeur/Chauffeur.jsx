@@ -1,16 +1,15 @@
 import { Drawer, Pagination, Skeleton } from "@mui/material";
-import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
+import { ArrowUpRight, Phone, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router';
-import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
-import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
-import { getAllPartner } from "../../redux/store/partner";
-import { disablePartner } from "../../services/PartenaireService";
 import { BASE_URL } from "../../Utils/constant";
+import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
+import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
+import { getMoreDrivers } from "../../redux/store/driver";
+import { getAllPartner } from "../../redux/store/partner";
 
-export const Partenaire = () => {
+export const Chauffeur = () => {
 
     const [openSide, setOpenSide] = useState(false);
     const [openSideUpdate, setOpenSideUpdate] = useState(false);
@@ -26,31 +25,17 @@ export const Partenaire = () => {
         email: "",
         telephone: "",
     });
-    const partner = useSelector((state) => state.partner.partner);
-    const loading = useSelector((state) => state.customer.isloading);
+    const driver = useSelector((state) => state.driver.driverListe);
+    const loading = useSelector((state) => state.driver.loading);
 
     useEffect(() => {
-        dispatch(getAllPartner({ page: 0, param: '', size: 10 }))
+        dispatch(getMoreDrivers({ page: 0, param: '', size: 10 }))
     }, [dispatch])
 
     const toggleDrawer = (newOpen) => () => {
         setOpenSide(newOpen);
     };
 
-    const openClientDetail = (id) => {
-        navigate(`/detail-partenaire/${id}`);
-    };
-
-    const handleDisableAccount = () => {
-        disablePartner(idPartner).then((res) => {
-            if (res.status === 200) {
-                dispatch(getAllPartner({ page: 0, param: '', size: 10 }))
-                toast.success('Compte desactivé')
-            }
-        }).catch((err) => {
-
-        })
-    }
 
     const more = async (page) => {
         dispatch(getAllPartner({ page: page - 1, param: '', size: 10 }))
@@ -59,11 +44,11 @@ export const Partenaire = () => {
     return (
         <div className="p-3 pt-7">
             <div className='relative'>
-                <h1 className="text-3xl font-extrabold text-black">Partenaires</h1>
+                <h1 className="text-3xl font-extrabold text-black">Chauffeurs</h1>
                 <div className='absolute inset-y-0 right-4 top-3'>
-                    <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
-                        Ajouter un partenaire
-                    </button>
+                    {/* <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
+                        Ajouter un chauffeur
+                    </button> */}
                     <AddPartnerSidebar openSide={openSide} setOpenSide={setOpenSide} />
                 </div>
 
@@ -100,91 +85,89 @@ export const Partenaire = () => {
                                         </select>
                                     </label>
                                     <button onClick={() => {
-                                        dispatch(getAllPartner({ page: 0, param: search, size: 10 }))
+                                        dispatch(getMoreDrivers({ page: 0, param: search, size: 10 }))
                                     }} className="btn btn-sm w-fit h-10 px-4 rounded-md bg-main text-white text-sm font-semibold">
                                         Rechercher
                                     </button>
                                 </div>
                             </div>
-                            {partner.partenaires?.length === 0 || partner.length === 0 ?
+                            {driver.length === 0 ?
                                 (
                                     <div className="py-3 flex justify-center">
                                         <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
                                     </div>
                                 ) : null}
                             <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
-                                {partner.partenaires?.map((item, index) => (
+                                {driver.listDriver?.map((item, index) => (
                                     <div
                                         key={index}
-                                        className="relative w-48 lg:w-56 h-fit rounded-lg shadow bg-white p-4 pb-6"
+                                        className="relative h-fit rounded-lg border-2 border-dashed bg-white p-4 pb-6"
                                     >
                                         {
-                                            loading ? '' : (<div className="dropdown dropdown-end absolute right-2 top-2">
+                                            !loading ? '' : (<div className="dropdown dropdown-end absolute right-2 top-2">
                                                 <div
-                                                    tabIndex={0}
                                                     role="button"
-                                                    className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50"
+                                                    className=" rounded-full flex items-center justify-center bg-gray-100"
                                                 >
-                                                    <MoreHorizontal size={20} />
+                                                    <p className="px-2 text-xs text-gray-500 text-center font-semibold">
+                                                        {
+                                                            !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='text' width={80} />
+                                                                : item.point + ' points'
+                                                        }
+                                                    </p>
                                                 </div>
-                                                <ul
-                                                    tabIndex={0}
-                                                    className="mt-1 dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-lg w-44"
-                                                >
-                                                    <button
-                                                        className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
-                                                        onClick={() => setOpenSideUpdate(true)}
-                                                    >
-                                                        Modifer
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            setIdPartner(item.id);
-                                                            document.getElementById("disable_client").showModal()
-                                                        }
-                                                        }
-                                                        className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
-                                                    >
-                                                        Désactiver
-                                                    </button>
-                                                </ul>
+
                                             </div>)
                                         }
-
-
                                         {
-                                            loading ? (
-                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="circular" width={80} height={80} />
-                                            ) : (
-                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.photo?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
+                                            !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='circular' width={80} height={80} />
+                                                : (
+                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
                                                 </div>)
                                         }
 
-                                        <h1 className="text-lg text-black text-center font-bold mt-2 truncate">
-                                            {loading ? (
-                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={190} />
-                                            ) : item.nom + " " + item.prenoms}
+                                        <h1 className="text-sm text-indigo-900 text-center font-bold mt-2 mb-1 truncate">
+                                            {
+                                                !loading ? <Skeleton animation='wave' variant='text' width={190} />
+                                                    : item.nom + ' ' + item.prenoms
+                                            }
                                         </h1>
-                                        <p className="text-sm text-gray-500 text-center font-medium">
-                                            {loading ? (
-                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={80} />
-                                            ) : item.numero}
+                                        <p className="text-xs  text-gray-500 text-center font-medium">
+                                            {
+                                                !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='text' width={80} />
+                                                    : (
+                                                        <div className="flex justify-center space-x-1">
+                                                            <Phone size={12} />
+                                                            <p>{item.numero}</p>
+                                                        </div>
+                                                    )
+                                            }
                                         </p>
-                                        <p className="text-xs text-gray-500 text-center font-medium">
-                                            {loading ? (
-                                                <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="text" width={80} />
-                                            ) : item.enabled ? 'Compte actif' : 'Compte inactif'}
+                                        <p className="text-xs  text-gray-500 text-center font-medium">
+                                            {
+                                                !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='text' width={80} />
+                                                    : (
+                                                        <div className="flex justify-center space-x-1">
+                                                            <p>Status du compte : </p>
+                                                            <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : 'Rejeté'}</p>
+                                                        </div>
+                                                    )
+                                            }
                                         </p>
-                                        {loading ? (
-                                            <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant="rounded" width={180} height={30} />
-                                        ) : (
-                                            <button
-                                                className="bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
-                                                onClick={() => openClientDetail(item.id)}
-                                            >
-                                                Détail partenaire <ArrowUpRight size={17} />
-                                            </button>
-                                        )}
+                                        {
+                                            !loading ? <Skeleton animation='wave' variant='text' width={190} height={40} />
+                                                : (
+                                                    <div
+                                                        className="cursor-pointer bg-gray-100 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
+                                                        onClick={() => {
+                                                            setOpenSideUpdate(true)
+                                                            setRowData(item)
+                                                        }}
+                                                    >
+                                                        Details du chauffeur <ArrowUpRight size={17} />
+                                                    </div>
+                                                )
+                                        }
 
                                     </div>
                                 ))}
@@ -193,37 +176,11 @@ export const Partenaire = () => {
                             <div className='my-3 flex justify-end'>
 
                                 <Pagination onChange={(event, newValue) => more(newValue)}
-                                    onSelect={selectedPage => more(selectedPage)} count={partner.totalPages} variant="outlined" color='primary' shape="rounded" />
+                                    onSelect={selectedPage => more(selectedPage)} count={driver.totalPages} variant="outlined" color='primary' shape="rounded" />
                             </div>
                         </div>
-                        <UpdatePartnerSidebar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />
+                        <ShowDriverSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />
 
-                        {/* MODAL DESACTIVATION COMPTE UTILISATEUR */}
-                        <dialog id="disable_client" className="modal">
-                            <div className="modal-box rounded-lg">
-                                <h3 className="font-extrabold text-xl text-red-600 text-center">
-                                    Attention
-                                </h3>
-                                <p className="pt-4 text-center text-black font-medium">
-                                    Cette action désactivera les accès du partenaire à son compte.
-                                </p>
-                                <div className="modal-action">
-                                    <form
-                                        method="dialog"
-                                        className="w-full flex items-center justify-center gap-x-4"
-                                    >
-                                        <button className="bg-gray-100 text-gray-600 w-fit h-10 px-4 rounded-md flex items-center justify-center font-semibold">
-                                            Annuler
-                                        </button>
-                                        <button onClick={handleDisableAccount} className="bg-red-600 text-white w-fit h-10 px-4 rounded-md flex items-center justify-center font-semibold">
-                                            Désactiver
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </dialog>
-
-                        {/* SIDEBAR MODAL */}
                         <Drawer
                             anchor={"right"}
                             open={openSidebarModal}

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { getImg } from "../../Utils/Utils";
+import { BASE_URL } from "../../Utils/constant";
 import { getAllCustomer } from "../../redux/store/customer";
 import { disableAccount } from "../../services/CustomerService";
 import ArrowTop from "./../../assets/icons/arrow-top.svg";
@@ -24,6 +26,9 @@ export const Client = () => {
     const loading = useSelector((state) => state.customer.loading);
 
     useEffect(() => {
+        const img = async (id) => {
+            getImg(id)
+        }
         dispatch(getAllCustomer({ page: 0, param: '', size: 10 }))
     }, [dispatch])
 
@@ -55,6 +60,7 @@ export const Client = () => {
 
         })
     }
+
     return (
         <div className="p-3 pt-7">
             <h1 className="text-3xl font-extrabold text-black">Clients</h1>
@@ -151,7 +157,7 @@ export const Client = () => {
                                         loading ? <Skeleton className='mx-auto' animation='wave' variant='circular' width={62} height={62} />
                                             : (
                                                 <img
-                                                    src={`https://randomuser.me/api/portraits/men/7${index}.jpg`}
+                                                    src={item.photo != null ? `${BASE_URL}/webfree/partenaire/fichier/${item.photo.id}` : `https://randomuser.me/api/portraits/men/7${index}.jpg`}
                                                     alt=""
                                                     className="rounded-full"
                                                 />

@@ -1,10 +1,11 @@
 import { Drawer, Pagination, Skeleton } from "@mui/material";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, MapIcon, MinusCircle, MoreHorizontal, PenLine, UserRound } from "lucide-react";
+import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, MapIcon, MinusCircle, MoreHorizontal, PenLine } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from 'react-router-dom';
+import { BASE_URL } from "../../Utils/constant";
 import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSidebar";
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
 import Directions from "../../components/GoogleMap/Direction";
@@ -174,7 +175,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                    : "20"
+                    : partner.nombreDriver ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Chauffeurs</p>
@@ -194,7 +195,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                    : "78"
+                    : partner.nombreCourse ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Commandes</p>
@@ -402,9 +403,10 @@ const PartenaireDetail = () => {
                             </div>
                             {
                               !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='circular' width={80} height={80} />
-                                : (<div className="bg-gray-200 rounded-full w-20 h-20 mx-auto mt-5 flex items-center justify-center">
-                                  <UserRound />
-                                </div>)
+                                : (
+
+                                  <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
+                                  </div>)
                             }
 
                             <h1 className="text-sm text-black text-center font-medium mt-2 truncate">
@@ -419,6 +421,14 @@ const PartenaireDetail = () => {
                                   : item.numero
                               }
                             </p>
+
+                            <p className="text-xs mt-2 text-gray-500 text-center font-medium">
+                              {
+                                !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='text' width={80} />
+                                  : <p className={item.isAssociate ? 'text-green-800 font-bold' : 'text-rose-600 font-semibold'}>{item.isAssociate ? 'Possède un vehicule' : 'aucun vehicule associé'}</p>
+                              }
+                            </p>
+
                             {
                               !loading ? <Skeleton animation='wave' variant='text' width={190} height={40} />
                                 : (

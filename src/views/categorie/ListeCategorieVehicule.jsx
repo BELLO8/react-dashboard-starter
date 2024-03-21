@@ -1,13 +1,17 @@
 import { Pagination, Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../redux/store/categoryCar";
+import { editCarCategoryDescription } from "../../services/CarCategory";
 
 export const ListeCategorieVehicule = () => {
     const [openSide, setOpenSide] = useState(false);
     const [addLoading, setAddLoading] = useState(false);
     const [categorieInfo, setCategorieInfo] = useState(null);
+    const [description, setDescription] = useState();
+    const [id, setId] = useState();
     const [loading, setLoading] = useState(false)
     const carCategory = useSelector((state) => state.categoryCar.categoryCar);
     const dispatch = useDispatch();
@@ -18,6 +22,7 @@ export const ListeCategorieVehicule = () => {
             setLoading(true)
         }, "2000")
     }, [dispatch])
+
 
     const more = async (page) => {
         setLoading(true)
@@ -72,6 +77,8 @@ export const ListeCategorieVehicule = () => {
                             <div key={index} className='bg-gray-50 border border-dashed rounded-lg'>
                                 <div onClick={() => {
                                     setCategorieInfo(item)
+                                    setId(item.id)
+                                    setDescription(item.description)
                                     document.getElementById(`create_categorie${index}`).showModal()
                                 }}
                                     className='cursor-pointer mx-2 my-4  rounded-lg pr-8 flex'>
@@ -112,7 +119,7 @@ export const ListeCategorieVehicule = () => {
                                                 : "Modifier cette catégorie"}
                                         </h3>
                                         <form method="dialog">
-                                            <button className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
+                                            <button id={`close${item.id}`} className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
                                         </form>
 
                                         <div className="py-4">
@@ -126,67 +133,22 @@ export const ListeCategorieVehicule = () => {
                                                 <div className="label">
                                                     <span className="label-text text-sm font-semibold">Description</span>
                                                 </div>
-                                                <textarea className="textarea textarea-bordered" defaultValue={categorieInfo?.description}>
+                                                <textarea onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered" defaultValue={categorieInfo?.description}>
 
                                                 </textarea>
                                             </label>
                                         </div>
 
                                         <div className="modal-action">
-                                            <form method="dialog">
-                                                {!addLoading ? (
-                                                    <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md cursor-pointer">
-                                                        Annuler
-                                                    </button>
-                                                ) : (
-                                                    <button className="bg-gray-200 text-sm text-gray-600 font-semibold px-4 py-2 rounded-md pointer-events-none">
-                                                        Annuler
-                                                    </button>
-                                                )}
-                                            </form>
-                                            {categorieInfo === null ? (
-                                                <div
-                                                    disabled={addLoading}
-                                                    className="bg-main text-white text-sm font-semibold px-4 py-2 rounded-md flex items-center justify-center cursor-pointer"
-                                                // onClick={ajoutNouvelUtilisateur}
-                                                >
-                                                    {!addLoading ? (
-                                                        <span>Enregistrer</span>
-                                                    ) : (
-                                                        <ThreeDots
-                                                            height="20"
-                                                            width="40"
-                                                            radius="9"
-                                                            color="#000"
-                                                            ariaLabel="three-dots-loading"
-                                                            wrapperStyle={{}}
-                                                            wrapperClassName=""
-                                                            visible={addLoading}
-                                                        />
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    disabled={addLoading}
-                                                    className="bg-main text-white text-sm font-semibold px-4 py-2 rounded-md flex items-center justify-center cursor-pointer"
-                                                // onClick={modifierInfoUtilisateur}
-                                                >
-                                                    {!addLoading ? (
-                                                        <span>Modifier</span>
-                                                    ) : (
-                                                        <ThreeDots
-                                                            height="20"
-                                                            width="40"
-                                                            radius="9"
-                                                            color="#000"
-                                                            ariaLabel="three-dots-loading"
-                                                            wrapperStyle={{}}
-                                                            wrapperClassName=""
-                                                            visible={addLoading}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
+                                            <button onClick={() => {
+                                                editCarCategoryDescription(id, description).then((res) => {
+                                                    if (res.status === 200) {
+                                                        document.getElementById(`close${item.id}`).click()
+                                                        dispatch(getCategory({ page: 0, param: '', size: 10 }))
+                                                        toast.success('Description modifiée ')
+                                                    }
+                                                })
+                                            }} className="btn btn-md bg-blue-900 text-white hover:bg-blue-900">Modifier</button>
                                         </div>
                                     </div>
                                 </dialog>

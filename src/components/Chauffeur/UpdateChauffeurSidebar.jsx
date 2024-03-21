@@ -15,7 +15,7 @@ export const UpdateChauffeurSidebar = ({ setOpenSide, openSide }) => {
     const [verso, setVerso] = useState([]);
     const [photo, setPhoto] = useState([]);
     const [permisPhoto, setPermisPhoto] = useState([]);
-
+    
     const handleChangeRecto = (e) => {
         const selectedFiles = e.target.files;
         if (recto.length <= 0) {

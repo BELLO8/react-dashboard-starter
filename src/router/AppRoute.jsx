@@ -1,20 +1,22 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import { Layout } from "../layout/Layout";
 import { Home } from "../views/Home/Home";
 import { Login } from "../views/auth/login/Login";
 import { ListeCategorieVehicule } from "../views/categorie/ListeCategorieVehicule";
 import { ChauffeurCommande } from "../views/chauffeur-commande/ChauffeurCommande";
+import { Chauffeur } from "../views/chauffeur/Chauffeur";
 import { ClientDetail } from "../views/client-detail/ClientDetail";
 import { Client } from "../views/client/Client";
 import { Commande } from "../views/commande/Commande";
 import { ModificationIdentifiant } from "../views/modification-identifiant/ModificationIdentifiant";
 import ErrorPage from "../views/notFound/ErrorPage";
+import { Paramettre } from "../views/paramettre/Paramettre";
 import PartenaireDetail from "../views/partenaire-detail/PartenaireDetail";
 import { Partenaire } from "../views/partenaire/Partenaire";
 import { PositionVehicule } from "../views/position-vehicule/PositionVehicule";
 import { ListeUtilisateur } from "../views/utilisateur/ListeUtilisateur";
 
-export const AppRoute = createBrowserRouter([
+export const AppRoute = createHashRouter([
   {
     path: "/",
     element: <Layout />,
@@ -35,6 +37,10 @@ export const AppRoute = createBrowserRouter([
       {
         path: "/partenaires",
         element: <Partenaire />,
+      },
+      {
+        path: "/liste-chauffeurs",
+        element: <Chauffeur />,
       },
       {
         path: "/detail-partenaire/:id",
@@ -64,6 +70,10 @@ export const AppRoute = createBrowserRouter([
         path: "/modification-identifiant",
         element: <ModificationIdentifiant />,
       },
+      {
+        path: "/paramettre",
+        element: <Paramettre />
+      }
     ],
   },
 

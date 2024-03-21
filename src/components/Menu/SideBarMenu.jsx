@@ -2,7 +2,9 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getUserProfil } from "../../Utils/Utils";
+import Driver from '../../assets/icons/driver.svg';
 import MapIcon from '../../assets/icons/map.svg';
+import Setting from '../../assets/icons/setting.svg';
 import logo from "../../assets/images/logo/logo.png";
 import { handleLogout } from "../../redux/auth";
 import AvatarIcon from './../../assets/icons/avatar.svg';
@@ -14,7 +16,6 @@ import HomeIcon from './../../assets/icons/home.svg';
 import LockIcon from './../../assets/icons/lock.svg';
 import LogoutIcon from './../../assets/icons/logout.svg';
 import UtilisateurIcon from './../../assets/icons/user.svg';
-
 export const SideBarMenu = () => {
     const user = getUserProfil();
     const dispatch = useDispatch();
@@ -36,6 +37,11 @@ export const SideBarMenu = () => {
             icon: PartenaireIcon
         },
         {
+            name: "Chauffeur",
+            link: "/liste-chauffeurs",
+            icon: Driver
+        },
+        {
             name: "Clients",
             link: "/clients",
             icon: ClientIcon
@@ -54,6 +60,11 @@ export const SideBarMenu = () => {
             name: "Position des vehicules",
             link: "/position-vehicules",
             icon: MapIcon
+        },
+        {
+            name: "Paramettre",
+            link: "/paramettre",
+            icon: Setting
         },
     ];
 
@@ -81,27 +92,28 @@ export const SideBarMenu = () => {
                         </NavLink>
                     </div>
                 ))}
+                <div className="w-60 rounded-xl bg-white/50 p-3">
+                    <div className="tooltip absolute right-3" data-tip="Modifier identifiant">
+                        <NavLink to={'/modification-identifiant'} className="bg-gray-200 w-9 h-9 rounded-full flex items-center justify-center">
+                            <img src={LockIcon} alt="" className="w-5 h-5" />
+                        </NavLink>
+                    </div>
+
+                    <div className="mt-7 w-12 h-12 rounded-full bg-gray-600 shadow mx-auto flex items-center justify-center">
+                        <img src={AvatarIcon} alt="" className="w-6 h-6" />
+                    </div>
+                    <p className="text-base font-bold text-black truncate text-center">{user?.nom ?? user?.email}</p>
+                    <button className="w-full h-9 flex items-center justify-center gap-x-2 bg-red-600 text-white text-sm font-semibold rounded-xl mt-2" onClick={() => {
+                        dispatch(handleLogout())
+                        navigate('/login')
+                    }}>
+                        <img src={LogoutIcon} alt="" className="w-6 h-6" />
+                        Déconnexion
+                    </button>
+                </div>
             </div>
 
-            <div className="absolute bottom-8 w-60 h-fit rounded-xl bg-white/50 p-3">
-                <div className="tooltip absolute right-3" data-tip="Modifier identifiant">
-                    <NavLink to={'/modification-identifiant'} className="bg-gray-200 w-9 h-9 rounded-full flex items-center justify-center">
-                        <img src={LockIcon} alt="" className="w-5 h-5" />
-                    </NavLink>
-                </div>
 
-                <div className="mt-7 w-12 h-12 rounded-full bg-gray-600 shadow mx-auto flex items-center justify-center">
-                    <img src={AvatarIcon} alt="" className="w-6 h-6" />
-                </div>
-                <p className="text-base font-bold text-black truncate text-center">{user?.nom ?? user?.email}</p>
-                <button className="w-full h-9 flex items-center justify-center gap-x-2 bg-red-600 text-white text-sm font-semibold rounded-xl mt-2" onClick={() => {
-                    dispatch(handleLogout())
-                    navigate('/login')
-                }}>
-                    <img src={LogoutIcon} alt="" className="w-6 h-6" />
-                    Déconnexion
-                </button>
-            </div>
         </div>
     );
 };
