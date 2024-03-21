@@ -147,7 +147,6 @@ export const ClientDetail = () => {
     <div>
       <div className="flex items-start">
         <div className='sticky top-0 left-0 bg-white w-64 min-h-screen z-50'>
-
           <div className='my-3 rounded-lg px-4'>
             <div className="flex items-center justify-between mb-12">
               <NavLink to="/clients">
@@ -225,7 +224,7 @@ export const ClientDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                    : "157 0000 Fr"
+                    : customer.depenses + ' Fcfa' ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Dépenses</p>
@@ -235,14 +234,14 @@ export const ClientDetail = () => {
                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
                   : customer?.nombreCourseEffectuees
               }</p>
-              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses annulé</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses effectuées</p>
             </div>
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">{
                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
                   : customer?.nombreCourseAnnulees
               }</p>
-              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses</p>
+              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses annulé</p>
             </div>
           </div>
           <h1 className='mt-5 text-lg text-gray-400 font-medium'>Historique de commandes</h1>

@@ -185,6 +185,7 @@ export const ListeUtilisateur = () => {
                         <div>
                             <button onClick={() => {
                                 disableUser(row.id).then((res) => {
+                                    console.log(res);
                                     if (res.status === 200) {
                                         dispatch(getAllUser({ page: 0, param: '', size: 10 }))
                                         toast.success('Compte supprimé')

@@ -53,7 +53,7 @@ export const AppRoute = createBrowserRouter([
         element: <Commande />,
       },
       {
-        path: "/chauffeur-commande",
+        path: "/chauffeur-commande/:id",
         element: <ChauffeurCommande />,
       },
       {

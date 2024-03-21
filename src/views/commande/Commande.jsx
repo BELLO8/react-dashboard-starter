@@ -51,33 +51,33 @@ export const Commande = () => {
                 ),
             sortable: true,
         },
-        {
-            name: "Categorie de vehicule",
-            selector: (row) =>
-                !loading ? (
-                    <Skeleton animation="wave" variant="text" width={80} />
-                ) : (
-                    row?.categorieVehicule
-                ),
-        },
-        {
-            name: "Distance",
-            selector: (row) =>
-                !loading ? (
-                    <Skeleton animation="wave" variant="text" width={80} />
-                ) : (
-                    row?.distance
-                ),
-        },
-        {
-            name: "Montant",
-            selector: (row) =>
-                !loading ? (
-                    <Skeleton animation="wave" variant="text" width={80} />
-                ) : (
-                    row?.montant
-                ),
-        },
+        // {
+        //     name: "Categorie de vehicule",
+        //     selector: (row) =>
+        //         !loading ? (
+        //             <Skeleton animation="wave" variant="text" width={80} />
+        //         ) : (
+        //             row?.categorieVehicule
+        //         ),
+        // },
+        // {
+        //     name: "Distance",
+        //     selector: (row) =>
+        //         !loading ? (
+        //             <Skeleton animation="wave" variant="text" width={80} />
+        //         ) : (
+        //             row?.distance
+        //         ),
+        // },
+        // {
+        //     name: "Montant",
+        //     selector: (row) =>
+        //         !loading ? (
+        //             <Skeleton animation="wave" variant="text" width={80} />
+        //         ) : (
+        //             row?.montant
+        //         ),
+        // },
         {
             name: "Depart",
             selector: (row) =>
@@ -96,15 +96,15 @@ export const Commande = () => {
                     row?.lieuDestination
                 ),
         },
-        {
-            name: "Durée du trajet",
-            selector: (row) =>
-                !loading ? (
-                    <Skeleton animation="wave" variant="text" width={80} />
-                ) : (
-                    row?.duree
-                ),
-        },
+        // {
+        //     name: "Durée du trajet",
+        //     selector: (row) =>
+        //         !loading ? (
+        //             <Skeleton animation="wave" variant="text" width={80} />
+        //         ) : (
+        //             row?.duree
+        //         ),
+        // },
         {
             name: "Status",
             selector: (row) =>
@@ -170,9 +170,6 @@ export const Commande = () => {
                             noDataComponent='Aucune données'
                             customStyles={{
                                 rows: {
-                                    style: {
-                                        width: '1900px'
-                                    },
                                 },
                             }}
                         />

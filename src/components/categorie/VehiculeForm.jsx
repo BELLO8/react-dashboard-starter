@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
+import { getAllPartnerCar } from '../../redux/store/partner';
 import { addCar } from '../../services/CarService';
-import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 
 export const VehiculeForm = () => {
@@ -16,9 +16,11 @@ export const VehiculeForm = () => {
     } = useForm()
     const [category, setCategory] = useState();
     const [assurance, setAssurance] = useState([]);
+    const [cartGrise, setCarteGrise] = useState([]);
     const [isSubmit, setIsSubmit] = useState(false);
     const carCategory = useSelector((state) => state.categoryCar.categoryCar);
     const { id } = useParams()
+    const dispatch = useDispatch()
     const carCategoryOption = []
 
     carCategory?.categoriesVehicule?.map((item) => {
@@ -35,6 +37,16 @@ export const VehiculeForm = () => {
         }
     }
 
+    const handleChangeImageCarteGrise = (e) => {
+        const selectedFiles = e.target.files;
+        if (cartGrise.length <= 0) {
+            const newFiles = Array.from(selectedFiles)
+            setCarteGrise(prevFiles => [...prevFiles, ...newFiles])
+        } else {
+            toast.error('Uniquement un fichier à uploader')
+        }
+    }
+
     useEffect(() => {
         reset()
     }, [reset])
@@ -44,11 +56,11 @@ export const VehiculeForm = () => {
         category?.map((item) => {
             return categories.push(item.value)
         })
-        console.log({ ...data, categories: categories, partenaireId: id, fichier: assurance[0] });
         setIsSubmit(true)
-        addCar({ ...data, categories: categories, partenaireId: id, fichier: assurance[0] }).then((res) => {
+        addCar({ ...data, categories: categories, partenaireId: id, assurance: assurance[0], carteGrise: cartGrise[0] }).then((res) => {
             setIsSubmit(false);
             if (res.status === 200) {
+                dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))
                 toast.success('Vehicule ajouté ')
             }
             console.log(res);
@@ -117,31 +129,63 @@ export const VehiculeForm = () => {
                         </div>
                     </div>
 
-                    <div className="text-indigo-600 py-8 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md  py-2 text-gray-900 shadow-sm "
-                        onClick={() => document.getElementById('assurance').click()}
-                    >
-                        <div className='flex justify-center mb-3'>
-                            <UploadIcon />
-                        </div>
+                    <label className="text-sm font-medium">Assurance du vehicule</label>
+                    {
+                        assurance.length !== 0 ? (
+                            assurance.map((assur, index) => (
+                                <div key={index} className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md text-gray-900 shadow-sm "
+                                    style={{
+                                        background: "url('" + URL.createObjectURL(assur) + "') no-repeat center/cover"
+                                    }}
+                                    onClick={() => document.getElementById('assurance').click()}
+                                >
+                                </div>
+                            ))
 
-                        <div>
-                            <p className='text-center text-sm mx-1'>Uploader votre assurance de vehicule</p>
-                        </div>
-                    </div>
+                        ) : (
+                            <div className="text-indigo-600 py-8 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md text-gray-900 shadow-sm "
+                                onClick={() => document.getElementById('assurance').click()}
+                            >
+                                <div className='flex justify-center mb-3'>
+                                    <UploadIcon />
+                                </div>
+
+                                <div>
+                                    <p className='text-center text-sm mx-1'>Assurance du vehicule</p>
+                                </div>
+                            </div>
+                        )
+                    }
+
+                    <label className="text-sm font-medium">Carte grise du vehicule</label>
+                    {
+                        cartGrise.length !== 0 ? (
+                            cartGrise.map((grise, index) => (
+                                <div key={index} className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md text-gray-900 shadow-sm "
+                                    style={{
+                                        background: "url('" + URL.createObjectURL(grise) + "') no-repeat center/cover"
+                                    }}
+                                    onClick={() => document.getElementById('grise').click()}
+                                >
+                                </div>
+                            ))
+
+                        ) : (
+                            <div className="text-indigo-600 py-8 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-md text-gray-900 shadow-sm "
+                                onClick={() => document.getElementById('grise').click()}
+                            >
+                                <div className='flex justify-center mb-3'>
+                                    <UploadIcon />
+                                </div>
+
+                                <div>
+                                    <p className='text-center text-sm mx-1'>Carte grise du vehicule</p>
+                                </div>
+                            </div>
+                        )
+                    }
                     <input type="file" accept="image/jpeg, image/png " hidden id='assurance' onChange={handleChangeImageAssurance} />
-
-                    <div className='grid grid-cols-2 gap-1'>
-                        {assurance?.map((file, index) => (
-                            <div key={index} className='rounded min-h-40 mx-1 border' style={{
-                                background: "url('" + URL.createObjectURL(file) + "') no-repeat center/cover"
-                            }}>
-                                <button className='bg-white rounded text-rose-800 text-sm p-1 m-1' onClick={() => {
-                                    setAssurance(assurance.filter(deleteFile => deleteFile !== file))
-                                }}>
-                                    <Trash />
-                                </button></div>
-                        ))}
-                    </div>
+                    <input type="file" accept="image/jpeg, image/png " hidden id='grise' onChange={handleChangeImageCarteGrise} />
 
                     <button type='submit'
                         disabled={isSubmit ? true : false}

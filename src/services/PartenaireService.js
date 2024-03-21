@@ -1,8 +1,10 @@
 import {
+  ADD_DRIVER,
   ADD_PARTNER,
   DISABLE_PARTNER_ACCOUNT,
   PARTNER_CAR_LIST,
   PARTNER_DELETE,
+  PARTNER_DRIVER_LIST,
   PARTNER_INFO,
   PARTNER_LIST,
 } from "../Utils/constant";
@@ -41,5 +43,17 @@ export const deletePartner = async (id) => {
 export const getCarByPartner = async (params) => {
   return clientAxios.get(
     `${PARTNER_CAR_LIST}${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
+  );
+};
+
+export const addDriver = async (id, ...data) => {
+  return clientAxios.post(`${ADD_DRIVER}/${id}`, ...data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const getDriverByPartner = async (params) => {
+  return clientAxios.get(
+    `${PARTNER_DRIVER_LIST}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
   );
 };

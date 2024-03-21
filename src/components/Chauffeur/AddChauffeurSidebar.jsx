@@ -2,6 +2,10 @@ import { Drawer } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getAllPartnerDriver } from '../../redux/store/partner';
+import { addDriver } from '../../services/PartenaireService';
 import { Trash } from '../Icons/Trash';
 import { UploadIcon } from '../Icons/upload';
 
@@ -15,7 +19,9 @@ export const AddChauffeurSidebar = ({ setOpenSide, openSide }) => {
     const [verso, setVerso] = useState([]);
     const [photo, setPhoto] = useState([]);
     const [permisPhoto, setPermisPhoto] = useState([]);
-
+    const [isSubmit, setIsSubmit] = useState(false);
+    const dispatch = useDispatch();
+    const { id } = useParams();
     const handleChangeRecto = (e) => {
         const selectedFiles = e.target.files;
         if (recto.length <= 0) {
@@ -61,9 +67,22 @@ export const AddChauffeurSidebar = ({ setOpenSide, openSide }) => {
     }
 
     const submit = (data) => {
-        reset();
-        setOpenSide(false)
-        toast.success('Chauffeur enregistré')
+        setIsSubmit(true)
+        addDriver(id, { ...data, photo: photo, permisConduire: permisPhoto, cniRecto: recto, cniVerso: verso }).then((res) => {
+            setIsSubmit(false);
+            if (res.status === 200) {
+                dispatch(getAllPartnerDriver({ id: id, page: 0, param: '', size: 10 }))
+                reset();
+                setOpenSide(false)
+                toast.success('Partenaire ajouté ')
+            }
+        }).catch((err) => {
+            setIsSubmit(false)
+            console.log(err);
+            if (err.response.status === 500) {
+                toast.error(err.response.data)
+            }
+        })
     }
 
 
@@ -107,46 +126,40 @@ export const AddChauffeurSidebar = ({ setOpenSide, openSide }) => {
                             </div>
                             <div className='my-2'>
                                 <div>
-                                    <label htmlFor="" className='text-sm font-medium'>Nom complet<sup className='text-rose-600'>*</sup></label>
+                                    <label htmlFor="" className='text-sm font-medium'>Nom<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : Yao kofff" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('name', { required: true })} />
+                                    {...register('nom', { required: true })} />
+                            </div>
+                            <div className='my-2'>
+                                <div>
+                                    <label htmlFor="" className='text-sm font-medium'>Prenoms<sup className='text-rose-600'>*</sup></label>
+                                </div>
+                                <input type="text" placeholder="ex : kofff" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                    {...register('prenoms', { required: true })} />
+                            </div>
+                            <div className='my-2'>
+                                <div>
+                                    <label htmlFor="" className='text-sm font-medium'>Email<sup className='text-rose-600'>*</sup></label>
+                                </div>
+                                <input type="text" placeholder="ex : kofff" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                                    {...register('email', { required: true })} />
                             </div>
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Adresse<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : Palm ci" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('address', { required: true })} />
+                                    {...register('lieuHabitation', { required: true })} />
                             </div>
                             <div className='my-2'>
                                 <div>
                                     <label htmlFor="" className='text-sm font-medium'>Numéro de téléphone<sup className='text-rose-600'>*</sup></label>
                                 </div>
                                 <input type="text" placeholder="ex : 002587663321" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('phone', { required: true })} />
+                                    {...register('numero', { required: true })} />
                             </div>
-                            {/* <div className='my-2'>
-                                <div>
-                                    <label htmlFor="" className='text-sm font-medium'>Email<sup className='text-rose-600'>*</sup></label>
-                                </div>
-                                <input type="text" placeholder="ex : kofi@yao.ee" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('email', { required: true })} />
-                            </div> */}
-                            <div className='my-2'>
-                                <div>
-                                    <label htmlFor="" className='text-sm font-medium'>Numero de permis<sup className='text-rose-600'>*</sup></label>
-                                </div>
-                                <input type="text" placeholder="ex : 1234578894" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('permis', { required: true })} />
-                            </div>
-                            {/* <div className='my-2'>
-                                <div>
-                                    <label htmlFor="" className='text-sm font-medium'>Assurance<sup className='text-rose-600'>*</sup></label>
-                                </div>
-                                <input type="text" placeholder="ex : A55588648" className="px-3 my-2 w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
-                                    {...register('assurance', { required: true })} />
-                            </div> */}
+
                             <label className='text-sm font-medium'>Pièces d'identité</label>
                             <div className='grid grid-cols-2 gap-1'>
                                 {
@@ -235,8 +248,17 @@ export const AddChauffeurSidebar = ({ setOpenSide, openSide }) => {
                             <input type="file" accept="image/jpeg, image/png " hidden id='recto' onChange={handleChangeRecto} />
                             <input type="file" accept="image/jpeg, image/png " hidden id='verso' onChange={handleChangeVerso} />
                             <input type="file" accept="image/jpeg, image/png " hidden id='permis' onChange={handleChangePermiPhoto} />
-                            <button type='submit' className="btn btn-sm texte-xs hover:bg-gray-900 font-medium my-2 mx-1 w-full rounded-md border-0 text-white shadow-sm bg-[#04356B]">
-                                Ajouter un partenaire
+                            <button type='submit'
+                                disabled={isSubmit ? true : false}
+                                className={`${!isSubmit
+                                    ? "text-white bg-indigo-900"
+                                    : "text-slate-800 bg-slate-200 "
+                                    } w-full my-3 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                            >
+                                {!isSubmit ? "Ajouter un chauffeur" : "Veuillez patientez..."}{" "}
+                                {isSubmit ? (
+                                    <span className="loading loading-dots loading-xs"></span>
+                                ) : null}
                             </button>
                         </div>
                     </form>

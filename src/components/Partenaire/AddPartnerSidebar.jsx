@@ -238,6 +238,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                             </div>
                             <input type="file" accept="image/jpeg, image/png " hidden id='recto' onChange={handleChangeRecto} />
                             <input type="file" accept="image/jpeg, image/png " hidden id='verso' onChange={handleChangeVerso} />
+                            
                             {/* <div className='bg-gray-100  mt-3 rounded p-2'> <p className='text-xs font-medium'>Liste des vehicules</p> </div> */}
                             {/* {
                                 vehicule.map((item, index) => (

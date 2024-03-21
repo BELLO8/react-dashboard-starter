@@ -52,7 +52,7 @@ export const Partenaire = () => {
     }
 
     const more = async (page) => {
-        dispatch(getAllPartner({ page: page, param: '', size: 10 }))
+        dispatch(getAllPartner({ page: page - 1, param: '', size: 10 }))
     }
 
     return (
