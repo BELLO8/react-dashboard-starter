@@ -101,12 +101,12 @@ export const Client = () => {
                         </button>
                     </div>
                     <div>
-                        <button
+                        {/* <button
                             className="w-fit h-10 px-4 rounded-lg bg-orange-600 text-white text-sm font-semibold"
                             onClick={() => openModalCreateEditUser()}
                         >
                             Ajouter un client
-                        </button>
+                        </button> */}
                     </div>
                 </div>
                 {customer.clients?.length === 0 || customer.length === 0 ?
@@ -157,7 +157,7 @@ export const Client = () => {
                                         loading ? <Skeleton className='mx-auto' animation='wave' variant='circular' width={62} height={62} />
                                             : (
                                                 <img
-                                                    src={item.photo != null ? `${BASE_URL}/webfree/partenaire/fichier/${item.photo.id}` : `https://randomuser.me/api/portraits/men/7${index}.jpg`}
+                                                    src={item.photo != null ? `${BASE_URL}/webfree/partenaire/fichier/${item.photo.id}` : `https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg`}
                                                     alt=""
                                                     className="rounded-full"
                                                 />

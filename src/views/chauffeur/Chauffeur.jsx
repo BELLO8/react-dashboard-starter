@@ -2,7 +2,6 @@ import { Drawer, Pagination, Skeleton } from "@mui/material";
 import { ArrowUpRight, Phone, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router';
 import { BASE_URL } from "../../Utils/constant";
 import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
@@ -13,8 +12,6 @@ export const Chauffeur = () => {
     const [openSide, setOpenSide] = useState(false);
     const [openSideUpdate, setOpenSideUpdate] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [idPartner, setIdPartner] = useState();
     const [rowData, setRowData] = useState();
     const [openSidebarModal, setOpenSidebarModal] = useState(false);
     const [search, setSearch] = useState();
@@ -30,10 +27,6 @@ export const Chauffeur = () => {
     useEffect(() => {
         dispatch(getMoreDrivers({ page: 0, param: '', size: 10 }))
     }, [dispatch])
-
-    const toggleDrawer = (newOpen) => () => {
-        setOpenSide(newOpen);
-    };
 
 
     const more = async (page) => {

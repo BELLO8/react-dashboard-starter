@@ -59,22 +59,22 @@ export const ClientDetail = () => {
         ),
       sortable: true,
     },
-    {
-      name: "Distance",
-      selector: (row) =>
-        !loading ? (
-          <Skeleton animation="wave" variant="text" width={80} />
-        ) : (
-          row?.distance
-        ),
-    },
+    // {
+    //   name: "Distance",
+    //   selector: (row) =>
+    //     !loading ? (
+    //       <Skeleton animation="wave" variant="text" width={80} />
+    //     ) : (
+    //       row?.distance
+    //     ),
+    // },
     {
       name: "Montant",
       selector: (row) =>
         !loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
-          row?.montant
+          row?.montant + ' Fcfa'
         ),
     },
     {
@@ -95,15 +95,15 @@ export const ClientDetail = () => {
           row?.lieuDestination
         ),
     },
-    {
-      name: "Durée du trajet",
-      selector: (row) =>
-        !loading ? (
-          <Skeleton animation="wave" variant="text" width={80} />
-        ) : (
-          row?.duree
-        ),
-    },
+    // {
+    //   name: "Durée du trajet",
+    //   selector: (row) =>
+    //     !loading ? (
+    //       <Skeleton animation="wave" variant="text" width={80} />
+    //     ) : (
+    //       row?.duree
+    //     ),
+    // },
     {
       name: "Status",
       selector: (row) =>
@@ -258,13 +258,6 @@ export const ClientDetail = () => {
               data={order.courses}
               className='border'
               noDataComponent='Aucune données'
-              customStyles={{
-                rows: {
-                  style: {
-                    width: '1400px'
-                  },
-                },
-              }}
             />
             <div className='my-3 flex justify-end'>
               <Pagination onChange={(event, newValue) => more(newValue)}

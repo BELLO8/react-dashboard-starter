@@ -283,7 +283,7 @@ const PartenaireDetail = () => {
                                   className="bg-white hover:bg-gray-100 text-gray-600 font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
                                   onClick={() => setOpenSideCarUpdate(true)}
                                 >
-                                  Modifer
+                                  Modifier
                                 </button>
 
                                 <button

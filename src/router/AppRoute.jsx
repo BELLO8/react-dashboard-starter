@@ -15,6 +15,7 @@ import PartenaireDetail from "../views/partenaire-detail/PartenaireDetail";
 import { Partenaire } from "../views/partenaire/Partenaire";
 import { PositionVehicule } from "../views/position-vehicule/PositionVehicule";
 import { ListeUtilisateur } from "../views/utilisateur/ListeUtilisateur";
+import { ListeVehicules } from "../views/vehicule/ListeVehicules";
 
 export const AppRoute = createHashRouter([
   {
@@ -69,6 +70,10 @@ export const AppRoute = createHashRouter([
       {
         path: "/modification-identifiant",
         element: <ModificationIdentifiant />,
+      },
+      {
+        path: "/liste-vehicules",
+        element: <ListeVehicules />
       },
       {
         path: "/paramettre",

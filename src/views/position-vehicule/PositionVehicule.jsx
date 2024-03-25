@@ -114,7 +114,7 @@ export const PositionVehicule = () => {
                     mapId={'<Your custom MapId here>'}>
                     {
                         locations.map((item, index) => (
-                            <AdvancedMarker key={index} position={item.location} >
+                            <AdvancedMarker key={index} position={item.location} onClick={() => alert(JSON.stringify(item.location))}>
                                 <img src="https://www.dealer.com/wp-content/uploads/sites/18/2023/06/Car-1-Orange@2x2-1024x542-1.png?h=542" alt='' height={70} width={70} />
                             </AdvancedMarker>
                         ))

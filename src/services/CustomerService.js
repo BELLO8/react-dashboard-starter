@@ -1,5 +1,4 @@
 import {
-  ADD_CUSTOMER,
   CUSTOMER_INFO,
   CUSTOMER_LIST,
   CUSTOMER_ORDER,
@@ -21,10 +20,6 @@ export const getCustomerInfo = async (id) => {
     })
     .catch((err) => {});
   return response;
-};
-
-export const addCustomer = async (...data) => {
-  return await clientAxios.post(`${ADD_CUSTOMER}`, ...data);
 };
 
 export const disableAccount = async (id) => {

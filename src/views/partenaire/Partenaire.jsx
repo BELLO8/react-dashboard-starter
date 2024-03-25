@@ -27,7 +27,7 @@ export const Partenaire = () => {
         telephone: "",
     });
     const partner = useSelector((state) => state.partner.partner);
-    const loading = useSelector((state) => state.customer.isloading);
+    const loading = useSelector((state) => state.partner.isloading);
 
     useEffect(() => {
         dispatch(getAllPartner({ page: 0, param: '', size: 10 }))

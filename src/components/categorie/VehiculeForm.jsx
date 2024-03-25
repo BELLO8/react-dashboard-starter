@@ -84,16 +84,15 @@ export const VehiculeForm = () => {
         })
 
         setIsSubmit(true)
-        addCar({ ...data, categories: categories, partenaireId: id, listOrienatations: ['AVANT', 'ARRIERE', 'GAUCHE', 'DROITE', 'INTERIEUR'], typeFichiers: ['ASSURANCE', 'CARTE_GRISE'], fichiers: [assurance[0], cartGrise[0]], listPhotosVehicule: files }).then((res) => {
+        addCar(id, { ...data, categories: categories, listOrienatations: ['AVANT', 'ARRIERE', 'GAUCHE', 'DROITE', 'INTERIEUR'], typeFichiers: ['ASSURANCE', 'CARTE_GRISE'], fichiers: [assurance[0], cartGrise[0]], listPhotosVehicule: files }).then((res) => {
             setIsSubmit(false);
             if (res.status === 200) {
                 dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))
                 toast.success('Vehicule ajouté ')
             }
-            console.log(res);
+            reset()
         }).catch((err) => {
             setIsSubmit(false)
-            console.log(err);
             if (err.response.status === 500) {
                 toast.error(err.response.data)
             }

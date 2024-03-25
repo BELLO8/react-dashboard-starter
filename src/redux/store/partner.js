@@ -69,14 +69,14 @@ export const partnerSlice = createSlice({
     cars: [],
     drivers: [],
     driver: [],
-    isloading: false,
+    isloading: true,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllPartner.fulfilled, (state, action) => {
         state.partner = action.payload;
-        state.isloading = true;
+        state.isloading = false;
       })
       .addCase(partnerInfo.fulfilled, (state, action) => {
         state.infoPartner = action.payload;
