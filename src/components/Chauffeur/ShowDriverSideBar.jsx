@@ -1,7 +1,10 @@
 import { Drawer } from '@mui/material';
+import { MapPin, Phone } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { BASE_URL } from '../../Utils/constant';
 import { getMoreDrivers } from '../../redux/store/driver';
 import { changerStatus } from '../../services/Driver';
@@ -10,13 +13,80 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
 
     const [raison, setRaison] = useState();
     const dispatch = useDispatch();
+    const pieces = useSelector((state) => state.driver.listePieces);
+
+
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                 <div className='bg-white w-[380px] px-8'>
-                    {/* <h1 className='text-lg font-semibold'>Info sur le chauffeur</h1> */}
                     <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${data?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-28 h-28 border-2 mx-auto mt-5 flex items-center justify-center">
 
+                    </div>
+                    <div className='flex justify-center'>
+                        <div className=' my-2 bg-blue-600 w-fit text-white rounded-full p-1'>
+                            <p className='text-xs font-medium'>{data?.email}</p>
+                        </div>
+                    </div>
+                    <div className='flex justify-center'>
+                        <p className='text-xl font-bold text-blue-900'>{data?.nom + ' ' + data?.prenoms}</p>
+                    </div>
+                    <div className="flex justify-center space-x-1 text-gray-400">
+                        <Phone size={15} />
+                        <p className='text-sm'>{data?.numero}</p>
+                    </div>
+                    <div className="flex justify-center space-x-1 text-gray-400">
+                        <MapPin size={15} />
+                        <p className='text-sm'>{data?.lieuHabitation}</p>
+                    </div>
+                    <div className="my-3 flex justify-center gap-x-2">
+                        <div className="px-3 py-3 border border-dashed rounded-lg flex flex-col">
+                            <p className=" text-md font-medium">
+                                {
+                                    data?.solde ?? 0
+                                }{" "}
+                                Fcfa
+                            </p>
+                            <p className="text-sm text-center text-gray-400 font-medium truncate">Solde</p>
+                        </div>
+                        <div className="px-3 py-3 border border-dashed rounded-lg flex flex-col">
+                            <p className="text-md font-medium">
+                                {
+                                    data?.revenues ?? 0
+                                }{" "}
+                                Fcfa
+                            </p>
+                            <p className="text-sm text-center text-gray-400 font-medium truncate">Revenue</p>
+                        </div>
+                        <div className="px-3 py-3 border border-dashed rounded-lg flex flex-col">
+                            <p className=" text-md font-medium">
+                                {
+                                    data?.point ?? 0
+                                }{" "}
+                            </p>
+                            <p className="text-sm text-center text-gray-400 font-medium truncate">Point</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p className='text-sm '>Liste des pieces</p>
+
+                        <div className="flex gap-x-1">
+                            {
+                                pieces?.map((item, index) => (
+                                    <PhotoProvider>
+                                        <PhotoView key={index} src={`${BASE_URL}/webfree/partenaire/fichier/${item.id}`}>
+                                            <div>
+                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}
+                                                    className="bg-gray-200 rounded-lg w-28 h-32 border-2 mx-auto mt-5 flex items-center justify-center">
+                                                    <p className='text-xs bg-white font-bold p-1 rounded'>{item.typeFichier === 'PERMIS_DE_CONDUIRE' ? 'Permis' : item.typeFichier === 'CNI_RECTO' ? 'Cni recto' : item.typeFichier === 'PASSEPORT' ? 'Passeport' : 'Cni verso'}</p>
+
+                                                </div>
+                                            </div>
+                                        </PhotoView>
+                                    </PhotoProvider>
+                                ))
+                            }
+                        </div>
                     </div>
                     {
                         data?.statusEnregistrement === 'TERMINE' || data?.statusEnregistrement === 'REJETER' ? null : (

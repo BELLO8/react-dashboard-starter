@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router';
 import { BASE_URL } from "../../Utils/constant";
 import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
-import { getMoreDrivers } from "../../redux/store/driver";
-import { getAllPartner } from "../../redux/store/partner";
+import { getDriverPieces, getMoreDrivers } from "../../redux/store/driver";
 
 export const Chauffeur = () => {
 
@@ -38,7 +37,7 @@ export const Chauffeur = () => {
 
 
     const more = async (page) => {
-        dispatch(getAllPartner({ page: page - 1, param: '', size: 10 }))
+        dispatch(getMoreDrivers({ page: page - 1, param: '', size: 10 }))
     }
 
     return (
@@ -122,8 +121,8 @@ export const Chauffeur = () => {
                                         {
                                             !loading ? <Skeleton className="mx-auto mt-5 flex items-center justify-center" animation='wave' variant='circular' width={80} height={80} />
                                                 : (
-                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
-                                                </div>)
+                                                    <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
+                                                    </div>)
                                         }
 
                                         <h1 className="text-sm text-indigo-900 text-center font-bold mt-2 mb-1 truncate">
@@ -162,6 +161,7 @@ export const Chauffeur = () => {
                                                         onClick={() => {
                                                             setOpenSideUpdate(true)
                                                             setRowData(item)
+                                                            dispatch(getDriverPieces(item.id))
                                                         }}
                                                     >
                                                         Details du chauffeur <ArrowUpRight size={17} />

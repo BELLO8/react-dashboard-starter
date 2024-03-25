@@ -2,7 +2,10 @@ import {
   CHANGE_DRIVER,
   DRIVER_INFO,
   DRIVER_LIST,
+  DRIVER_PIECES,
+  PARTNER_DISOCIATE_DRIVER_CAR,
   PARTNER_DRIVER_CAR_ASSOCIATE,
+  PARTNER_DRIVER_DELETE,
 } from "../Utils/constant";
 import clientAxios from "./axios";
 
@@ -25,4 +28,19 @@ export const associateDriver = async (driverId, vehiculeId) => {
     `${PARTNER_DRIVER_CAR_ASSOCIATE}/${driverId}/vehicule/${vehiculeId}`,
     {}
   );
+};
+
+export const deleteCarDriver = async (driverId, vehiculeId) => {
+  return clientAxios.delete(
+    `${PARTNER_DISOCIATE_DRIVER_CAR}/${driverId}/vehicule/${vehiculeId}`,
+    {}
+  );
+};
+
+export const deleteDriver = async (driverId) => {
+  return clientAxios.delete(`${PARTNER_DRIVER_DELETE}/${driverId}`, {});
+};
+
+export const getPieces = async (driverId) => {
+  return clientAxios.get(`${DRIVER_PIECES}/${driverId}`);
 };

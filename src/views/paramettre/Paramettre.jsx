@@ -136,15 +136,29 @@ export const Paramettre = () => {
                             {
                                 son.length !== 0 ? (
                                     son.map((sonnerie, index) => (
-                                        <div key={index} className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
+                                        <div>
+                                            <div key={index} className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
+                                                style={{
+                                                    background: "url('https://pixabay.com/static/img/audio/sfx_thumbnail_7.svg') no-repeat center/cover"
+                                                }}
+                                                onClick={() => document.getElementById('son').click()}
+                                            >
+                                            </div>
+                                            <p className='text-sm'>{sonnerie.name}</p>
+                                        </div>
+                                    ))
+
+                                ) : param?.son?.id !== null ? (
+                                    <div>
+                                        <div className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
                                             style={{
-                                                background: "url('https://pixabay.com/static/img/audio/sfx_thumbnail_7.svg') no-repeat center/cover"
+                                                background: "url('https://pixabay.com/static/img/audio/sfx_thumbnail_6.svg') no-repeat center/cover"
                                             }}
                                             onClick={() => document.getElementById('son').click()}
                                         >
                                         </div>
-                                    ))
-
+                                        <p className='text-sm'>{param?.son?.nom}</p>
+                                    </div>
                                 ) : (
                                     <div className="text-indigo-600 py-8 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
                                         onClick={() => document.getElementById('son').click()}

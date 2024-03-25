@@ -2,10 +2,13 @@ import { Pagination, Skeleton } from '@mui/material'
 import { ChevronLeft, Eye, Info, MinusCircle, PenLine } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { BASE_URL } from '../../Utils/constant'
 import { getAllOrderByDriver } from '../../redux/store/order'
 import { driverInfo } from '../../redux/store/partner'
+import { deleteCarDriver } from '../../services/Driver'
 
 export const ChauffeurCommande = () => {
 
@@ -14,57 +17,7 @@ export const ChauffeurCommande = () => {
     const dispatch = useDispatch();
     const ordersDriver = useSelector((state) => state.order.driverOrder);
     const InfoDriver = useSelector((state) => state.partner.driver);
-    const driver = {
-        driver: {
-            dateCreation: '2024-03-14T18:44:43.066857',
-            numero: '0200000006',
-            listCategorieVehicule: [
-                {
-                    id: '1d60a784-9aeb-4dac-95a2-523ce70a681d',
-                    designation: 'ECO',
-                    prixsParKilometrage: 200,
-                    description: 'vehicule simple'
-                },
-                {
-                    id: 'b2db0005-8475-46c2-b80e-e3a1a4264acc',
-                    designation: 'CONFORT',
-                    prixsParKilometrage: 250,
-                    description: 'vehicule avec climatisateur'
-                }
-            ],
-            latitude: 5.3680361,
-            raison: null,
-            photo: {
-                id: 480,
-                nom: '1710441926421.png',
-                chemin: 'C:/SKAN_FOLDER/Treize_Fichiers/1710441927944_1710441926421.png',
-                taille: 17608,
-                typeFichier: 'PHOTO_PROFILE',
-                typeUtilisateur: 'DRIVER'
-            },
-            nom: 'pollo',
-            statusEnregistrement: 'TERMINE',
-            prenoms: 'pipo',
-            lieuHabitation: 'Abidjan',
-            codeParainage: '4D2L73Q6',
-            vehicule: {
-                id: 483,
-                marque: 'opel',
-                modele: null,
-                numeroMatriculation: '357rugby',
-                numeroChassis: null,
-                couleur: 'gris',
-                dateCreation: null,
-                isDeleted: null,
-                typeEtat: 'ACTIF'
-            },
-            solde: 57120,
-            id: 478,
-            etatpeEnregistrement: null,
-            email: 'ak@gmail.com',
-            longitude: -3.9597929
-        }
-    }
+
     useEffect(() => {
         dispatch(getAllOrderByDriver({ id: id, page: 0, param: '', size: 10 }))
         dispatch(driverInfo(id))
@@ -209,7 +162,7 @@ export const ChauffeurCommande = () => {
                         </div>
 
                         <div className="w-26">
-                            <div className='rounded-full w-20 h-20' style={{ background: "url('https://www.shutterstock.com/image-photo/new-car-cheerful-black-man-260nw-1746419990.jpg') no-repeat center/cover" }}>
+                            <div className='rounded-full w-20 h-20' style={{ background: `url("${BASE_URL}/webfree/partenaire/fichier/${InfoDriver?.photo?.id}") no-repeat center/cover` }}>
                             </div>
                         </div>
                         <div className="relative my-6 h-[430px]">
@@ -258,7 +211,16 @@ export const ChauffeurCommande = () => {
 
                             </div> */}
                             <div className="absolute bottom-0">
-                                <button className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Desactiver le compte</button>
+                                <button onClick={() => {
+                                    deleteCarDriver(id, InfoDriver?.vehicule?.id).then((res) => {
+                                        toast.success('Vehicule rétiré')
+                                    }).catch((err) => {
+                                        console.log(err);
+                                        if (err.response.status === 500) {
+                                            toast.error(err.response.data)
+                                        }
+                                    })
+                                }} className="btn btn-ghost btn-sm hover:bg-red-50 flex text-red-500 font-medium text-sm"><MinusCircle size={20} /> Retirer le vehicule</button>
                             </div>
                         </div>
                         <div className='absolute right-8 mt-2'>
@@ -312,7 +274,7 @@ export const ChauffeurCommande = () => {
                         <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
                             <p className=" text-2xl font-semibold">{
                                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                                    : ordersDriver.courses.length
+                                    : ordersDriver?.courses.length
                             }</p>
                             <p className="text-sm text-gray-400 font-medium truncate">Courses effectées</p>
                         </div>
