@@ -29,6 +29,7 @@ export const orderSlice = createSlice({
     order: [],
     driverOrder: [],
     loading: true,
+    loadingOrder: true,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -39,7 +40,7 @@ export const orderSlice = createSlice({
       })
       .addCase(getAllOrderByDriver.fulfilled, (state, action) => {
         state.driverOrder = action.payload;
-        state.loading = false;
+        state.loadingOrder = false;
       });
   },
 });

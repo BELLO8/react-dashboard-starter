@@ -84,7 +84,7 @@ export const VehiculeForm = () => {
         })
 
         setIsSubmit(true)
-        addCar(id, { ...data, categories: categories, listOrienatations: ['AVANT', 'ARRIERE', 'GAUCHE', 'DROITE', 'INTERIEUR'], typeFichiers: ['ASSURANCE', 'CARTE_GRISE'], fichiers: [assurance[0], cartGrise[0]], listPhotosVehicule: files }).then((res) => {
+        addCar(id, { ...data, categories: categories, listOrientations: ['AVANT', 'ARRIERE', 'GAUCHE', 'DROITE', 'INTERIEUR'], typeFichiers: ['ASSURANCE', 'CARTE_GRISE'], fichiers: [assurance[0], cartGrise[0]], listPhotosVehicule: files }).then((res) => {
             setIsSubmit(false);
             if (res.status === 200) {
                 dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))

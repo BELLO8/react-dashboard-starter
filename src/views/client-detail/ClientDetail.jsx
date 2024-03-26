@@ -13,9 +13,11 @@ import { disableAccount } from '../../services/CustomerService'
 export const ClientDetail = () => {
   const [selectRow, setSelectRow] = useState();
   const [openSide, setOpenSide] = useState(false)
-  const [loading, setLoading] = useState(false)
   const customer = useSelector((state) => state.customer.selectCustomer)
   const order = useSelector((state) => state.customer.order)
+  const loading = useSelector((state) => state.customer.loadingOrder)
+  const loadingInfo = useSelector((state) => state.customer.loadingInfo)
+
   const { id } = useParams()
   const dispatch = useDispatch();
   const handleDisableAccount = () => {
@@ -31,13 +33,10 @@ export const ClientDetail = () => {
   useEffect(() => {
     dispatch(customerInfo(id))
     dispatch(getAllCustomerOrder({ id: id, page: 0, param: '', size: 10 }))
-    setTimeout(() => {
-      setLoading(true)
-    }, "2000")
+
   }, [dispatch, id])
 
   const more = async (page) => {
-    setLoading(true)
     dispatch(getAllCustomerOrder({ id: id, page: page, param: '', size: 10 }))
   }
   const defaultProps = {
@@ -51,10 +50,10 @@ export const ClientDetail = () => {
     {
       name: "Chauffeur",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
-          row?.driver === null ? 'en attente...' :
+          row?.driver === null ? ' ' :
             row?.driver?.nom + " " + row?.driver?.prenoms
         ),
       sortable: true,
@@ -71,7 +70,7 @@ export const ClientDetail = () => {
     {
       name: "Montant",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           row?.montant + ' Fcfa'
@@ -80,7 +79,7 @@ export const ClientDetail = () => {
     {
       name: "Depart",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           row?.lieuDepart
@@ -89,7 +88,7 @@ export const ClientDetail = () => {
     {
       name: "Destination",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           row?.lieuDestination
@@ -107,7 +106,7 @@ export const ClientDetail = () => {
     {
       name: "Status",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : 'en attente'}</p>
@@ -116,7 +115,7 @@ export const ClientDetail = () => {
     {
       name: "Date de la course",
       selector: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           new Date(row?.dateCreation).toLocaleString()
@@ -125,7 +124,7 @@ export const ClientDetail = () => {
     {
       name: "Action",
       cell: (row) =>
-        !loading ? (
+        loading ? (
           <Skeleton animation="wave" variant="text" width={80} />
         ) : (
           <div>
@@ -173,7 +172,7 @@ export const ClientDetail = () => {
                 <p className="text-sm font-semibold">Nom et prenoms</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
-                    !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                    loadingInfo ? <Skeleton animation='wave' variant='text' width={80} />
                       : customer?.nom ?? "Aucun nom"
                   }</p>
               </div>
@@ -182,7 +181,7 @@ export const ClientDetail = () => {
                 <p className="text-sm font-semibold">Email</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
-                    !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                    loadingInfo ? <Skeleton animation='wave' variant='text' width={80} />
                       : customer?.email ?? "Aucun mail"
                   }
                 </p>
@@ -191,7 +190,7 @@ export const ClientDetail = () => {
               <div className="my-6">
                 <p className="text-sm font-semibold">Contact</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">{
-                  !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                  loadingInfo ? <Skeleton animation='wave' variant='text' width={80} />
                     : customer?.numero
                 }</p>
               </div>
@@ -200,7 +199,7 @@ export const ClientDetail = () => {
                 <p className="text-sm font-semibold">Etat du compte</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
-                    !loading ? <Skeleton animation='wave' variant='text' width={80} />
+                    loadingInfo ? <Skeleton animation='wave' variant='text' width={80} />
                       : customer.enabled ? 'compte actif' : 'compte bloqué'
                   }
 
@@ -223,7 +222,7 @@ export const ClientDetail = () => {
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">
                 {
-                  !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                  loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
                     : customer.depenses + ' Fcfa' ?? 0
                 }
               </p>
@@ -231,14 +230,14 @@ export const ClientDetail = () => {
             </div>
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">{
-                !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
                   : customer?.nombreCourseEffectuees
               }</p>
               <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses effectuées</p>
             </div>
             <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
               <p className=" text-2xl font-semibold">{
-                !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
                   : customer?.nombreCourseAnnulees
               }</p>
               <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses annulé</p>

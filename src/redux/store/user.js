@@ -14,13 +14,13 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     users: [],
-    isloading: false,
+    isloading: true,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAllUser.fulfilled, (state, action) => {
       state.users = action.payload;
-      state.isloading = true;
+      state.isloading = false;
     });
   },
 });

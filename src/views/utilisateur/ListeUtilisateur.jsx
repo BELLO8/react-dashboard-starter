@@ -8,173 +8,53 @@ import { getAllUser } from '../../redux/store/user';
 import { disableUser } from '../../services/UserService';
 import EditPenIcon from "./../../assets/icons/pen.svg";
 import TrashIcon from "./../../assets/icons/trash.svg";
-export const users = [
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-]
+
 export const ListeUtilisateur = () => {
 
     const [openSide, setOpenSide] = useState(false);
-    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
     const users = useSelector((state) => state.user.users);
+    const loading = useSelector((state) => state.user.isloading);
     useEffect(() => {
         dispatch(getAllUser({ page: 0, param: '', size: 10 }))
-        setTimeout(() => {
-            setLoading(true)
-        }, "2000")
     }, [dispatch])
 
     const more = async (page) => {
-        setLoading(true)
         dispatch(getAllUser({ page: page, param: '', size: 10 }))
     }
 
     const columns = [
         {
             name: "Nom et prenoms",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            selector: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : row.nom,
             sortable: true,
         },
         {
             name: "Nom d'utilisateur",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            selector: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : row.username,
             sortable: true,
         },
         {
             name: "Email",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            selector: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : row.email,
             sortable: true,
         },
         {
             name: "Numero telephone",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            selector: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : row.numero,
         },
         {
             name: "Etat du compte",
-            selector: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            selector: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : <p className={`text-xs  ${row?.enabled ? 'bg-green-100 text-green-800 font-semibold' : 'bg-rose-100 text-rose-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.enabled ? 'Actif' : 'Inactif'}</p>
         },
         {
             name: "Action",
-            cell: (row) => !loading ? <Skeleton animation='wave' variant='text' width={80} />
+            cell: (row) => loading ? <Skeleton animation='wave' variant='text' width={80} />
                 : (
                     <div className="flex items-center gap-x-3">
                         <div className="tooltip" data-tip="Modifier">
@@ -231,12 +111,23 @@ export const ListeUtilisateur = () => {
                         columns={columns}
                         data={users.users}
                         className='border'
+                        progressPending={loading}
+                        progressComponent={
+                            <span class="loading loading-spinner loading-lg"></span>
+                        }
                         noDataComponent='Aucune donnée'
                     />
-                    <div className='my-3 flex justify-end'>
-                        <Pagination onChange={(event, newValue) => more(newValue)}
-                            onSelect={selectedPage => more(selectedPage)} count={users.totalPages} variant="outlined" color='primary' shape="rounded" />
-                    </div>
+
+                    {
+                        loading ? null :
+                            (
+                                <div className='my-3 flex justify-end'>
+                                    <Pagination onChange={(event, newValue) => more(newValue)}
+                                        onSelect={selectedPage => more(selectedPage)} count={users.totalPages} variant="outlined" color='primary' shape="rounded" />
+                                </div>
+                            )
+                    }
+
                 </div>
             </div>
         </div>

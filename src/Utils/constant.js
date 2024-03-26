@@ -1,4 +1,5 @@
 export const BASE_URL = "http://192.168.1.10:8081/treizetaxi-api";
+export const API_KEY = "AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc";
 export const LOGIN_ENDPOINT = "/webfree/userback/signin";
 export const DISABLE_USER_ACCOUNT = "/superadmin/userback/desactiver";
 export const UPDATE_USER_CREDENTIALS =
@@ -43,7 +44,7 @@ export const SEARCH_CUSTOMER = "";
 export const CUSTOMER_INFO = "/superadmin/client/rechercherinfos";
 export const CUSTOMER_ORDER = "/superadmin/course/rechercherhistoriqueclient";
 export const DISABLE_CUSTOMER = "/superadmin/client/desactiver";
-export const CATEGORY_CAR_LIST = "/superadmin/categorievehicule/listcategories";
+export const CATEGORY_CAR_LIST = "/admin/categorievehicule/listcategories";
 export const EDIT_CATEGORY_CAR = "/superadmin/categorievehicule/modifier";
 export const DELETE_CATEGORY_CAR = "";
 export const ADD_USER = "/superadmin/userback/enregistrer";

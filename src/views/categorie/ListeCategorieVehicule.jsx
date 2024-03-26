@@ -1,8 +1,9 @@
-import { Pagination, Skeleton } from "@mui/material";
+import { Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
+import { LoadingCar } from "../../components/categorie/LoadingCar";
 import { getCategory } from "../../redux/store/categoryCar";
 import { editCarCategoryDescription } from "../../services/CarCategory";
 
@@ -12,20 +13,16 @@ export const ListeCategorieVehicule = () => {
     const [categorieInfo, setCategorieInfo] = useState(null);
     const [description, setDescription] = useState();
     const [id, setId] = useState();
-    const [loading, setLoading] = useState(false)
     const carCategory = useSelector((state) => state.categoryCar.categoryCar);
     const dispatch = useDispatch();
+    const loading = useSelector((state) => state.categoryCar.loading);
 
     useEffect(() => {
         dispatch(getCategory({ page: 0, param: '', size: 10 }))
-        setTimeout(() => {
-            setLoading(true)
-        }, "2000")
     }, [dispatch])
 
 
     const more = async (page) => {
-        setLoading(true)
         dispatch(getCategory({ page: page, param: '', size: 10 }))
     }
 
@@ -38,7 +35,7 @@ export const ListeCategorieVehicule = () => {
             <div className="mt-10">
                 <div className="w-full flex items-end justify-between">
                     <div className="flex items-end gap-x-3">
-                        <label className="form-control w-60">
+                        <label className="form-control w-80">
                             <div className="label">
                                 <span className="label-text text-xs font-medium -mb-1">
                                     Rechercher
@@ -47,7 +44,7 @@ export const ListeCategorieVehicule = () => {
                             <input
                                 type="text"
                                 placeholder="Rechercher un élément..."
-                                className="input input-bordered w-full h-10 font-semibold"
+                                className="input input-bordered w-full h-10 text-sm"
                             />
                         </label>
                         <button className="w-fit h-10 px-4 rounded-lg bg-main text-white text-sm font-semibold">
@@ -65,108 +62,110 @@ export const ListeCategorieVehicule = () => {
                 </div>
             </div>
             <div className="mt-5 bg-white rounded-lg p-3">
-                {carCategory.length === 0 ?
+                {carCategory.length === 0 && !loading ?
                     (
                         <div className="py-3 flex justify-center">
                             <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" srcset="" />
                         </div>
-                    ) : null}
-                <div className="grid grid-cols-4 gap-4">
-                    {
-                        carCategory?.categoriesVehicule?.map((item, index) => (
-                            <div key={index} className='bg-gray-50 border border-dashed rounded-lg'>
-                                <div onClick={() => {
-                                    setCategorieInfo(item)
-                                    setId(item.id)
-                                    setDescription(item.description)
-                                    document.getElementById(`create_categorie${index}`).showModal()
-                                }}
-                                    className='cursor-pointer mx-2 my-4  rounded-lg pr-8 flex'>
-                                    {
-                                        !loading ? <Skeleton animation='wave' variant='rounded' width={50} height={40} />
-                                            : <div className="w-96 rounded bg-orange-300" >
+                    ) : !loading && carCategory?.categoriesVehicule.length !== 0 ? (
+                        <div className="grid grid-cols-4 gap-4">
+                            {
+                                carCategory?.categoriesVehicule?.map((item, index) => (
+                                    <div key={index} className='bg-gray-50 border border-dashed rounded-lg'>
+                                        <div onClick={() => {
+                                            setCategorieInfo(item)
+                                            setId(item.id)
+                                            setDescription(item.description)
+                                            document.getElementById(`create_categorie${index}`).showModal()
+                                        }}
+                                            className='cursor-pointer mx-2 my-4  rounded-lg pr-8 flex'>
+
+                                            <div className="w-96 rounded bg-orange-300" >
 
                                             </div>
-                                    }
 
-                                    <div className='mx-2 space-y-1'>
-                                        <p className='text-sm font-semibold truncate'>
-                                            {
-                                                !loading ? <Skeleton animation='wave' variant='text' width={120} />
-                                                    : item.designation
-                                            }
-                                        </p>
-                                        <p className='text-xs truncate w-48'>
-                                            {
-                                                !loading ? <Skeleton animation='wave' variant='text' width={120} />
-                                                    : item.description
-                                            }
-                                        </p>
-                                        <p className='text-xs text-gray-300 font-semibold bg-blue-100 text-indigo-800 rounded-md px-2 w-fit'>
-                                            {
-                                                !loading ? <Skeleton animation='wave' variant='text' width={80} />
-                                                    : item.prixParKilometrage + ' Fr'
-                                            }
 
-                                        </p>
-                                    </div>
-                                </div>
-                                <dialog id={`create_categorie${index}`} className="modal">
-                                    <div className="modal-box rounded-lg max-w-md">
-                                        <h3 className="font-bold text-lg text-black">
-                                            {categorieInfo === null
-                                                ? "Ajouter une catégorie"
-                                                : "Modifier cette catégorie"}
-                                        </h3>
-                                        <form method="dialog">
-                                            <button id={`close${item.id}`} className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
-                                        </form>
-
-                                        <div className="py-4">
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text text-sm font-semibold">Designation</span>
-                                                </div>
-                                                <input type="text" disabled defaultValue={categorieInfo?.designation} placeholder="Désignation de la catégorie" className="input input-bordered w-full h-12 font-medium" />
-                                            </label>
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text text-sm font-semibold">Description</span>
-                                                </div>
-                                                <textarea onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered" defaultValue={categorieInfo?.description}>
-
-                                                </textarea>
-                                            </label>
-                                        </div>
-
-                                        <div className="modal-action">
-                                            <button onClick={() => {
-                                                editCarCategoryDescription(id, description).then((res) => {
-                                                    if (res.status === 200) {
-                                                        document.getElementById(`close${item.id}`).click()
-                                                        dispatch(getCategory({ page: 0, param: '', size: 10 }))
-                                                        toast.success('Description modifiée ')
+                                            <div className='mx-2 space-y-1'>
+                                                <p className='text-sm font-semibold truncate'>
+                                                    {
+                                                        item.designation
                                                     }
-                                                })
-                                            }} className="btn btn-md bg-blue-900 text-white hover:bg-blue-900">Modifier</button>
-                                        </div>
-                                    </div>
-                                </dialog>
+                                                </p>
+                                                <p className='text-xs truncate w-48'>
+                                                    {
+                                                        item.description
+                                                    }
+                                                </p>
+                                                <p className='text-xs text-gray-300 font-semibold bg-blue-100 text-indigo-800 rounded-md px-2 w-fit'>
+                                                    {
+                                                        item.prixParKilometrage + ' Fr'
+                                                    }
 
-                            </div>
-                        ))
-                    }
-                </div>
-                <div className="my-3 flex justify-end">
-                    <Pagination
-                        count={carCategory.totalPages}
-                        variant="outlined"
-                        color="primary"
-                        shape="rounded"
-                        onChange={(event, newValue) => more(newValue)}
-                        onSelect={selectedPage => more(selectedPage)}
-                    />
-                </div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <dialog id={`create_categorie${index}`} className="modal">
+                                            <div className="modal-box rounded-lg max-w-md">
+                                                <h3 className="font-bold text-lg text-black">
+                                                    {categorieInfo === null
+                                                        ? "Ajouter une catégorie"
+                                                        : "Modifier cette catégorie"}
+                                                </h3>
+                                                <form method="dialog">
+                                                    <button id={`close${item.id}`} className="w-8 h-8 rounded-lg bg-red-100 absolute right-3 top-3 text-red-600 text-lg font-bold">✕</button>
+                                                </form>
+
+                                                <div className="py-4">
+                                                    <label className="form-control w-full">
+                                                        <div className="label">
+                                                            <span className="label-text text-sm font-semibold">Designation</span>
+                                                        </div>
+                                                        <input type="text" disabled defaultValue={categorieInfo?.designation} placeholder="Désignation de la catégorie" className="input input-bordered w-full h-12 font-medium" />
+                                                    </label>
+                                                    <label className="form-control w-full mt-2">
+                                                        <div className="label">
+                                                            <span className="label-text text-sm font-semibold">Description</span>
+                                                        </div>
+                                                        <textarea onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered" defaultValue={categorieInfo?.description}>
+
+                                                        </textarea>
+                                                    </label>
+                                                </div>
+
+                                                <div className="modal-action">
+                                                    <button onClick={() => {
+                                                        editCarCategoryDescription(id, description).then((res) => {
+                                                            if (res.status === 200) {
+                                                                document.getElementById(`close${item.id}`).click()
+                                                                dispatch(getCategory({ page: 0, param: '', size: 10 }))
+                                                                toast.success('Description modifiée ')
+                                                            }
+                                                        })
+                                                    }} className="btn btn-md bg-blue-900 text-white hover:bg-blue-900">Modifier</button>
+                                                </div>
+                                            </div>
+                                        </dialog>
+
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    ) : <LoadingCar />}
+
+                {
+                    loading ? null :
+                        <div className="my-3 flex justify-end">
+                            <Pagination
+                                count={carCategory.totalPages}
+                                variant="outlined"
+                                color="primary"
+                                shape="rounded"
+                                onChange={(event, newValue) => more(newValue)}
+                                onSelect={selectedPage => more(selectedPage)}
+                            />
+                        </div>
+                }
+
             </div>
 
             <dialog id="delete_categorie" className="modal">

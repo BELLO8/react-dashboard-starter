@@ -1,6 +1,7 @@
 import { APIProvider, AdvancedMarker, Map } from '@vis.gl/react-google-maps';
 import React, { useEffect, useState } from 'react';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+import { API_KEY } from '../../Utils/constant';
 import { AutocompleteCustom } from '../../components/Autocomplete';
 import MapHandle from '../../components/MapHandle';
 
@@ -102,7 +103,7 @@ export const PositionVehicule = () => {
     return (
         <div className='relative'>
 
-            <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
+            <APIProvider apiKey={API_KEY}>
                 <div className='px-3 absolute top-3 w-96  z-50'>
                     <AutocompleteCustom onPlaceSelect={setSelectedPlace} />
                 </div>

@@ -45,6 +45,8 @@ export const customerSlice = createSlice({
     selectCustomer: {},
     order: [],
     loading: true,
+    loadingInfo: true,
+    loadingOrder: true,
   },
   reducers: {
     selectCustomer: (state, action) => {
@@ -59,9 +61,11 @@ export const customerSlice = createSlice({
       })
       .addCase(getAllCustomerOrder.fulfilled, (state, action) => {
         state.order = action.payload;
+        state.loadingOrder = false;
       })
       .addCase(customerInfo.fulfilled, (state, action) => {
         state.selectCustomer = action.payload;
+        state.loadingInfo = false;
       });
   },
 });

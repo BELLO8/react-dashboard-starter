@@ -70,6 +70,10 @@ export const partnerSlice = createSlice({
     drivers: [],
     driver: [],
     isloading: true,
+    loadingInfo: true,
+    loadingCars: true,
+    loadingDriver: true,
+    loadingDriverInfo: true,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -80,19 +84,19 @@ export const partnerSlice = createSlice({
       })
       .addCase(partnerInfo.fulfilled, (state, action) => {
         state.infoPartner = action.payload;
-        state.isloading = true;
+        state.loadingInfo = false;
       })
       .addCase(getAllPartnerCar.fulfilled, (state, action) => {
         state.cars = action.payload;
-        state.isloading = true;
+        state.loadingCars = false;
       })
       .addCase(getAllPartnerDriver.fulfilled, (state, action) => {
         state.drivers = action.payload;
-        state.isloading = true;
+        state.loadingDriver = false;
       })
       .addCase(driverInfo.fulfilled, (state, action) => {
         state.driver = action.payload;
-        state.isloading = true;
+        state.loadingDriverInfo = false;
       });
   },
 });

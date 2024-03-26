@@ -9,16 +9,14 @@ import { getAllOrder } from '../../redux/store/order';
 
 export const Commande = () => {
     const [openSide, setOpenSide] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const loading = useSelector((state) => state.order.loading)
     const dispatch = useDispatch();
     const order = useSelector((state) => state.order.order)
     const [selectRow, setSelectRow] = useState();
 
     useEffect(() => {
         dispatch(getAllOrder({ page: 0, param: '', size: 10 }))
-        setTimeout(() => {
-            setLoading(true)
-        }, "2000")
+
     }, [dispatch])
 
     const defaultProps = {
@@ -33,10 +31,10 @@ export const Commande = () => {
         {
             name: "Chauffeur",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
-                    row?.driver === null ? 'en attente...' :
+                    row?.driver === null ? ' ' :
                         row?.driver?.nom + " " + row?.driver?.prenoms
                 ),
             sortable: true,
@@ -44,7 +42,7 @@ export const Commande = () => {
         {
             name: "Cient",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     row?.client?.nom + " " + row?.client?.prenoms
@@ -81,7 +79,7 @@ export const Commande = () => {
         {
             name: "Depart",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     row?.lieuDepart
@@ -90,7 +88,7 @@ export const Commande = () => {
         {
             name: "Destination",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     row?.lieuDestination
@@ -108,7 +106,7 @@ export const Commande = () => {
         {
             name: "Status",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : 'en attente'}</p>
@@ -117,7 +115,7 @@ export const Commande = () => {
         {
             name: "Date de la course",
             selector: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     new Date(row?.dateCreation).toLocaleString()
@@ -126,7 +124,7 @@ export const Commande = () => {
         {
             name: "Action",
             cell: (row) =>
-                !loading ? (
+                loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
                     <div>
@@ -144,7 +142,6 @@ export const Commande = () => {
         },
     ];
     const more = async (page) => {
-        setLoading(true)
         dispatch(getAllOrder({ page: page, param: '', size: 10 }))
     }
     return (
@@ -158,30 +155,54 @@ export const Commande = () => {
                     <div className='flex'>
                         <input type="text" placeholder="Recherche..." className="input input-bordered px-3 my-2 w-80 h-10 text-gray-900 placeholder:text-gray-400"
                         />
-                        <button className="px-3 my-2 mx-1 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
+                        <label className="form-control w-44">
+                            <select onChange={(e) => {
+                                dispatch(getAllOrder({ page: 0, param: e.target.value, size: 10 }))
+                            }} className="mx-2 my-2 select select-bordered custom-select w-full h-10 font-semibold">
+                                <option disabled selected>
+                                    Staut d'activié
+                                </option>
+                                <option value='TERMINE'>Terminé</option>
+                                <option value='ANNULE'>Annulé</option>
+                            </select>
+                        </label>
+                        <button className="px-3 my-2 mx-3 rounded-md border-0 py-1.5 text-white shadow-sm bg-[#04356B] placeholder:text-gray-400  sm:text-sm sm:leading-6">
                             Rechercher
                         </button>
+
                     </div>
                     <div className="">
                         <DataTable
                             columns={OrdersColumns}
                             data={order.courses}
                             className='border'
+                            progressPending={loading}
+                            progressComponent={
+
+                                <span class="loading loading-spinner loading-lg"></span>
+                            }
                             noDataComponent='Aucune données'
                             customStyles={{
                                 rows: {
                                 },
                             }}
                         />
-                        <div className='my-3 flex justify-end'>
-                            <Pagination onChange={(event, newValue) => more(newValue)}
-                                onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
-                        </div>
+
+                        {
+                            loading ? null :
+                                (
+                                    <div className='my-3 flex justify-end'>
+                                        <Pagination onChange={(event, newValue) => more(newValue)}
+                                            onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
+                                    </div>
+                                )
+                        }
+
                     </div>
                     <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                         <div className="w-[580px] mx-2 my-6">
                             <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
-                                <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
+                                <APIProvider apiKey={"AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc"}>
                                     <Map
                                         disableDefaultUI={true}
                                         zoom={14}

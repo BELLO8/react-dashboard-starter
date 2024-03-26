@@ -136,6 +136,7 @@ export const Home = () => {
                         }
                     </div>
                 </div>
+
             </div>
 
             <div className='my-8'>

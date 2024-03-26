@@ -26,17 +26,18 @@ const driverSlice = createSlice({
   initialState: {
     driverListe: [],
     listePieces: [],
-    loading: false,
+    loading: true,
+    loadingPiece: true,
   },
   reducers: {},
   extraReducers: (builder) =>
     builder
       .addCase(getMoreDrivers.fulfilled, (state, action) => {
-        state.loading = true;
+        state.loading = false;
         state.driverListe = action.payload;
       })
       .addCase(getDriverPieces.fulfilled, (state, action) => {
-        state.loading = true;
+        state.loadingPiece = false;
         state.listePieces = action.payload;
       }),
 });
