@@ -1,4 +1,4 @@
-import { Drawer } from '@mui/material';
+import { Drawer, Skeleton } from '@mui/material';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -22,7 +22,21 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                     <div>
                         <p className='text-md font-semibold'>Liste des photos du vehicule</p>
                         {
-                            carImages !== "" ? (
+                            carImages === "" ? 'Aucun fichier pour ce vehicule' : null
+                        }
+
+
+
+                        {
+                            isloading ? (
+                                <div className="grid grid-cols-2 gap-1 mt-8">
+                                    {
+                                        [1, 2, 3, 4].map((item, index) => (
+                                            <Skeleton animation='wave' variant="rounded" height={120} />
+                                        ))
+                                    }
+                                </div>
+                            ) : (
                                 <div className="grid grid-cols-2 gap-x-1">
                                     {
                                         carImages?.map((item, index) => (
@@ -39,7 +53,7 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                                         ))
                                     }
                                 </div>
-                            ) : null
+                            )
                         }
 
 
