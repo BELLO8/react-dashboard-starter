@@ -200,10 +200,11 @@ export const Commande = () => {
 
                     </div>
                     <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
-                        <div className="w-[580px] mx-2 my-6">
+                        <div className="w-[480px] mx-2 my-6">
                             <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
                                 <APIProvider apiKey={"AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc"}>
                                     <Map
+                                        style={{ borderRadius: 20 }}
                                         disableDefaultUI={true}
                                         zoom={14}
                                         center={defaultProps.center}
@@ -215,50 +216,68 @@ export const Commande = () => {
                             <div className="grid grid-cols-3 my-2 gap-1">
                                 <div class="text-left text-sm  bg-muted">
                                     <div class=" gap-1">
-                                        <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
-                                        <div class="px-3 text-xs font-medium my-2">
-                                            <div>
-                                                <div className="flex items-center ">
-                                                    <div className="rounded-full w-3 h-3 bg-indigo-700">
-                                                    </div>
-                                                    <div className="ml-2">
-                                                        <p className="text-sm font-semibold">{selectRow?.lieuDepart}</p>
-                                                        <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateDebutCourse).toLocaleString() : ''}</p>
-                                                    </div>
-                                                </div>
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><MapIcon color='white' size={17} /></div>
+                                            <div className="px-1 py-2 ">
+                                                <p className="text-md font-medium">
+                                                    {selectRow?.distance}
+                                                </p>
+                                                <p className="text-sm text-center text-gray-400 font-medium truncate">Distance</p>
+                                            </div>
+                                        </div>
 
-                                                <div className="w-1 h-4 border-r-2  px-[3px] border-indigo-700"></div>
-                                                <div className="flex items-center ">
-                                                    <div className="rounded-full w-3 h-3 bg-indigo-700">
-                                                    </div>
-                                                    <div className="ml-2">
-                                                        <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
-                                                        <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                <div class="text-left text-sm  bg-muted">
+                                    <div class=" gap-1">
+
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><Clock color='white' size={17} /></div>
+                                            <div className="px-1 py-2 ">
+                                                <p className="text-md font-medium">
+                                                    {selectRow?.duree === "" ? 0 : selectRow?.duree}
+                                                </p>
+                                                <p className="text-sm text-gray-400 font-medium truncate">Durée</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-left text-sm  bg-muted">
-                                    <div class=" gap-1">
-                                        <div class="rounded-lg bg-gray-200 p-3 font-semibold flex gap-1 text-xs"><Clock size={17} />Durée de la course</div>
-                                        <div class="px-3 text-lg font-semibold my-2">
-                                            {selectRow?.duree}
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="text-left text-sm  bg-muted">
+                                <div class="text-left text-sm">
                                     <div class=" gap-1">
-                                        <div class="text-xs font-semibold flex rounded-lg bg-gray-200 p-3 gap-1"><BadgeSwissFranc size={17} />Prix de la course</div>
-                                        <div class="px-3 text-lg font-semibold my-2">
-                                            {selectRow?.montant + ' Fr'}
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><BadgeSwissFranc size={17} color='white' /></div>
+                                            <div className="px-1 py-2 ">
+                                                <p className="text-md font-medium">
+                                                    {selectRow?.montant + ' Fcfa'}
+                                                </p>
+                                                <p className="text-sm text-gray-400 font-medium truncate">Prix</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="px-3 text-xs font-medium my-2">
+                                <div className='border-b-[1px]  pb-3'>
+                                    <p className='mt-6 font-semibold'>Trajet de la course</p>
+                                    <div className="flex items-center my-2">
+                                        <div className="rounded px-1 py-1 bg-indigo-100">
+                                            Depart
+                                        </div>
+                                        <div className="ml-2">
+                                            <p className="text-sm font-semibold">{selectRow?.lieuDepart}</p>
+                                            <p className="text-xs text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateDebutCourse).toLocaleString() : ''}</p>
+                                        </div>
+                                    </div>
 
+                                    <div className="flex items-center ">
+                                        <div className="rounded px-2 py-1 bg-green-100">
+                                            Arrivé
+                                        </div>
+                                        <div className="ml-2">
+                                            <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
+                                            <p className="text-xs text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="px-3 py-6">
                                 <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
                                 <div>

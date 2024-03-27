@@ -22,13 +22,14 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                     <div>
                         <p className='text-md font-semibold'>Liste des photos du vehicule</p>
                         {
-                            carImages === "" ? 'Aucun fichier pour ce vehicule' : null
-                        }
-
-
-
-                        {
-                            isloading ? (
+                            carImages === "" ? (
+                                <div>
+                                    <div className=" flex justify-center">
+                                        <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={250} width={250} alt="" />
+                                    </div>
+                                    <p className='text-sm text-center'>Aucun fichier pour ce vehicule</p>
+                                </div>
+                            ) : isloading ? (
                                 <div className="grid grid-cols-2 gap-1 mt-8">
                                     {
                                         [1, 2, 3, 4].map((item, index) => (
@@ -55,7 +56,6 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                                 </div>
                             )
                         }
-
 
                     </div>
                     {

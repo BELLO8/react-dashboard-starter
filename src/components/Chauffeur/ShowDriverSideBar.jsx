@@ -20,7 +20,8 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                 <div className='bg-white w-[380px] px-8'>
-                    <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${data?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-28 h-28 border-2 mx-auto mt-5 flex items-center justify-center">
+                    <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${data?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} 
+                    className="bg-gray-200 rounded-full w-28 h-28 border-2 mx-auto mt-5 flex items-center justify-center">
 
                     </div>
                     <div className='flex justify-center'>

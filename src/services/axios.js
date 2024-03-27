@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 import { BASE_URL } from "../Utils/constant";
 
 const clientAxios = axios.create({
@@ -15,6 +16,24 @@ clientAxios.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
+  }
+);
+
+clientAxios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    console.log(error);
+    if (error.code === "ERR_NETWORK") {
+      toast.error("Problème de connexion.\nVerifier l'adresse du serveur");
+    } else if (error.response.status === 401) {
+      toast.error("Vous n'êtes pas authentifié");
+      localStorage.removeItem("userProfil");
+      localStorage.removeItem("accessToken");
+      window.location.replace("#/login");
+    }
+    return Promise.reject(error);
   }
 );
 

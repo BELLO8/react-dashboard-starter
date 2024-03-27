@@ -15,6 +15,7 @@ import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
 import { getCategory } from "../../redux/store/categoryCar";
 import { getAllPartnerCar, getAllPartnerDriver, partnerInfo } from "../../redux/store/partner";
+import { deleteCar } from "../../services/CarService";
 import { associateDriver, deleteDriver } from "../../services/Driver";
 import { disablePartner } from "../../services/PartenaireService";
 
@@ -115,7 +116,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                      : partner.nom + " " + partner.prenoms
+                      : partner?.nom + " " + partner?.prenoms
                   }</p>
               </div>
 
@@ -124,7 +125,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                      : partner.email
+                      : partner?.email
                   }
                 </p>
               </div>
@@ -133,7 +134,7 @@ const PartenaireDetail = () => {
                 <p className="text-sm font-semibold">Contact</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">{
                   loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                    : partner.numero
+                    : partner?.numero
                 }</p>
               </div>
 
@@ -142,7 +143,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                      : partner.typePartenaire ?? 'Particulier'
+                      : partner?.typePartenaire ?? 'Particulier'
                   }
 
                 </p>
@@ -152,7 +153,7 @@ const PartenaireDetail = () => {
                 <p className="text-xs text-gray-600 font-medium mt-1">
                   {
                     loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                      : partner.enabled ? 'compte actif' : 'compte bloqué'
+                      : partner?.enabled ? 'compte actif' : 'compte bloqué'
                   }
 
                 </p>
@@ -161,7 +162,7 @@ const PartenaireDetail = () => {
                 loadingInfoPartner ? null :
                   (
                     <div className="absolute bottom-0">
-                      <button onClick={handleDisableAccount} className={`btn btn-ghost btn-sm ${!partner.enabled ? 'hover:bg-green-50 text-green-500' : 'hover:bg-red-50 text-red-500'}  flex  font-medium text-sm`}><MinusCircle size={20} />{partner.enabled ? 'Desactiver le compte' : 'Activer le compte'} </button>
+                      <button onClick={handleDisableAccount} className={`btn btn-ghost btn-sm ${!partner?.enabled ? 'hover:bg-green-50 text-green-500' : 'hover:bg-red-50 text-red-500'}  flex  font-medium text-sm`}><MinusCircle size={20} />{partner?.enabled ? 'Desactiver le compte' : 'Activer le compte'} </button>
                     </div>
                   )
               }
@@ -191,7 +192,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                    : partner.nombreDriver ?? 0
+                    : partner?.nombreDriver ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Chauffeurs</p>
@@ -201,7 +202,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                    : partner.nombreVehicules ?? 0
+                    : partner?.nombreVehicules ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Vehicule</p>
@@ -211,7 +212,7 @@ const PartenaireDetail = () => {
               <p className=" text-2xl font-semibold">
                 {
                   loadingInfoPartner ? <Skeleton animation='wave' variant='text' width={80} />
-                    : partner.nombreCourse ?? 0
+                    : partner?.nombreCourse ?? 0
                 }
               </p>
               <p className="text-sm text-gray-400 font-medium truncate">Commandes</p>
@@ -300,8 +301,11 @@ const PartenaireDetail = () => {
                                     </button>
 
                                     <button
-                                      onClick={() =>
-                                        document.getElementById("disable_client").showModal()
+                                      onClick={() => {
+                                        setVehiculeId(item.id)
+                                        document.getElementById(`delete_car${index}`).showModal()
+                                      }
+
                                       }
                                       className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
                                     >
@@ -328,6 +332,42 @@ const PartenaireDetail = () => {
                                     </p>
                                   </div>
                                 </div>
+                                <dialog id={`delete_car${index}`} className="modal">
+                                  <div className="modal-box rounded-lg">
+                                    <h3 className="font-extrabold text-xl text-red-600 text-center">
+                                      Attention
+                                    </h3>
+                                    <p className="pt-4 text-center text-black font-medium">
+                                      Êtes vous sûr de vouloir effectuer cette action ?
+                                    </p>
+                                    <div className="modal-action">
+                                      <form
+                                        method="dialog"
+                                        className="w-full flex items-center justify-center gap-x-4"
+                                      >
+                                        <button id={`CloseCar${index}`} className="bg-gray-100 text-gray-600 w-fit h-10 px-4 rounded-md flex items-center justify-center font-semibold">
+                                          Annuler
+                                        </button>
+                                        <button onClick={() => {
+                                          deleteCar(vehiculeId).then((res) => {
+                                            dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))
+                                            document.getElementById(`CloseCar${index}`).click()
+                                            toast.success('Chauffeur supprimé ')
+                                          }).catch((err) => {
+                                            console.log(err);
+                                            if (err.response.status === 500) {
+                                              document.getElementById(`CloseCar${index}`).click()
+                                              toast.error(err.response.data)
+
+                                            }
+                                          })
+                                        }} className="bg-red-600 text-white w-fit h-10 px-4 rounded-md flex items-center justify-center font-semibold">
+                                          Supprimer
+                                        </button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </dialog>
                               </div>
                             ))}
                             <Drawer open={openSideCarUpdate} onClose={() => setOpenSideCarUpdate(false)} anchor='right'>

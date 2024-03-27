@@ -82,7 +82,7 @@ export const ListeVehicules = () => {
                                                 <p className="text-xs  text-gray-500 text-center font-medium">
                                                     <div className="flex space-x-1">
                                                         <p>status : </p>
-                                                        <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : 'Rejeté'}</p>
+                                                        <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : item.statusEnregistrement === 'REJETER' ? 'rejeté' : 'en cours'}</p>
                                                     </div>
                                                 </p>
                                             </div>

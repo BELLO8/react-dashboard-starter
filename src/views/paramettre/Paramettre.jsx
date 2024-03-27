@@ -5,19 +5,21 @@ import { addOrEditParamettre, getParametre } from '../../services/paramettre';
 
 export const Paramettre = () => {
     const [isSubmit, setIsSubmit] = useState(false);
-    const [son, setSon] = useState([]);
+    const [son, setSon] = useState();
     const [param, setParam] = useState();
     const [distance, setDistance] = useState();
     const [frenquence, setFrequence] = useState();
 
     const handleChangeSon = (e) => {
         const selectedFiles = e.target.files;
-        if (son.length <= 0) {
+        if (son !== undefined) {
             const newFiles = Array.from(selectedFiles)
-            setSon(prevFiles => [...prevFiles, ...newFiles])
+            setSon(newFiles)
         } else {
-            toast.error('Uniquement un fichier à uploader')
+            const newFiles = Array.from(selectedFiles)
+            setSon(newFiles)
         }
+        console.log(son);
     }
 
     useEffect(() => {
@@ -39,7 +41,6 @@ export const Paramettre = () => {
             <div className="flex flex-col items-center justify-center my-2 lg:py-0">
                 <div className="bg-white w-[500px] rounded-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="space-y-4 md:space-y-6 sm:p-8">
-
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Distance de localisation
@@ -134,19 +135,18 @@ export const Paramettre = () => {
                         <div>
                             <label className="text-sm font-medium">Ajouter une sonnerie</label>
                             {
-                                son.length !== 0 ? (
-                                    son.map((sonnerie, index) => (
-                                        <div>
-                                            <div key={index} className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
-                                                style={{
-                                                    background: "url('https://pixabay.com/static/img/audio/sfx_thumbnail_7.svg') no-repeat center/cover"
-                                                }}
-                                                onClick={() => document.getElementById('son').click()}
-                                            >
-                                            </div>
-                                            <p className='text-sm'>{sonnerie.name}</p>
+                                son ? (
+                                    <div>
+                                        <div className="text-indigo-600 py-14 border-dashed border-2 bg-gray-200 border-indigo-300 px-3 my-2 w-full rounded-[10px] text-gray-900 shadow-sm "
+                                            style={{
+                                                background: "url('https://pixabay.com/static/img/audio/sfx_thumbnail_7.svg') no-repeat center/cover"
+                                            }}
+                                            onClick={() => document.getElementById('son').click()}
+                                        >
                                         </div>
-                                    ))
+                                        <p className='text-sm'>{son[0]?.name}</p>
+                                    </div>
+
 
                                 ) : param?.son?.id !== null ? (
                                     <div>
@@ -180,7 +180,7 @@ export const Paramettre = () => {
                             type="submit"
                             onClick={() => {
 
-                                addOrEditParamettre({ value: son[0], parametre: 'SON' }).then((res) => {
+                                addOrEditParamettre({ valeur: son[0], parametre: 'SON' }).then((res) => {
                                     console.log(res);
                                     setIsSubmit(false);
                                     toast.success('Configuration appliquée')
