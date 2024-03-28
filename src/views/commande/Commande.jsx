@@ -1,6 +1,6 @@
 import { Drawer, Pagination, Skeleton } from '@mui/material';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
-import { BadgeSwissFranc, Clock, Eye, MapIcon } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { useDispatch, useSelector } from 'react-redux';
@@ -216,7 +216,7 @@ export const Commande = () => {
                             <div className="grid grid-cols-3 my-2 gap-1">
                                 <div class="text-left text-sm  bg-muted">
                                     <div class=" gap-1">
-                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><MapIcon color='white' size={17} /></div>
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
                                             <div className="px-1 py-2 ">
                                                 <p className="text-md font-medium">
                                                     {selectRow?.distance}
@@ -230,7 +230,7 @@ export const Commande = () => {
                                 <div class="text-left text-sm  bg-muted">
                                     <div class=" gap-1">
 
-                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><Clock color='white' size={17} /></div>
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
                                             <div className="px-1 py-2 ">
                                                 <p className="text-md font-medium">
                                                     {selectRow?.duree === "" ? 0 : selectRow?.duree}
@@ -243,7 +243,7 @@ export const Commande = () => {
 
                                 <div class="text-left text-sm">
                                     <div class=" gap-1">
-                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs"><div className='bg-slate-500 p-2 w-8 h-8 rounded-full'><BadgeSwissFranc size={17} color='white' /></div>
+                                        <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
                                             <div className="px-1 py-2 ">
                                                 <p className="text-md font-medium">
                                                     {selectRow?.montant + ' Fcfa'}

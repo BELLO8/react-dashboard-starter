@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getImg } from "../../Utils/Utils";
 import { BASE_URL } from "../../Utils/constant";
 import { LoadingPatner } from "../../components/Partenaire/LoadingPatner";
 import { getAllCustomer } from "../../redux/store/customer";
@@ -24,12 +23,11 @@ export const Client = () => {
     const [idCustomer, setIdCustomer] = useState();
     const customer = useSelector((state) => state.customer.customer);
     const loading = useSelector((state) => state.customer.loading);
+    const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
-        const img = async (id) => {
-            getImg(id)
-        }
         dispatch(getAllCustomer({ page: 0, param: '', size: 10 }))
+
     }, [dispatch])
 
     const openModalCreateEditUser = (user) => {
@@ -46,10 +44,6 @@ export const Client = () => {
         }
     };
 
-    function topFunction() {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    }
     const handleDisableAccount = () => {
         disableAccount(idCustomer).then((res) => {
             if (res.status === 200) {
@@ -60,6 +54,31 @@ export const Client = () => {
 
         })
     }
+
+    const handleScroll = () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        if (scrollY + windowHeight >= documentHeight - 100) {
+            setCurrentPage(currentPage + 1)
+            if (currentPage <= customer.totalPages - 1) {
+                dispatch(getAllCustomer({ page: currentPage, param: '', size: 5 }))
+            } else {
+
+                console.log(currentPage);
+            }
+
+        }
+    };
+
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+
+
+    // }, [dispatch, currentPage]);
 
     return (
         <div className="p-3 pt-7">

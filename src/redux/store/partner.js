@@ -3,6 +3,7 @@ import { getDriver } from "../../services/Driver";
 import {
   getCarByPartner,
   getDriverByPartner,
+  getOrderPartner,
   getPartnerInfo,
   getPartners,
 } from "../../services/PartenaireService";
@@ -45,6 +46,19 @@ export const getAllPartnerDriver = createAsyncThunk(
   }
 );
 
+export const getAllPartnerOrder = createAsyncThunk(
+  "partner/getAllPartnerOrder",
+  async (param) => {
+    const response = await getOrderPartner({
+      id: param.id,
+      page: param.page,
+      param: param.param,
+      size: param.size,
+    });
+    return response.data;
+  }
+);
+
 export const partnerInfo = createAsyncThunk(
   "partner/getPartner",
   async (id) => {
@@ -69,6 +83,8 @@ export const partnerSlice = createSlice({
     cars: [],
     drivers: [],
     driver: [],
+    order: [],
+    loadingOrder: [],
     isloading: true,
     loadingInfo: true,
     loadingCars: true,
@@ -93,6 +109,10 @@ export const partnerSlice = createSlice({
       .addCase(getAllPartnerDriver.fulfilled, (state, action) => {
         state.drivers = action.payload;
         state.loadingDriver = false;
+      })
+      .addCase(getAllPartnerOrder.fulfilled, (state, action) => {
+        state.order = action.payload;
+        state.loadingOrder = false;
       })
       .addCase(driverInfo.fulfilled, (state, action) => {
         state.driver = action.payload;

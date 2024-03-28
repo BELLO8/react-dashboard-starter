@@ -7,6 +7,7 @@ import {
   PARTNER_DRIVER_LIST,
   PARTNER_INFO,
   PARTNER_LIST,
+  PARTNER_ORDER_LIST,
 } from "../Utils/constant";
 import clientAxios from "./axios";
 
@@ -55,5 +56,11 @@ export const addDriver = async (id, ...data) => {
 export const getDriverByPartner = async (params) => {
   return clientAxios.get(
     `${PARTNER_DRIVER_LIST}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
+  );
+};
+
+export const getOrderPartner = async (params) => {
+  return clientAxios.get(
+    `${PARTNER_ORDER_LIST}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
   );
 };

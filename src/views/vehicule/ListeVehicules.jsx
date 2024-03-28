@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShowCarSideBar } from '../../components/ShowCarSideBar';
 import { LoadingCar } from '../../components/categorie/LoadingCar';
-import { files, getCars } from '../../redux/store/car';
+import { document, files, getCars, getDriver } from '../../redux/store/car';
 
 export const ListeVehicules = () => {
     const dispatch = useDispatch();
@@ -61,6 +61,8 @@ export const ListeVehicules = () => {
                                         setOpenSideUpdate(true)
                                         setVehicule({ id: item.id, status: item.statusEnregistrement })
                                         dispatch(files(item.id))
+                                        dispatch(getDriver(item.id))
+                                        dispatch(document(item.id))
                                     }} className='bg-white shadow-sm cursor-pointer border border-dashed rounded-lg relative'>
 
                                         <div className='mx-2 my-4 flex'>

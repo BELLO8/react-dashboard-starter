@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.8:8081/treizetaxi-api";
+export const BASE_URL = "http://192.168.1.5:8081/treizetaxi-api";
 export const API_KEY = "AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc";
 export const LOGIN_ENDPOINT = "/webfree/userback/signin";
 export const DISABLE_USER_ACCOUNT = "/superadmin/userback/desactiver";
@@ -35,7 +35,8 @@ export const DRIVER_ORDER_HISTORY = "/admin/course/recherchercoursesdriver";
 export const DRIVER_PIECES = "/admin/driver/rechercherpieces";
 export const CHANGE_DRIVER = "/superadmin/changerstatusenregistrement";
 export const ADD_DRIVER = "/superadmin/partenairedriver/enregistrer";
-export const PARTNER_ORDER_LIST = "";
+export const PARTNER_ORDER_LIST =
+  "/superadmin/course/recherchercoursespartenaire";
 export const ORDER_LIST = "/superadmin/course/recherchercourses";
 export const ORDER_DETAIL = "";
 export const SEARCH_ORDER = "";
@@ -54,5 +55,7 @@ export const DELETE_USER = "superadmin/userback/supprimer";
 export const USER_LIST = "/superadmin/userback/rechercherusers";
 export const PARAMETTRE = "/superadmin/course/enregistrerparametre";
 export const CAR_LIST = "/superadmin/vehicule/recherchervehicules";
-export const CAR_DOC = "/admin/vehicule/rechercherphotos";
+export const CAR_PHOTO = "/admin/vehicule/rechercherphotos";
 export const CAR_CHANGE_STATUS = "/superadmin/vehicule/modiferstatus";
+export const DRIVER_VEHICULE = "/admin/drivervehicule/rechercherdriverassocier";
+export const CAR_DOC = "/admin/partenairevehicule/rechercherdocsvehicule";

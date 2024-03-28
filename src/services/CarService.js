@@ -3,6 +3,8 @@ import {
   CAR_CHANGE_STATUS,
   CAR_DOC,
   CAR_LIST,
+  CAR_PHOTO,
+  DRIVER_VEHICULE,
   PARTNER_CAR_DELETE,
 } from "../Utils/constant";
 import clientAxios from "./axios";
@@ -20,6 +22,10 @@ export const getAllCars = async (params) => {
 };
 
 export const carFiles = async (id) => {
+  return clientAxios.get(`${CAR_PHOTO}/${id}`);
+};
+
+export const carDocument = async (id) => {
   return clientAxios.get(`${CAR_DOC}/${id}`);
 };
 
@@ -29,4 +35,8 @@ export const changerStatus = async (id, ...data) => {
 
 export const deleteCar = async (id) => {
   return clientAxios.delete(`${PARTNER_CAR_DELETE}/${id}`);
+};
+
+export const getDriverVehicule = async (id) => {
+  return clientAxios.get(`${DRIVER_VEHICULE}/${id}`);
 };

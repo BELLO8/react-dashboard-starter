@@ -26,7 +26,7 @@ clientAxios.interceptors.response.use(
   function (error) {
     console.log(error);
     if (error.code === "ERR_NETWORK") {
-      toast.error("Problème de connexion.\nVerifier l'adresse du serveur");
+      toast.error("Oops! problème de connexion.");
     } else if (error.response.status === 401) {
       toast.error("Vous n'êtes pas authentifié");
       localStorage.removeItem("userProfil");

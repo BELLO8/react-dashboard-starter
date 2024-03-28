@@ -14,7 +14,7 @@ import { LoadingCar } from "../../components/categorie/LoadingCar";
 import { VehiculeForm } from "../../components/categorie/VehiculeForm";
 import { UpdateFormVehicule } from "../../components/categorie/updateFormVehicule";
 import { getCategory } from "../../redux/store/categoryCar";
-import { getAllPartnerCar, getAllPartnerDriver, partnerInfo } from "../../redux/store/partner";
+import { getAllPartnerCar, getAllPartnerDriver, getAllPartnerOrder, partnerInfo } from "../../redux/store/partner";
 import { deleteCar } from "../../services/CarService";
 import { associateDriver, deleteDriver } from "../../services/Driver";
 import { disablePartner } from "../../services/PartenaireService";
@@ -25,7 +25,6 @@ const PartenaireDetail = () => {
   const [openSideUpdate, setOpenSideUpdate] = useState(false)
   const [openSideAddCar, setOpenSideAddCar] = useState(false);
   const [openSideCarUpdate, setOpenSideCarUpdate] = useState(false);
-  const loading = useSelector((state) => state.partner.isloading)
   const [click, setClick] = useState();
   const [loadData, setLoadData] = useState(false);
   const [driverId, setDriverId] = useState();
@@ -36,19 +35,19 @@ const PartenaireDetail = () => {
   const partner = useSelector((state) => state.partner.infoPartner);
   const partnerCars = useSelector((state) => state.partner.cars);
   const partnerDriver = useSelector((state) => state.partner.drivers);
+  const partnerOrder = useSelector((state) => state.partner.order);
 
   const loadingInfoPartner = useSelector((state) => state.partner.loadingInfo)
   const loadingCars = useSelector((state) => state.partner.loadingCars)
   const loadingDriver = useSelector((state) => state.partner.loadingDriver)
-  const loadingDriverInfo = useSelector((state) => state.partner.loadingDriverInfo)
-
+  const loadingOrder = useSelector((state) => state.partner.loadingOrder);
 
   useEffect(() => {
     dispatch(getCategory({ page: 0, param: '', size: 10 }))
     dispatch(partnerInfo(id))
     dispatch(getAllPartnerCar({ id: id, page: 0, param: '', size: 10 }))
     dispatch(getAllPartnerDriver({ id: id, page: 0, param: '', size: 10 }))
-
+    dispatch(getAllPartnerOrder({ id: id, page: 0, param: '', size: 10 }))
   }, [dispatch, id])
 
   const tab = [
@@ -274,7 +273,7 @@ const PartenaireDetail = () => {
                           <div className="py-3 flex justify-center">
                             <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
                           </div>
-                        ) : !loadingCars && partnerCars?.vehicules?.length != 0 ? (
+                        ) : !loadingCars && partnerCars?.vehicules?.length !== 0 ? (
                           <div className="mt-6 grid grid-cols-4 gap-4">
                             {partnerCars?.vehicules?.map((item, index) => (
                               <div className='bg-gray-50 border border-dashed rounded-lg relative'>
@@ -649,30 +648,22 @@ const PartenaireDetail = () => {
                       </div>
                       <div className="flex items-start">
                         <div className="mt-6 grid grid-row-3 gap-2 bg-gray-50 w-80 p-4 h-[500px] overflow-y-scroll rounded-lg">
-                          {[0, 1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+                          {partnerOrder?.coureses?.map((item, index) => (
                             <div className='relative px-4 bg-white border border-dashed border-indigo-800 rounded-lg '>
                               <div className="flex items-start">
                                 <div className="px-2 py-2">
                                   <p className="text-xs font-bold">{
-                                    !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                      : "Mr Dennis Schulist"
+                                    "Mr Dennis Schulist"
                                   }</p>
                                   <p className="text-xs text-gray-400 font-medium">{
-                                    !loadData ? <Skeleton animation='wave' variant='text' width={90} />
-                                      : "+225047845241"
+                                    "+225047845241"
                                   }</p>
                                 </div>
-                                {
-                                  !loadData ?
-                                    <div className="absolute my-2  right-2 bg-slate-100 w-fit h-6 px-2 py-1 rounded-lg">
-                                      <Skeleton animation='wave' variant='text' width={80} />
-                                    </div>
-                                    : <div className="absolute my-2  right-2 bg-orange-100 w-fit h-6 px-2 py-1 rounded-lg">
-                                      <p className="text-xs text-orange-500 font-semibold">
-                                        en cours
-                                      </p>
-                                    </div>
-                                }
+                                <div className="absolute my-2  right-2 bg-orange-100 w-fit h-6 px-2 py-1 rounded-lg">
+                                  <p className="text-xs text-orange-500 font-semibold">
+                                    en cours
+                                  </p>
+                                </div>
 
                               </div>
                               <div className='rounded-lg px-2 my-4 flex'>
@@ -683,14 +674,12 @@ const PartenaireDetail = () => {
                                     <div className="ml-2">
                                       <p className="text-xs font-semibold">
                                         {
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                            : "Kulas Light,Gwenborough"
+                                          "Kulas Light,Gwenborough"
                                         }
                                       </p>
                                       <p className="text-xs text-gray-400">
                                         {
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={100} />
-                                            : "07/03/2024 16:40"
+                                          "07/03/2024 16:40"
                                         }
                                       </p>
                                     </div>
@@ -703,14 +692,12 @@ const PartenaireDetail = () => {
                                     <div className="ml-2">
                                       <p className="text-xs font-semibold">
                                         {
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                            : "Kulas Light,Gwenborough"
+                                          "Kulas Light,Gwenborough"
                                         }
                                       </p>
                                       <p className="text-xs text-gray-400">
                                         {
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={100} />
-                                            : "07/03/2024 16:40"
+                                          "07/03/2024 16:40"
                                         }
                                       </p>
                                     </div>

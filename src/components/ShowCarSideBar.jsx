@@ -1,4 +1,5 @@
 import { Drawer, Skeleton } from '@mui/material';
+import { Phone } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -14,18 +15,21 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
     const dispatch = useDispatch();
     const carImages = useSelector((state) => state.car.carFiles);
     const isloading = useSelector((state) => state.car.fileLoading);
+    const loading = useSelector((state) => state.car.driverLoading);
+    const drivers = useSelector((state) => state.car.drivers)
+    const documentsCar = useSelector((state) => state.car.carDocuments)
 
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                 <div className='bg-white w-[380px] px-8'>
                     <div>
-                        <p className='text-md font-semibold'>Liste des photos du vehicule</p>
+                        <p className='text-sm font-semibold'>Liste des photos du vehicule</p>
                         {
-                            carImages === "" ? (
+                            carImages === "" || drivers === "" || documentsCar === "" ? (
                                 <div>
                                     <div className=" flex justify-center">
-                                        <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={250} width={250} alt="" />
+                                        <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={200} width={200} alt="" />
                                     </div>
                                     <p className='text-sm text-center'>Aucun fichier pour ce vehicule</p>
                                 </div>
@@ -56,6 +60,71 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                                 </div>
                             )
                         }
+                        <p className='mt-12 text-sm font-semibold'>Liste des documents du vehicule</p>
+
+                        <div className="grid grid-cols-2 gap-x-1">
+                            {
+                                documentsCar?.map((item, index) => (
+                                    <PhotoProvider>
+                                        <PhotoView key={index} src={`${BASE_URL}/webfree/partenaire/fichier/${item.id}`}>
+                                            <div>
+                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}
+                                                    className="bg-gray-200 rounded-lg  h-32 border-2 mx-auto mt-5 flex items-center justify-center">
+                                                    <p className='text-xs bg-white font-bold p-1 rounded'>{item.typeFichier === 'CARTE_GRISE' ? 'CARTE GRISE' : item.typeFichier === 'ASSURANCE' ? 'ASSURANCE' : ''}</p>
+                                                </div>
+                                            </div>
+                                        </PhotoView>
+                                    </PhotoProvider>
+                                ))
+                            }
+                        </div>
+
+                        <p className='mt-12 text-sm font-semibold'>Liste des chauffeurs associé à ce vehicule</p>
+
+                        {!loading && drivers !== "" ? (
+                            <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-6">
+                                {drivers?.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="relative h-fit rounded-lg border-2 border-dashed bg-white p-4 pb-6"
+                                    >
+                                        <div className="dropdown dropdown-end absolute right-2 top-2">
+                                            <div
+                                                role="button"
+                                                className=" rounded-full flex items-center justify-center bg-gray-100"
+                                            >
+                                                <p className="px-2 text-xs text-gray-500 text-center font-semibold">
+                                                    {
+                                                        item.point + ' points'
+                                                    }
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                        <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
+                                        </div>
+                                        <h1 className="text-sm text-indigo-900 text-center font-bold mt-2 mb-1 truncate">
+                                            {
+                                                item.nom + ' ' + item.prenoms
+                                            }
+                                        </h1>
+                                        <p className="text-xs  text-gray-500 text-center font-medium">
+                                            <div className="flex justify-center space-x-1">
+                                                <Phone size={12} />
+                                                <p>{item.numero}</p>
+                                            </div>
+                                        </p>
+                                    </div>
+                                ))}
+
+                            </div>
+                        ) : (
+                            <p className='mt-8 mx-auto text-sm'>Aucun chauffeur associé</p>
+                        )}
+
+
+
 
                     </div>
                     {
