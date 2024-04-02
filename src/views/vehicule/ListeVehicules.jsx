@@ -55,7 +55,7 @@ export const ListeVehicules = () => {
                                 <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
                             </div>
                         ) : !loading && vehicules?.vehicules !== 0 ? (
-                            <div className="mt-6 grid grid-cols-4 gap-4">
+                            <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                                 {vehicules?.vehicules?.map((item, index) => (
                                     <div onClick={() => {
                                         setOpenSideUpdate(true)
@@ -68,7 +68,6 @@ export const ListeVehicules = () => {
                                         <div className='mx-2 my-4 flex'>
                                             <div style={{ backgroundImage: `url("https://www.hyundai.com/content/dam/hyundai/in/en/data/find-a-car/i20/Highlights/pc/i20_Modelpc.png")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded w-32 h-14 border-2 mb-2">
                                             </div>
-
                                             <div className='mx-2 space-y-1'>
                                                 <p className='text-sm font-semibold truncate'>
                                                     {

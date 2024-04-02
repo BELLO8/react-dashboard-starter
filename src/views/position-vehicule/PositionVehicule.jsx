@@ -63,7 +63,6 @@ export const PositionVehicule = () => {
                 <MapHandle place={selectedPlace} />
             </APIProvider>
             <ShowDriverSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />
-
         </div>
     )
 }

@@ -151,6 +151,7 @@ export const Commande = () => {
                 <div className='absolute inset-y-0 right-0'>
 
                 </div>
+
                 <div className='my-8 bg-white rounded-lg p-3 border border-[#E2E8F0] '>
                     <div className='flex'>
                         <input type="text" placeholder="Recherche..." className="input input-bordered px-3 my-2 w-80 h-10 text-gray-900 placeholder:text-gray-400"
@@ -182,10 +183,6 @@ export const Commande = () => {
                                 <span class="loading loading-spinner loading-lg"></span>
                             }
                             noDataComponent='Aucune données'
-                            customStyles={{
-                                rows: {
-                                },
-                            }}
                         />
 
                         {
@@ -257,7 +254,26 @@ export const Commande = () => {
                             <div class="px-3 text-xs font-medium my-2">
                                 <div className='border-b-[1px]  pb-3'>
                                     <p className='mt-6 font-semibold'>Trajet de la course</p>
-                                    <div className="flex items-center my-2">
+                                    <div className='flex justify-start'>
+                                        <ul className="timeline timeline-vertical">
+                                            <li>
+                                                <div className="timeline-start timeline-box">{selectRow?.lieuDepart}</div>
+                                                <div className="timeline-middle">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                                                </div>
+                                                <hr className="bg-primary" />
+                                            </li>
+                                            <li className=''>
+                                                <hr className="bg-primary" />
+                                                <div className="timeline-middle">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                                                </div>
+                                                <div className="timeline-end timeline-box">{selectRow?.lieuDestination}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    {/* <div className="flex items-center my-2">
                                         <div className="rounded px-1 py-1 bg-indigo-100">
                                             Depart
                                         </div>
@@ -275,7 +291,7 @@ export const Commande = () => {
                                             <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
                                             <p className="text-xs text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className="px-3 py-6">

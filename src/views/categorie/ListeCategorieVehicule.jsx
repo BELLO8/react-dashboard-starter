@@ -68,7 +68,7 @@ export const ListeCategorieVehicule = () => {
                             <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" srcset="" />
                         </div>
                     ) : !loading && carCategory?.categoriesVehicule.length !== 0 ? (
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
                             {
                                 carCategory?.categoriesVehicule?.map((item, index) => (
                                     <div key={index} className='bg-gray-50 border border-dashed rounded-lg'>
@@ -80,7 +80,7 @@ export const ListeCategorieVehicule = () => {
                                         }}
                                             className='cursor-pointer mx-2 my-4  rounded-lg pr-8 flex'>
 
-                                            <div className="w-96 rounded bg-orange-300" >
+                                            <div className="md:w-96 rounded bg-orange-300" >
 
                                             </div>
 

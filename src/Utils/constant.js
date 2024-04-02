@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.5:8081/treizetaxi-api";
+export const BASE_URL = "http://192.168.1.12:8081/treizetaxi-api";
 export const API_KEY = "AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc";
 export const LOGIN_ENDPOINT = "/webfree/userback/signin";
 export const DISABLE_USER_ACCOUNT = "/superadmin/userback/desactiver";
@@ -59,3 +59,5 @@ export const CAR_PHOTO = "/admin/vehicule/rechercherphotos";
 export const CAR_CHANGE_STATUS = "/superadmin/vehicule/modiferstatus";
 export const DRIVER_VEHICULE = "/admin/drivervehicule/rechercherdriverassocier";
 export const CAR_DOC = "/admin/partenairevehicule/rechercherdocsvehicule";
+export const PARTNER_CHANGE_STATUS = "/superadmin/partenaire/modifierstatus";
+export const PARTNER_DOC = "/superadmin/partenaire/rechercherpieces";

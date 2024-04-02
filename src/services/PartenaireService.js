@@ -3,7 +3,9 @@ import {
   ADD_PARTNER,
   DISABLE_PARTNER_ACCOUNT,
   PARTNER_CAR_LIST,
+  PARTNER_CHANGE_STATUS,
   PARTNER_DELETE,
+  PARTNER_DOC,
   PARTNER_DRIVER_LIST,
   PARTNER_INFO,
   PARTNER_LIST,
@@ -63,4 +65,12 @@ export const getOrderPartner = async (params) => {
   return clientAxios.get(
     `${PARTNER_ORDER_LIST}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
   );
+};
+
+export const changerStatusPartner = async (id, ...data) => {
+  return clientAxios.post(`${PARTNER_CHANGE_STATUS}/${id}`, ...data);
+};
+
+export const partnerDocument = async (id) => {
+  return clientAxios.get(`${PARTNER_DOC}/${id}`);
 };

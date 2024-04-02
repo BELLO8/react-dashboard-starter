@@ -75,7 +75,7 @@ export const SideBarMenu = () => {
     ];
 
     return (
-        <div className="sticky top-0 left-0 bg-[#01192e] w-[280px] h-screen relative px-4 pt-5">
+        <div className="sticky top-0 left-0 bg-[#01192e] w-[280px] h-screen relative px-4 pt-5 z-50">
             <div className="flex gap-x-3">
                 <img
                     className="rounded-md"

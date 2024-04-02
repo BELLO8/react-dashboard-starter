@@ -6,6 +6,7 @@ import {
   getOrderPartner,
   getPartnerInfo,
   getPartners,
+  partnerDocument,
 } from "../../services/PartenaireService";
 
 export const getAllPartner = createAsyncThunk(
@@ -75,16 +76,23 @@ export const driverInfo = createAsyncThunk(
   }
 );
 
+export const document = createAsyncThunk("car/document", async (id) => {
+  const response = await partnerDocument(id);
+  return response.data;
+});
+
 export const partnerSlice = createSlice({
   name: "partner",
   initialState: {
     partner: [],
     infoPartner: {},
+    document: [],
     cars: [],
     drivers: [],
     driver: [],
     order: [],
-    loadingOrder: [],
+    loadDoc: true,
+    loadingOrder: true,
     isloading: true,
     loadingInfo: true,
     loadingCars: true,
@@ -117,6 +125,10 @@ export const partnerSlice = createSlice({
       .addCase(driverInfo.fulfilled, (state, action) => {
         state.driver = action.payload;
         state.loadingDriverInfo = false;
+      })
+      .addCase(document.fulfilled, (state, action) => {
+        state.document = action.payload;
+        state.loadDoc = false;
       });
   },
 });

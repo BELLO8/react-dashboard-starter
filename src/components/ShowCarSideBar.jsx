@@ -26,7 +26,7 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                     <div>
                         <p className='text-sm font-semibold'>Liste des photos du vehicule</p>
                         {
-                            carImages === "" || drivers === "" || documentsCar === "" ? (
+                            carImages === "" || drivers === "" ? (
                                 <div>
                                     <div className=" flex justify-center">
                                         <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={200} width={200} alt="" />
@@ -61,23 +61,27 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                             )
                         }
                         <p className='mt-12 text-sm font-semibold'>Liste des documents du vehicule</p>
+                        {
+                            documentsCar !== "" ? (
+                                <div className="grid grid-cols-2 gap-x-1">
+                                    {
+                                        documentsCar?.map((item, index) => (
+                                            <PhotoProvider>
+                                                <PhotoView key={index} src={`${BASE_URL}/webfree/partenaire/fichier/${item.id}`}>
+                                                    <div>
+                                                        <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}
+                                                            className="bg-gray-200 rounded-lg  h-32 border-2 mx-auto mt-5 flex items-center justify-center">
+                                                            <p className='text-xs bg-white font-bold p-1 rounded'>{item.typeFichier === 'CARTE_GRISE' ? 'CARTE GRISE' : item.typeFichier === 'ASSURANCE' ? 'ASSURANCE' : ''}</p>
+                                                        </div>
+                                                    </div>
+                                                </PhotoView>
+                                            </PhotoProvider>
+                                        ))
+                                    }
+                                </div>
+                            ) : (<p className='text-sm mt-8'>Aucun document</p>)
+                        }
 
-                        <div className="grid grid-cols-2 gap-x-1">
-                            {
-                                documentsCar?.map((item, index) => (
-                                    <PhotoProvider>
-                                        <PhotoView key={index} src={`${BASE_URL}/webfree/partenaire/fichier/${item.id}`}>
-                                            <div>
-                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}
-                                                    className="bg-gray-200 rounded-lg  h-32 border-2 mx-auto mt-5 flex items-center justify-center">
-                                                    <p className='text-xs bg-white font-bold p-1 rounded'>{item.typeFichier === 'CARTE_GRISE' ? 'CARTE GRISE' : item.typeFichier === 'ASSURANCE' ? 'ASSURANCE' : ''}</p>
-                                                </div>
-                                            </div>
-                                        </PhotoView>
-                                    </PhotoProvider>
-                                ))
-                            }
-                        </div>
 
                         <p className='mt-12 text-sm font-semibold'>Liste des chauffeurs associé à ce vehicule</p>
 

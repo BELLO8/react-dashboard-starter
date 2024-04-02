@@ -14,16 +14,18 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
     const [raison, setRaison] = useState();
     const dispatch = useDispatch();
     const pieces = useSelector((state) => state.driver.listePieces);
+    const loadingDoc = useSelector((state) => state.driver.loadingPiece);
 
 
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
                 <div className='bg-white w-[380px] px-8'>
-                    <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${data?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} 
-                    className="bg-gray-200 rounded-full w-28 h-28 border-2 mx-auto mt-5 flex items-center justify-center">
+                    <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${data?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}
+                        className="bg-gray-200 rounded-full w-28 h-28 border-2 mx-auto mt-5 flex items-center justify-center">
 
                     </div>
+
                     <div className='flex justify-center'>
                         <div className=' my-2 bg-blue-600 w-fit text-white rounded-full p-1'>
                             <p className='text-xs font-medium'>{data?.email}</p>
@@ -70,7 +72,13 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
                     </div>
                     <div>
                         <p className='text-sm '>Liste des pieces</p>
-
+                        {
+                            pieces.length === 0 && !loadingDoc ? (
+                                <div className="py-3 flex justify-center">
+                                    <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
+                                </div>
+                            ) : null
+                        }
                         <div className="flex gap-x-1">
                             {
                                 pieces?.map((item, index) => (
@@ -88,6 +96,42 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
                                 ))
                             }
                         </div>
+
+
+                        {
+                            data?.Vehicule !== null ? (
+                                <div>
+                                    <p className='text-sm mt-3 '>Info sur le vehicule</p>
+                                    <div className='my-3 bg-gray-50 shadow-sm border border-dashed rounded-lg relative'>
+                                        <div className='mx-2 my-4 flex'>
+                                            <div style={{ backgroundImage: `url("https://www.hyundai.com/content/dam/hyundai/in/en/data/find-a-car/i20/Highlights/pc/i20_Modelpc.png")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-50 rounded w-32 h-14 mb-2">
+                                            </div>
+
+                                            <div className='mx-2 space-y-1'>
+                                                <p className='text-sm font-semibold truncate'>
+                                                    {
+                                                        (data?.Vehicule?.marque ?? '') + ' ' + (data?.Vyehicule?.modele ?? '')
+                                                    }
+                                                </p>
+                                                <p className='text-xs text-gray-400 truncate'>
+                                                    {
+                                                        data?.Vehicule?.numeroMatriculation ?? ''
+                                                    }
+                                                </p>
+                                                <p className='text-xs font-semibold  truncate'>
+                                                    couleur : {
+                                                        data?.Vehicule?.couleur ?? ''
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            ) : null
+                        }
+
                     </div>
                     {
                         data?.statusEnregistrement === 'TERMINE' || data?.statusEnregistrement === 'REJETER' ? null : (

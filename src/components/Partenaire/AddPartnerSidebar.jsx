@@ -79,14 +79,6 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
 
     }
 
-    // const submitCar = (data) => {
-    //     reset();
-    //     setOpen(false)
-    //     setVehicule(prev => [...prev, data])
-    //     console.log(vehicule);
-    //     toast.success('Categorie de vehicule enregistrer')
-    // }
-
     useEffect(() => {
         reset()
     }, [reset])

@@ -1,5 +1,5 @@
-import { Drawer, Pagination } from "@mui/material";
-import { ArrowUpRight, MoreHorizontal, UserRound } from "lucide-react";
+import { Pagination } from "@mui/material";
+import { ArrowUpRight, MoreHorizontal } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router';
 import { BASE_URL } from "../../Utils/constant";
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { LoadingPatner } from "../../components/Partenaire/LoadingPatner";
+import { ShowPartnerSideBar } from "../../components/Partenaire/ShowPartnerSideBar";
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
-import { getAllPartner } from "../../redux/store/partner";
+import { document, getAllPartner } from "../../redux/store/partner";
 import { disablePartner } from "../../services/PartenaireService";
 
 export const Partenaire = () => {
@@ -99,11 +100,11 @@ export const Partenaire = () => {
                                         <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
                                     </div>
                                 ) : !loading && partner.partenaires?.length !== 0 ? (
-                                    <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
+                                    <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                                         {partner.partenaires?.map((item, index) => (
                                             <div
                                                 key={index}
-                                                className="relative w-48 lg:w-56 h-fit rounded-lg shadow bg-white p-4 pb-6"
+                                                className="relative h-fit rounded-lg shadow bg-white p-4 pb-6"
                                             >
                                                 <div className="dropdown dropdown-end absolute right-2 top-2">
                                                     <div
@@ -143,16 +144,37 @@ export const Partenaire = () => {
                                                 <p className="text-sm text-gray-500 text-center font-medium">
                                                     {item.numero}
                                                 </p>
-                                                <p className="text-xs text-gray-500 text-center font-medium">
-                                                    {item.enabled ? 'Compte actif' : 'Compte inactif'}
+                                                <p className="text-xs  text-gray-500 text-center font-medium">
+                                                    <div className="flex justify-center space-x-1">
+                                                        <p>Status du compte : </p>
+                                                        <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : 'Rejeté'}</p>
+                                                    </div>
                                                 </p>
 
-                                                <button
-                                                    className="bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
-                                                    onClick={() => openClientDetail(item.id)}
-                                                >
-                                                    Détail partenaire <ArrowUpRight size={17} />
-                                                </button>
+                                                {
+                                                    item.statusEnregistrement === 'EN_COURS' ? (
+                                                        <button
+                                                            className="btn btn-sm bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
+                                                            onClick={() => {
+                                                                dispatch(document(item.id))
+                                                                setOpenSidebarModal(true)
+                                                                setRowData(item)
+                                                                console.log(item);
+
+                                                            }}
+                                                        >
+                                                            Validation du compte
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className="btn btn-sm bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
+                                                            onClick={() => openClientDetail(item.id)}
+                                                        >
+                                                            Détail partenaire <ArrowUpRight size={17} />
+                                                        </button>
+                                                    )
+                                                }
+
                                             </div>
                                         ))}
 
@@ -174,6 +196,7 @@ export const Partenaire = () => {
 
                         </div>
                         <UpdatePartnerSidebar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />
+                        <ShowPartnerSideBar openSide={openSidebarModal} setOpenSide={setOpenSidebarModal} data={rowData} />
 
                         {/* MODAL DESACTIVATION COMPTE UTILISATEUR */}
                         <dialog id="disable_client" className="modal">
@@ -200,89 +223,6 @@ export const Partenaire = () => {
                             </div>
                         </dialog>
 
-                        {/* SIDEBAR MODAL */}
-                        <Drawer
-                            anchor={"right"}
-                            open={openSidebarModal}
-                            onClose={() => setOpenSidebarModal((prev) => !prev)}
-                        >
-                            <div className="w-[450px] h-full p-4 relative">
-                                <p className="text-lg text-black font-extrabold">
-                                    {!userInfo.nom ? "Ajouter un nouveau client" : "Modifier ce client"}
-                                </p>
-                                <div className="mt-5">
-                                    <div className="flex flex-col items-start gap-y-3">
-                                        <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-                                            <UserRound />
-                                        </div>
-                                        <button className="bg-gray-100 text-gray-600 h-8 w-fit px-3 rounded-lg text-sm font-semibold">
-                                            Choisir une photo
-                                        </button>
-                                    </div>
-                                    <div className="flex items-center gap-x-3 mt-4">
-                                        <label className="form-control w-full">
-                                            <div className="label">
-                                                <span className="label-text text-xs font-medium -mb-1">
-                                                    Nom
-                                                </span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="Nom client"
-                                                className="input input-bordered w-full h-10 font-medium"
-                                            />
-                                        </label>
-                                        <label className="form-control w-full">
-                                            <div className="label">
-                                                <span className="label-text text-xs font-medium -mb-1">
-                                                    Prénoms
-                                                </span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="Prénoms client"
-                                                className="input input-bordered w-full h-10 font-medium"
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center gap-x-3 mt-4">
-                                        <label className="form-control w-full">
-                                            <div className="label">
-                                                <span className="label-text text-xs font-medium -mb-1">
-                                                    Téléphone
-                                                </span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="0700000000"
-                                                className="input input-bordered w-full h-10 font-medium"
-                                            />
-                                        </label>
-                                        <label className="form-control w-full">
-                                            <div className="label">
-                                                <span className="label-text text-xs font-medium -mb-1">
-                                                    Email
-                                                </span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="email@xyz.com"
-                                                className="input input-bordered w-full h-10 font-medium"
-                                            />
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div className="w-full absolute bottom-5 left-0 px-4 flex items-center gap-x-3 mt-4">
-                                    <button className="w-full h-10 bg-gray-200 text-sm text-gray-600 font-semibold flex items-center justify-center rounded-lg">
-                                        Annuler
-                                    </button>
-                                    <button className="w-full h-10 bg-orange-600 text-sm text-white font-semibold flex items-center justify-center rounded-lg">
-                                        Enregistrer
-                                    </button>
-                                </div>
-                            </div>
-                        </Drawer>
                     </div>
                 </div>
 
