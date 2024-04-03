@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.12:8081/treizetaxi-api";
+export const BASE_URL = "http://192.168.1.7:8081/treizetaxi-api";
 export const API_KEY = "AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc";
 export const LOGIN_ENDPOINT = "/webfree/userback/signin";
 export const DISABLE_USER_ACCOUNT = "/superadmin/userback/desactiver";

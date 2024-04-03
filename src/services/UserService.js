@@ -1,13 +1,13 @@
 import {
   ADD_USER,
-  DISABLE_USER_ACCOUNT,
+  DELETE_USER,
   UPDATE_USER_CREDENTIALS,
   USER_LIST,
 } from "../Utils/constant";
 import clientAxios from "./axios";
 
 export const disableUser = async (id) => {
-  return clientAxios.delete(`${DISABLE_USER_ACCOUNT}/${id}`);
+  return clientAxios.delete(`${DELETE_USER}/${id}`);
 };
 
 export const addUser = async (...data) => {

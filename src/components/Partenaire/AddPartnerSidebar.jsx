@@ -86,7 +86,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
-                <div className='bg-white w-[480px] px-8 mt-4'>
+                <div className='bg-white [320px]:w-[480px] lg:w-[480px] px-8 mt-4'>
                     <h1 className='text-lg font-semibold'>Création d'un partenaire</h1>
                     <div>
                         {errors.assurance && <span className="text-sm text-rose-600">Renseignez tout les champs</span>}
@@ -230,7 +230,7 @@ export const AddPartnerSidebar = ({ setOpenSide, openSide }) => {
                             </div>
                             <input type="file" accept="image/jpeg, image/png " hidden id='recto' onChange={handleChangeRecto} />
                             <input type="file" accept="image/jpeg, image/png " hidden id='verso' onChange={handleChangeVerso} />
-                            
+
                             {/* <div className='bg-gray-100  mt-3 rounded p-2'> <p className='text-xs font-medium'>Liste des vehicules</p> </div> */}
                             {/* {
                                 vehicule.map((item, index) => (

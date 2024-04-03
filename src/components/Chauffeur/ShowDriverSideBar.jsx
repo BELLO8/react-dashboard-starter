@@ -118,9 +118,29 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
                                                         data?.Vehicule?.numeroMatriculation ?? ''
                                                     }
                                                 </p>
+                                                {/* {data?.Vehicule ? (
+                                                    <div>
+                                                        <span
+                                                            className="color-box"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    data.Vehicule &&
+                                                                        data.Vehicule
+                                                                        ? data.Vehicule.couleur
+                                                                        : "",
+                                                            }}
+                                                        ></span>
+                                                    </div>
+                                                ) : (
+                                                    <div>indéfinie</div>
+                                                )} */}
+
                                                 <p className='text-xs font-semibold  truncate'>
                                                     couleur : {
-                                                        data?.Vehicule?.couleur ?? ''
+                                                        <div className={`w-10 h-10 bg-[${data?.Vehicule?.couleur}] `}>
+                                                        </div>
+
+                                                        // data?.Vehicule?.couleur ?? ''
                                                     }
                                                 </p>
                                             </div>

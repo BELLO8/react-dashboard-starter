@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserProfil, isLoggedIn } from "../../../Utils/Utils";
+import logo from "../../../assets/images/logo/logo.png";
 import { LoginForm } from "../../../components/Auth/LoginForm";
 
 export const Login = () => {
@@ -15,20 +16,37 @@ export const Login = () => {
   }, [user, navigate])
 
   return (
-    <div className="isolate bg-white px-6 ">
-      <div
-        className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
-        aria-hidden="true"
-      >
-        <div
-          className="relative left-1/2 -z-10 aspect-[1155/678] w-[6.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[112.1875rem]"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        />
+
+    <div
+      class="container relative  min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 "
+    >
+      <div style={{ backgroundImage: `url("https://cdn.pixabay.com/photo/2022/11/24/15/18/car-7614510_640.jpg")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="relative hidden h-full flex-col bg-zinc-900 p-10 text-white lg:flex dark:border-r">
       </div>
-      <LoginForm />
+      <div
+        class="p-8 mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[550px]"
+      >
+        <div className="flex gap-x-2 ">
+          <img
+            className="rounded-md"
+            src={logo}
+            height={35}
+            width={35}
+            alt=""
+          />
+          <p className="my-auto font-bold text-xl">Treiize Taxi</p>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <h1 class="text-2xl font-semibold tracking-tight">Connexion au BackOffice</h1>
+          <p class="text-sm text-muted-foreground">
+            Saisissez vos identifiants pour vous connecter.
+          </p>
+        </div>
+        <div class="grid gap-6">
+          <LoginForm />
+        </div>
+
+      </div>
     </div>
+
   );
 };

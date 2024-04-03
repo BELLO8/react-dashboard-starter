@@ -231,8 +231,8 @@ export const ChauffeurCommande = () => {
                 </div>
                 <div className="w-4/5 px-3 relative mt-2">
                     <h1 className='font-medium mt-3 text-gray-400 text-lg '>Chauffeur</h1>
-                    <div className='mt-2 grid grid-cols-3 gap-2'>
-                        <div className="flex bg-white w-full p-4 rounded-lg shadow">
+                    <div className='mt-2 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-2'>
+                        {/* <div className="flex bg-white w-full p-4 rounded-lg shadow">
                             <div>
                                 {
                                     !loading ? <Skeleton animation='wave' variant='circular' width={60} height={60} />
@@ -261,20 +261,38 @@ export const ChauffeurCommande = () => {
                                     }
                                 </p>
                             </div>
+                        </div> */}
+                        <div className="p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
+                            <div className="flex">
+                                <p className=' text-2xl font-semibold'>{
+                                    !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                                        : InfoDriver?.solde
+                                }{"  "}</p>
+                                Fcfa
+                            </div>
+                            <p className="text-sm text-gray-400 font-medium truncate">Solde</p>
                         </div>
                         <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
-                            <p className=" text-2xl font-semibold">
-                                {
+                            <div className="flex">
+                                <p className=' text-2xl font-semibold'>{
                                     !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                                        : "157 0000 Fr"
-                                }
-                            </p>
-                            <p className="text-sm text-gray-400 font-medium truncate">Revenue</p>
+                                        : InfoDriver?.revenu ?? 0
+                                }{"  "}</p>
+                                Fcfa
+                            </div>
+                            <p className="text-sm text-gray-400 font-medium truncate">Revenu</p>
                         </div>
                         <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
                             <p className=" text-2xl font-semibold">{
                                 !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                                    : ordersDriver?.courses.length
+                                    : InfoDriver?.point ?? 0
+                            }</p>
+                            <p className="text-sm text-gray-400 font-medium truncate">Points</p>
+                        </div>
+                        <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
+                            <p className=" text-2xl font-semibold">{
+                                !loading ? <Skeleton animation='wave' variant='text' width={130} />
+                                    : ordersDriver?.courses?.length
                             }</p>
                             <p className="text-sm text-gray-400 font-medium truncate">Courses effectées</p>
                         </div>
@@ -298,7 +316,7 @@ export const ChauffeurCommande = () => {
                                 </p>}
                         />
                         <div className='my-3 flex justify-end'>
-                            <Pagination count={8} variant="outlined" color='primary' shape="rounded" />
+                            <Pagination count={ordersDriver?.totalPages} variant="outlined" color='primary' shape="rounded" />
                         </div>
                     </div>
                 </div>

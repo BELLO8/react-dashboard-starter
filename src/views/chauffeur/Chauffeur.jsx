@@ -1,11 +1,11 @@
 import { Drawer, Pagination } from "@mui/material";
-import { ArrowUpRight, Phone, UserRound } from "lucide-react";
+import { ArrowUpRight, Menu, Phone, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../Utils/constant";
 import { LoadingDriver } from "../../components/Chauffeur/LoadingDriving";
 import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
-import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
+import { MobileMenu } from "../../components/Menu/MobileMenu";
 import { getDriverPieces, getMoreDrivers } from "../../redux/store/driver";
 
 export const Chauffeur = () => {
@@ -36,20 +36,18 @@ export const Chauffeur = () => {
 
     return (
         <div className="p-3 pt-7">
+            <div className="flex gap-x-2 my-3">
+                <button onClick={() => setOpenSide(true)} className='lg:hidden btn btn-sm'><Menu /></button>
+                <h1 className="lg:text-3xl font-extrabold text-black sm:text-lg my-auto">Chauffeurs</h1>
+            </div>
+            <MobileMenu openSide={openSide} setOpenSide={setOpenSide} />
             <div className='relative'>
-                <h1 className="text-3xl font-extrabold text-black">Chauffeurs</h1>
-                <div className='absolute inset-y-0 right-4 top-3'>
-                    {/* <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
-                        Ajouter un chauffeur
-                    </button> */}
-                    <AddPartnerSidebar openSide={openSide} setOpenSide={setOpenSide} />
-                </div>
 
                 <div className='my-3 rounded-lg'>
                     <div>
                         <div className="mt-10">
                             <div className="w-full flex items-end justify-between">
-                                <div className="flex items-end gap-x-3">
+                                <div className="lg:flex [320px]:grid sm:flex md:flex items-end gap-3">
                                     <label className="form-control w-72">
                                         <div className="label">
                                             <span className="label-text text-xs font-medium -mb-1">

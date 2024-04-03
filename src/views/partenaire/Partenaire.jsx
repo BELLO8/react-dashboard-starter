@@ -1,10 +1,11 @@
 import { Pagination } from "@mui/material";
-import { ArrowUpRight, MoreHorizontal } from "lucide-react";
+import { ArrowUpRight, Menu, MoreHorizontal } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router';
 import { BASE_URL } from "../../Utils/constant";
+import { MobileMenu } from "../../components/Menu/MobileMenu";
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { LoadingPatner } from "../../components/Partenaire/LoadingPatner";
 import { ShowPartnerSideBar } from "../../components/Partenaire/ShowPartnerSideBar";
@@ -21,6 +22,7 @@ export const Partenaire = () => {
     const [idPartner, setIdPartner] = useState();
     const [rowData, setRowData] = useState();
     const [openSidebarModal, setOpenSidebarModal] = useState(false);
+    const [showMenu, setShowMenu] = useState(false)
     const [search, setSearch] = useState();
     const [userInfo, setUserInfo] = useState({
         nom: "",
@@ -60,20 +62,25 @@ export const Partenaire = () => {
 
     return (
         <div className="p-3 pt-7">
-            <div className='relative'>
-                <h1 className="text-3xl font-extrabold text-black">Partenaires</h1>
-                <div className='absolute inset-y-0 right-4 top-3'>
+            <div className="flex gap-x-2 my-3">
+                <button onClick={() => setShowMenu(true)} className='lg:hidden btn btn-sm'><Menu /></button>
+                <h1 className="lg:text-3xl font-extrabold text-black sm:text-lg my-auto">Partenaires</h1>
+                <div className='absolute right-4 my-auto'>
                     <button onClick={toggleDrawer(true)} className="btn btn-sm bg-[#04356B] rounded-md text-white text-xs hover:bg-gray-900" >
                         Ajouter un partenaire
                     </button>
                     <AddPartnerSidebar openSide={openSide} setOpenSide={setOpenSide} />
                 </div>
+            </div>
+            <MobileMenu openSide={showMenu} setOpenSide={setShowMenu} />
+            <div className='relative'>
+
 
                 <div className='my-3 rounded-lg'>
                     <div>
                         <div className="mt-10">
                             <div className="w-full flex items-end justify-between">
-                                <div className="flex items-end gap-x-3">
+                                <div className="lg:flex [320px]:grid sm:flex md:flex items-end gap-x-3">
                                     <label className="form-control w-80">
                                         <div className="label">
                                             <span className="label-text text-xs font-medium -mb-1">
@@ -132,7 +139,9 @@ export const Partenaire = () => {
                                                             }
                                                             className="bg-white hover:bg-red-600 text-black hover:text-white font-semibold h-9 w-full flex items-center justify-start rounded-lg px-3"
                                                         >
-                                                            Désactiver
+                                                            {
+                                                                item.enabled ? 'Désactiver' : 'Activer'
+                                                            }
                                                         </button>
                                                     </ul>
                                                 </div>
@@ -159,8 +168,6 @@ export const Partenaire = () => {
                                                                 dispatch(document(item.id))
                                                                 setOpenSidebarModal(true)
                                                                 setRowData(item)
-                                                                console.log(item);
-
                                                             }}
                                                         >
                                                             Validation du compte
@@ -205,7 +212,7 @@ export const Partenaire = () => {
                                     Attention
                                 </h3>
                                 <p className="pt-4 text-center text-black font-medium">
-                                    Cette action désactivera les accès du partenaire à son compte.
+                                    Voulez vous vraiment effectuer cette action ?
                                 </p>
                                 <div className="modal-action">
                                     <form
@@ -216,7 +223,7 @@ export const Partenaire = () => {
                                             Annuler
                                         </button>
                                         <button onClick={handleDisableAccount} className="bg-red-600 text-white w-fit h-10 px-4 rounded-md flex items-center justify-center font-semibold">
-                                            Désactiver
+                                            Confirmer
                                         </button>
                                     </form>
                                 </div>

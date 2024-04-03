@@ -1,11 +1,11 @@
 import { Drawer, Pagination, Skeleton } from "@mui/material";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import { ArrowUpRight, BadgeSwissFranc, ChevronLeft, Clock, MapIcon, MinusCircle, MoreHorizontal, PenLine } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, MinusCircle, MoreHorizontal, PenLine } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from 'react-router-dom';
-import { BASE_URL } from "../../Utils/constant";
+import { API_KEY, BASE_URL } from "../../Utils/constant";
 import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSidebar";
 import { LoadingDriver } from "../../components/Chauffeur/LoadingDriving";
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
@@ -30,6 +30,8 @@ const PartenaireDetail = () => {
   const [driverId, setDriverId] = useState();
   const [vehiculeId, setVehiculeId] = useState();
   const [search, setSearch] = useState();
+  const [selectedRow, setSelectedRow] = useState("");
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const partner = useSelector((state) => state.partner.infoPartner);
@@ -634,12 +636,17 @@ const PartenaireDetail = () => {
                               Statut
                             </span>
                           </div>
-                          <select className="text-xs select select-bordered custom-select w-full h-8 font-semibold">
+                          <select
+                            onChange={(e) => {
+                              dispatch(getAllPartnerOrder({ id: id, page: 0, param: e.target.value, size: 10 }))
+                            }}
+                            className="text-xs select select-bordered custom-select w-full h-8 font-semibold">
                             <option disabled selected>
                               Statut d'activité
                             </option>
-                            <option>Actif</option>
-                            <option>Inactif</option>
+                            <option value='EN_COURS'>En cours</option>
+                            <option value='TERMINE'>Terminé</option>
+                            <option value='ANNULE'>Annullé</option>
                           </select>
                         </label>
                         <button className="w-fit h-8 px-4 rounded-md bg-main text-white text-xs font-medium">
@@ -647,21 +654,24 @@ const PartenaireDetail = () => {
                         </button>
                       </div>
                       <div className="flex items-start">
-                        <div className="mt-6 grid grid-row-3 gap-2 bg-gray-50 w-80 p-4 h-[500px] overflow-y-scroll rounded-lg">
-                          {partnerOrder?.coureses?.map((item, index) => (
-                            <div className='relative px-4 bg-white border border-dashed border-indigo-800 rounded-lg '>
+                        <div className="cursor-pointer mt-6 grid grid-row-3 gap-2 bg-gray-50 w-80 p-4 h-[500px] overflow-y-scroll rounded-lg">
+                          {partnerOrder?.courses?.map((item, index) => (
+                            <div onClick={() => {
+                              setLoadData(!loadData)
+                              setSelectedRow(item)
+                            }} className='max-h-52 relative px-4 bg-white border border-dashed border-indigo-800 rounded-lg '>
                               <div className="flex items-start">
                                 <div className="px-2 py-2">
                                   <p className="text-xs font-bold">{
-                                    "Mr Dennis Schulist"
+                                    item.driver.nom + " " + item.driver.prenoms
                                   }</p>
                                   <p className="text-xs text-gray-400 font-medium">{
-                                    "+225047845241"
+                                    item.driver.numero
                                   }</p>
                                 </div>
-                                <div className="absolute my-2  right-2 bg-orange-100 w-fit h-6 px-2 py-1 rounded-lg">
-                                  <p className="text-xs text-orange-500 font-semibold">
-                                    en cours
+                                <div className={`absolute my-2  ${item.status === 'TERMINE' ? 'bg-green-100 text-green-500' : 'bg-orange-100 text-orange-500'}  right-2  w-fit h-6 px-2 py-1 rounded-lg`}>
+                                  <p className="text-xs  font-semibold">
+                                    {item.status}
                                   </p>
                                 </div>
 
@@ -674,13 +684,11 @@ const PartenaireDetail = () => {
                                     <div className="ml-2">
                                       <p className="text-xs font-semibold">
                                         {
-                                          "Kulas Light,Gwenborough"
+                                          item.lieuDepart
                                         }
                                       </p>
                                       <p className="text-xs text-gray-400">
-                                        {
-                                          "07/03/2024 16:40"
-                                        }
+                                        {item?.dateDebutCourse !== null ? new Date(item?.dateDebutCourse).toLocaleString() : ''}
                                       </p>
                                     </div>
                                   </div>
@@ -692,13 +700,11 @@ const PartenaireDetail = () => {
                                     <div className="ml-2">
                                       <p className="text-xs font-semibold">
                                         {
-                                          "Kulas Light,Gwenborough"
+                                          item.lieuDestination
                                         }
                                       </p>
                                       <p className="text-xs text-gray-400">
-                                        {
-                                          "07/03/2024 16:40"
-                                        }
+                                        {item?.dateFinCourse !== null ? new Date(item?.dateFinCourse).toLocaleString() : ''}
                                       </p>
                                     </div>
                                   </div>
@@ -709,161 +715,129 @@ const PartenaireDetail = () => {
                         </div>
                         <div className="w-[580px] mx-2 my-6 h-[500px] overflow-y-scroll">
                           {
-                            !loadData ? <Skeleton animation='wave' variant='rectangular' width={580} height={200} />
-                              : (<div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
-                                <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
-                                  <Map
-                                    disableDefaultUI={true}
-                                    zoom={14}
-                                    center={defaultProps.center}
-                                    mapId={'<Your custom MapId here>'}>
-                                  </Map>
-                                  <Directions />
-                                </APIProvider>
-
+                            selectedRow === "" ? (
+                              <div className="py-3 flex justify-center">
+                                <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={300} width={200} alt="" />
                               </div>
+                            ) : (
+                              <div>
+                                <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
+                                  <APIProvider apiKey={API_KEY}>
+                                    <Map
+                                      disableDefaultUI={true}
+                                      zoom={14}
+                                      center={defaultProps.center}
+                                      mapId={'<Your custom MapId here>'}>
+                                    </Map>
+                                    <Directions origin={selectedRow?.lieuDepart} destination={selectedRow?.lieuDestination} />
+                                  </APIProvider>
+                                </div>
 
-                              )
-                          }
-
-
-                          <div className="grid grid-cols-3 my-2 gap-1">
-                            <div class="text-left text-sm  bg-muted">
-                              <div class=" gap-1">
-                                <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
-                                <div class="px-3 text-xs font-medium my-2">
-                                  <div>
-                                    <div className="flex items-center ">
-                                      <div className="rounded-full w-3 h-3 bg-indigo-700">
-                                      </div>
-                                      <div className="ml-2">
-                                        <p className="text-sm font-semibold">
-                                          {
-                                            !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                              : "Kulas Light"
-                                          }
-
-                                        </p>
-                                        <p className="text-sm text-gray-400">{
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                            : "07/03/2024 16:40"
-                                        }
-                                        </p>
+                                <div className="grid grid-cols-3 my-2 gap-1">
+                                  <div class="text-left text-sm  bg-muted">
+                                    <div class=" gap-1">
+                                      <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
+                                        <div className="px-1 py-2 ">
+                                          <p className="text-md font-medium">
+                                            {selectedRow?.distance}
+                                          </p>
+                                          <p className="text-sm text-center text-gray-400 font-medium truncate">Distance</p>
+                                        </div>
                                       </div>
                                     </div>
+                                  </div>
+                                  <div class="text-left text-sm  bg-muted">
+                                    <div class=" gap-1">
 
-                                    <div className="w-1 h-4 border-r-2  px-[3px] border-indigo-700"></div>
-                                    <div className="flex items-center ">
-                                      <div className="rounded-full w-3 h-3 bg-indigo-700">
+                                      <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
+                                        <div className="px-1 py-2 ">
+                                          <p className="text-md font-medium">
+                                            {selectedRow?.duree === "" ? 0 : selectedRow?.duree}
+                                          </p>
+                                          <p className="text-sm text-gray-400 font-medium truncate">Durée</p>
+                                        </div>
                                       </div>
-                                      <div className="ml-2">
-                                        <p className="text-sm font-semibold">{
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                            : "Gwenborough"
-                                        }
-                                        </p>
-                                        <p className="text-sm text-gray-400">{
-                                          !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                            : "07/03/2024 18:40"
-                                        }
-                                        </p>
+                                    </div>
+                                  </div>
+
+                                  <div class="text-left text-sm">
+                                    <div class=" gap-1">
+                                      <div class="p-1 rounded-lg bg-gray-100 font-semibold flex gap-1 text-xs">
+                                        <div className="px-1 py-2 ">
+                                          <p className="text-md font-medium">
+                                            {selectedRow?.montant + ' Fcfa'}
+                                          </p>
+                                          <p className="text-sm text-gray-400 font-medium truncate">Prix</p>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="text-left text-sm  bg-muted">
-                              <div class=" gap-1">
-                                <div class="rounded-lg bg-gray-200 p-3 font-semibold flex gap-1 text-xs"><Clock size={17} />Durée de la course</div>
-                                <div class="px-3 text-lg font-semibold my-2">
-                                  {
-                                    !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                      : "1 heure 45 mins"
-                                  }
+                                <div class="px-3 text-xs font-medium my-2">
+                                  <div className='border-b-[1px]  pb-3'>
+                                    <p className='mt-6 font-semibold'>Trajet de la course</p>
+                                    <div className='flex justify-start'>
+                                      <ul className="timeline timeline-vertical">
+                                        <li>
+                                          <div className="timeline-start timeline-box">{selectedRow?.lieuDepart}</div>
+                                          <div className="timeline-middle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                                          </div>
+                                          <hr className="bg-primary" />
+                                        </li>
+                                        <li className=''>
+                                          <hr className="bg-primary" />
+                                          <div className="timeline-middle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                                          </div>
+                                          <div className="timeline-end timeline-box">{selectedRow?.lieuDestination}</div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="px-3 py-6">
+                                  <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
+                                  <div>
+                                    <p className="text-xs font-semibold">Nom et prenoms</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.nom} {selectedRow?.driver?.prenoms}</p>
+                                  </div>
 
+                                  <div className="my-3">
+                                    <p className="text-xs font-semibold">Email</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.email}</p>
+                                  </div>
+
+                                  <div className="">
+                                    <p className="text-xs font-semibold">Contact</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.numero}</p>
+                                  </div>
+                                </div>
+
+                                <div className="px-3 py-6">
+                                  <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
+                                  <div>
+                                    <p className="text-xs font-semibold">Nom et prenoms</p>
+                                    <p className="text-md text-gray-900 font-bold  mt-1">{selectedRow?.client?.nom + " " + selectedRow?.client?.prenoms}</p>
+                                  </div>
+
+                                  <div className="my-3">
+                                    <p className="text-xs font-semibold">Email</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.client?.email}</p>
+                                  </div>
+
+                                  <div className="my-3">
+                                    <p className="text-sm font-semibold">Contact</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.client?.numero}</p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
 
-                            <div class="text-left text-sm  bg-muted">
-                              <div class=" gap-1">
-                                <div class="text-xs font-semibold flex rounded-lg bg-gray-200 p-3 gap-1"><BadgeSwissFranc size={17} />Prix de la course</div>
-                                <div class="px-3 text-lg font-semibold my-2">
-                                  {
-                                    !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                      : "4 200 Fr"
-                                  }
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                            )
+                          }
 
-                          <div className="px-3 py-6">
-                            <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
-                            <div>
-                              <p className="text-xs font-semibold">Nom et prenoms</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "Steeve Harvez"
-                                }</p>
-                            </div>
 
-                            <div className="my-3">
-                              <p className="text-xs font-semibold">Email</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "Sincere@april.biz"
-                                }
-                              </p>
-                            </div>
 
-                            <div className="">
-                              <p className="text-xs font-semibold">Contact</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "770-736-8031"
-                                }
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="px-3 py-6">
-                            <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
-
-                            <div>
-                              <p className="text-xs font-semibold">Nom et prenoms</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "Steeve Harvez"
-                                }</p>
-                            </div>
-
-                            <div className="my-3">
-                              <p className="text-xs font-semibold">Email</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "Sincere@april.biz"
-                                }
-                              </p>
-                            </div>
-
-                            <div className="">
-                              <p className="text-xs font-semibold">Contact</p>
-                              <p className="text-md text-gray-900 font-bold mt-1">
-                                {
-                                  !loadData ? <Skeleton animation='wave' variant='text' width={80} />
-                                    : "770-736-8031"
-                                }
-                              </p>
-                            </div>
-
-                          </div>
                         </div>
                       </div>
                     </div>

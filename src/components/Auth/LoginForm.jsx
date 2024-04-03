@@ -39,15 +39,46 @@ export const LoginForm = () => {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div class="grid gap-2">
+          <div class="grid gap-1">
+            <input
+              class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="name@exampl"
+              {...register("username", {
+                required: "Please enter your username.",
+              })}
+            />
+            <input
+              class="mt-4 flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              id="password"
+              placeholder="Mot de passe"
+              type="password"
+              {...register("password", {
+                required: "Please enter your Email.",
+              })}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmit ? true : false}
+            className={`${!isSubmit
+              ? "text-white bg-indigo-900"
+              : "text-slate-800 bg-slate-200 "
+              } inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow hover:bg-primary/90 h-9 px-4 py-2`}
+
+          >
+            {isSubmit ? "Veuillez patientez... " : "Se connecter au mon espace"}{" "}
+            {isSubmit ? (
+              <span className="loading loading-dots loading-xs"></span>
+            ) : null}
+          </button>
+        </div>
+      </form>
+      {/* <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="bg-white rounded-xl  shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900">
-              Connectez-vous à votre compte
-            </h1>
-            <p className="text-slate-400">
-              Veuillez renseigner toutes les informations
-            </p>
+           
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(onSubmit)}
@@ -94,7 +125,7 @@ export const LoginForm = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
