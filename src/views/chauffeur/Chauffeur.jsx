@@ -1,11 +1,13 @@
 import { Drawer, Pagination } from "@mui/material";
-import { ArrowUpRight, Menu, Phone, UserRound } from "lucide-react";
+import { Menu, UserRound } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../../Utils/constant";
+import { status } from "../../Utils/Utils";
+import { DriverCard } from "../../components/Chauffeur/DriverCard";
 import { LoadingDriver } from "../../components/Chauffeur/LoadingDriving";
 import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
 import { MobileMenu } from "../../components/Menu/MobileMenu";
+import { Tabs } from "../../components/Widget/Tab";
 import { getDriverPieces, getMoreDrivers } from "../../redux/store/driver";
 
 export const Chauffeur = () => {
@@ -16,6 +18,8 @@ export const Chauffeur = () => {
     const [rowData, setRowData] = useState();
     const [openSidebarModal, setOpenSidebarModal] = useState(false);
     const [search, setSearch] = useState();
+    const [active, setActive] = useState({ index: 0, value: 'EN_COURS' });
+
     const [userInfo, setUserInfo] = useState({
         nom: "",
         prenoms: "",
@@ -26,12 +30,12 @@ export const Chauffeur = () => {
     const loading = useSelector((state) => state.driver.loading);
 
     useEffect(() => {
-        dispatch(getMoreDrivers({ page: 0, param: '', size: 10 }))
-    }, [dispatch])
+        dispatch(getMoreDrivers({ page: 0, param: active.value, size: 10 }))
+    }, [dispatch, active])
 
 
     const more = async (page) => {
-        dispatch(getMoreDrivers({ page: page - 1, param: '', size: 10 }))
+        dispatch(getMoreDrivers({ page: page - 1, param: active.value, size: 10 }))
     }
 
     return (
@@ -55,36 +59,19 @@ export const Chauffeur = () => {
                                             </span>
                                         </div>
                                         <input
-                                            onChange={(e) => setSearch(e.target.value)}
+                                            onChange={(e) => {
+                                                dispatch(getMoreDrivers({ page: 0, param: e.target.value, size: 10 }))
+                                            }}
                                             type="text"
                                             placeholder="Rechercher un élément..."
                                             className="input input-bordered w-full h-10 text-sm"
                                         />
                                     </label>
-                                    <label className="form-control w-44">
-                                        <div className="label">
-                                            <span className="label-text text-xs font-medium -mb-1">
-                                                Statut
-                                            </span>
-                                        </div>
-                                        <select onChange={(e) => {
-                                            dispatch(getMoreDrivers({ page: 0, param: e.target.value, size: 10 }))
-                                        }} className="select select-bordered custom-select w-full h-10 ">
-                                            <option disabled selected>
-                                                Status
-                                            </option>
-                                            <option value='EN_COURS'>En cours</option>
-                                            <option value='TERMINE'>Validé</option>
-                                        </select>
-                                    </label>
-                                    <button onClick={() => {
-                                        dispatch(getMoreDrivers({ page: 0, param: search, size: 10 }))
-                                    }} className="btn btn-sm w-fit h-10 px-4 rounded-md bg-main text-white text-sm font-semibold">
-                                        Rechercher
-                                    </button>
                                 </div>
                             </div>
-                            {driver.length === 0 && !loading ?
+                            <Tabs tabsData={status} setActive={setActive} active={active} />
+
+                            {driver.listDriver?.length === 0 && !loading ?
                                 (
                                     <div className="py-3 flex justify-center">
                                         <img src="https://www.agencija-corrigo.com/build/images/background/no-results-bg.2d2c6ee3.png" height={350} width={250} alt="" />
@@ -92,55 +79,11 @@ export const Chauffeur = () => {
                                 ) : !loading && driver.listDriver.length !== 0 ? (
                                     <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                                         {driver.listDriver?.map((item, index) => (
-                                            <div
-                                                key={index}
-                                                className="relative h-fit rounded-lg border-2 border-dashed bg-white p-4 pb-6"
-                                            >
-                                                <div className="dropdown dropdown-end absolute right-2 top-2">
-                                                    <div
-                                                        role="button"
-                                                        className=" rounded-full flex items-center justify-center bg-gray-100"
-                                                    >
-                                                        <p className="px-2 text-xs text-gray-500 text-center font-semibold">
-                                                            {
-                                                                item.point + ' points'
-                                                            }
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-
-                                                <div style={{ backgroundImage: `url("${BASE_URL}/webfree/partenaire/fichier/${item?.fichier?.id}")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded-full w-20 h-20 border-2 mx-auto mt-5 flex items-center justify-center">
-                                                </div>
-                                                <h1 className="text-sm text-indigo-900 text-center font-bold mt-2 mb-1 truncate">
-                                                    {
-                                                        item.nom + ' ' + item.prenoms
-                                                    }
-                                                </h1>
-                                                <p className="text-xs  text-gray-500 text-center font-medium">
-                                                    <div className="flex justify-center space-x-1">
-                                                        <Phone size={12} />
-                                                        <p>{item.numero}</p>
-                                                    </div>
-                                                </p>
-                                                <p className="text-xs  text-gray-500 text-center font-medium">
-                                                    <div className="flex justify-center space-x-1">
-                                                        <p>Status du compte : </p>
-                                                        <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : 'Rejeté'}</p>
-                                                    </div>
-                                                </p>
-                                                <div
-                                                    className="cursor-pointer bg-gray-100 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
-                                                    onClick={() => {
-                                                        setOpenSideUpdate(true)
-                                                        setRowData(item)
-                                                        dispatch(getDriverPieces(item.id))
-                                                    }}
-                                                >
-                                                    Details du chauffeur <ArrowUpRight size={17} />
-                                                </div>
-
-                                            </div>
+                                            <DriverCard key={index} click={() => {
+                                                setOpenSideUpdate(true)
+                                                setRowData(item)
+                                                dispatch(getDriverPieces(item.id))
+                                            }} item={item} />
                                         ))}
 
                                     </div>

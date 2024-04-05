@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
 import Directions from '../../components/GoogleMap/Direction'
+import { StatsCount } from '../../components/Partenaire/statsCount'
 import { customerInfo, getAllCustomerOrder } from '../../redux/store/customer'
 import { disableAccount } from '../../services/CustomerService'
 
@@ -144,8 +145,9 @@ export const ClientDetail = () => {
 
   return (
     <div>
-      <div className="flex items-start">
-        <div className='sticky top-0 left-0 bg-white w-64 min-h-screen z-50'>
+      <div className="lg:flex items-start">
+        
+        <div className='lg:sticky lg:top-0 lg:left-0 bg-white lg:w-64 lg:min-h-screen z-50'>
           <div className='my-3 rounded-lg px-4'>
             <div className="flex items-center justify-between mb-12">
               <NavLink to="/clients">
@@ -167,7 +169,7 @@ export const ClientDetail = () => {
               <div className='rounded-full w-20 h-20' style={{ background: "url('https://www.shutterstock.com/image-photo/new-car-cheerful-black-man-260nw-1746419990.jpg') no-repeat center/cover" }}>
               </div>
             </div>
-            <div className="relative my-6 h-[430px]">
+            <div className="relative my-6 p-3 lg:h-[430px]">
               <div>
                 <p className="text-sm font-semibold">Nom et prenoms</p>
                 <p className="text-xs text-gray-600 font-medium mt-1">
@@ -205,7 +207,7 @@ export const ClientDetail = () => {
 
                 </p>
               </div>
-              <div className="absolute bottom-0">
+              <div className="lg:absolute bottom-0">
                 <button onClick={handleDisableAccount} className={`btn btn-ghost btn-sm ${!customer.enabled ? 'hover:bg-green-50 text-green-500' : 'hover:bg-red-50 text-red-500'}  flex  font-medium text-sm`}><MinusCircle size={20} />{customer.enabled ? 'Desactiver le compte' : 'Activer le compte'} </button>
               </div>
             </div>
@@ -215,33 +217,13 @@ export const ClientDetail = () => {
             </div>
           </div>
         </div>
-        <div className="w-4/5 px-3 relative mt-2">
-          <h1 className='font-medium mt-3 text-gray-400 text-lg '>Client</h1>
-          <div className='mt-2 grid grid-cols-3 gap-2'>
 
-            <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
-              <p className=" text-2xl font-semibold">
-                {
-                  loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
-                    : customer.depenses + ' Fcfa' ?? 0
-                }
-              </p>
-              <p className="text-sm text-gray-400 font-medium truncate">Dépenses</p>
-            </div>
-            <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
-              <p className=" text-2xl font-semibold">{
-                loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
-                  : customer?.nombreCourseEffectuees
-              }</p>
-              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses effectuées</p>
-            </div>
-            <div className="w-full p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
-              <p className=" text-2xl font-semibold">{
-                loadingInfo ? <Skeleton animation='wave' variant='text' width={130} />
-                  : customer?.nombreCourseAnnulees
-              }</p>
-              <p className="text-sm text-gray-400 font-medium truncate">Nombres de courses annulé</p>
-            </div>
+        <div className="lg:w-4/5 px-3 relative mt-2">
+          <h1 className='font-medium mt-3 text-gray-400 text-lg '>Client</h1>
+          <div className='mt-2 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2'>
+            <StatsCount count={customer.depenses + ' Fcfa' ?? 0} label={"Depenses"} />
+            <StatsCount count={customer?.nombreCourseEffectuees} label={"Nombres de courses effectuées"} />
+            <StatsCount count={customer?.nombreCourseAnnulees} label={"Nombres de courses annulé"} />
           </div>
           <h1 className='mt-5 text-lg text-gray-400 font-medium'>Historique de commandes</h1>
           <div className='mt-2 bg-white rounded-lg p-4 shadow border border-[#E2E8F0] '>

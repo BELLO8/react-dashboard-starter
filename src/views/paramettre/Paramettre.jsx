@@ -9,6 +9,7 @@ export const Paramettre = () => {
     const [param, setParam] = useState();
     const [distance, setDistance] = useState();
     const [frenquence, setFrequence] = useState();
+    const [version, setVersion] = useState();
 
     const handleChangeSon = (e) => {
         const selectedFiles = e.target.files;
@@ -43,7 +44,7 @@ export const Paramettre = () => {
                     <div className="space-y-4 md:space-y-6 sm:p-8">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Distance de localisation
+                                Distance de localisation ( Kilomettres )
                             </label>
                             <input
                                 type="text"
@@ -88,7 +89,7 @@ export const Paramettre = () => {
 
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                frequence de localisation
+                                frequence de localisation ( Seconds )
                             </label>
                             <input
                                 type="text"
@@ -106,6 +107,52 @@ export const Paramettre = () => {
                                 addOrEditParamettre({ valeur: frenquence, parametre: 'FREQUENCE_LOCALISATION' }).then((res) => {
                                     console.log(res);
                                     toast.success('Frequence de localisation appliquée')
+
+                                }).catch((err) => {
+                                    console.log(err);
+                                    if (err.response.status === 500) {
+                                        toast.error(err.response.data)
+                                    }
+                                })
+                            }}
+                            disabled={isSubmit ? true : false}
+                            className={`${!isSubmit
+                                ? "text-white bg-indigo-900"
+                                : "text-slate-800 bg-slate-200 "
+                                } w-full  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                        >
+                            {!isSubmit ? "Appliquer" : "Veuillez patientez..."}{" "}
+                            {isSubmit ? (
+                                <span className="loading loading-dots loading-xs"></span>
+                            ) : null}
+                        </button>
+
+                    </div>
+                </div>
+
+                <div className="mt-3 bg-white w-[500px] rounded-xl dark:border  sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                    <div className="space-y-4 md:space-y-6 sm:p-8">
+
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Version en cours de deploiement
+                            </label>
+                            <input
+                                type="text"
+                                onChange={(e) => setVersion(e.target.value)}
+                                defaultValue={param?.versionDriverEnCoursDeploiement}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            onClick={() => {
+
+                                addOrEditParamettre({ valeur: version, parametre: 'VERSION_DEPLOIEMENT' }).then((res) => {
+                                    console.log(res);
+                                    toast.success('Version de deploiement appliquée')
 
                                 }).catch((err) => {
                                     console.log(err);

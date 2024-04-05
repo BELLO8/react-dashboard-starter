@@ -1,9 +1,12 @@
 import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { statusCar } from '../../Utils/Utils';
 import { ShowCarSideBar } from '../../components/ShowCarSideBar';
+import { Car } from '../../components/Widget/Car';
+import { Tabs } from '../../components/Widget/Tab';
 import { LoadingCar } from '../../components/categorie/LoadingCar';
-import { document, files, getCars, getDriver } from '../../redux/store/car';
+import { documentCar, files, getCars, getDriver } from '../../redux/store/car';
 
 export const ListeVehicules = () => {
     const dispatch = useDispatch();
@@ -11,14 +14,15 @@ export const ListeVehicules = () => {
     const loading = useSelector((state) => state.car.loading)
     const [search, setSearch] = useState("")
     const [openSideUpdate, setOpenSideUpdate] = useState(false);
-    const [vehicule, setVehicule] = useState()
+    const [vehicule, setVehicule] = useState({})
+    const [active, setActive] = useState({ index: 0, value: 'ATTENTE_DE_VALIDATION' });
 
     useEffect(() => {
-        dispatch(getCars({ page: 0, param: '', size: 10 }))
-    }, [dispatch])
+        dispatch(getCars({ page: 0, param: active.value, size: 10 }))
+    }, [dispatch, active])
 
     const more = async (page) => {
-        dispatch(getCars({ page: page - 1, param: '', size: 10 }))
+        dispatch(getCars({ page: page - 1, param: active.value, size: 10 }))
     }
 
     return (
@@ -39,16 +43,15 @@ export const ListeVehicules = () => {
                                 type="text"
                                 placeholder="Rechercher un élément..."
                                 className="input input-bordered  h-10 text-sm"
-                                onChange={(e) => { setSearch(e.target.value) }}
+                                onChange={(e) => {
+                                    dispatch(getCars({ page: 0, param: e.target.value, size: 10 }))
+                                }}
                             />
                         </label>
-                        <button onClick={() => {
-                            dispatch(getCars({ page: 0, param: search, size: 10 }))
-                        }} className="btn btn-sm w-fit h-10 px-4 rounded-lg bg-main text-white text-sm font-semibold">
-                            Rechercher
-                        </button>
 
                     </div>
+                    <Tabs tabsData={statusCar} setActive={setActive} active={active} />
+
                     {vehicules?.length === 0 && !loading ?
                         (
                             <div className="py-3 flex justify-center">
@@ -57,38 +60,13 @@ export const ListeVehicules = () => {
                         ) : !loading && vehicules?.vehicules !== 0 ? (
                             <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                                 {vehicules?.vehicules?.map((item, index) => (
-                                    <div onClick={() => {
+                                    <Car key={index} item={item} handleClick={() => {
                                         setOpenSideUpdate(true)
                                         setVehicule({ id: item.id, status: item.statusEnregistrement })
                                         dispatch(files(item.id))
                                         dispatch(getDriver(item.id))
-                                        dispatch(document(item.id))
-                                    }} className='bg-white shadow-sm cursor-pointer border border-dashed rounded-lg relative'>
-
-                                        <div className='mx-2 my-4 flex'>
-                                            <div style={{ backgroundImage: `url("https://www.hyundai.com/content/dam/hyundai/in/en/data/find-a-car/i20/Highlights/pc/i20_Modelpc.png")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded w-32 h-14 border-2 mb-2">
-                                            </div>
-                                            <div className='mx-2 space-y-1'>
-                                                <p className='text-sm font-semibold truncate'>
-                                                    {
-                                                        item.marque + ' ' + item.modele
-                                                    }
-                                                </p>
-                                                <p className='text-xs text-gray-300 text-gray-400 truncate'>
-                                                    {
-                                                        item.numeroMatriculation ?? ''
-                                                    }
-
-                                                </p>
-                                                <p className="text-xs  text-gray-500 text-center font-medium">
-                                                    <div className="flex space-x-1">
-                                                        <p>status : </p>
-                                                        <p className={item.statusEnregistrement === 'TERMINE' ? 'text-green-500 font-bold' : 'text-orange-500 font-bold'}>{item.statusEnregistrement === 'TERMINE' ? 'validé' : item.statusEnregistrement === 'EN_COURS' ? 'en cours' : item.statusEnregistrement === 'REJETER' ? 'rejeté' : 'en cours'}</p>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        dispatch(documentCar(item.id))
+                                    }} />
                                 ))}
                             </div>
                         ) : <LoadingCar />}

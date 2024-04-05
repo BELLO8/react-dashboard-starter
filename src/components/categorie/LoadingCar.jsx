@@ -4,7 +4,7 @@ import React from 'react'
 export const LoadingCar = () => {
     return (
         <>
-            <div className="mt-6 grid grid-cols-4 gap-4">
+            <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((index) => (
                     <div className='bg-gray-50 border border-dashed rounded-lg relative'>
                         <div className='mx-2 my-4  rounded-lg pr-8 flex'>

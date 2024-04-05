@@ -20,7 +20,7 @@ export const files = createAsyncThunk("car/files", async (id) => {
   return response.data;
 });
 
-export const document = createAsyncThunk("car/document", async (id) => {
+export const documentCar = createAsyncThunk("car/document", async (id) => {
   const response = await carDocument(id);
   return response.data;
 });
@@ -53,7 +53,7 @@ const carSlice = createSlice({
         state.fileLoading = false;
         state.carFiles = action.payload;
       })
-      .addCase(document.fulfilled, (state, action) => {
+      .addCase(documentCar.fulfilled, (state, action) => {
         state.documentLoading = false;
         state.carDocuments = action.payload;
       })

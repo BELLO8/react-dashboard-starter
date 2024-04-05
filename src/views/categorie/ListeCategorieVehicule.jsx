@@ -8,11 +8,12 @@ import { getCategory } from "../../redux/store/categoryCar";
 import { editCarCategoryDescription } from "../../services/CarCategory";
 
 export const ListeCategorieVehicule = () => {
-    const [openSide, setOpenSide] = useState(false);
     const [addLoading, setAddLoading] = useState(false);
     const [categorieInfo, setCategorieInfo] = useState(null);
     const [description, setDescription] = useState();
     const [id, setId] = useState();
+    const [nouchi, setNouchi] = useState("");
+
     const carCategory = useSelector((state) => state.categoryCar.categoryCar);
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.categoryCar.loading);
@@ -96,11 +97,15 @@ export const ListeCategorieVehicule = () => {
                                                         item.description
                                                     }
                                                 </p>
+                                                <p className='text-xs truncate w-48 font-bold'>
+                                                    {
+                                                        item.nouchi != null ? "( " + item.nouchi + " )" : ''
+                                                    }
+                                                </p>
                                                 <p className='text-xs text-gray-300 font-semibold bg-blue-100 text-indigo-800 rounded-md px-2 w-fit'>
                                                     {
-                                                        item.prixParKilometrage + ' Fr'
+                                                        new Intl.NumberFormat('fr', { style: 'currency', currency: 'XOF' }).format(item.prixParKilometrage)
                                                     }
-
                                                 </p>
                                             </div>
                                         </div>
@@ -130,17 +135,26 @@ export const ListeCategorieVehicule = () => {
 
                                                         </textarea>
                                                     </label>
+                                                    <label className="form-control w-full mt-2">
+                                                        <div className="label">
+                                                            <span className="label-text text-sm font-semibold">Mot nouchi</span>
+                                                        </div>
+                                                        <textarea onChange={(e) => setNouchi(e.target.value)} className="textarea textarea-bordered" defaultValue={categorieInfo?.nouchi}>
+
+                                                        </textarea>
+                                                    </label>
                                                 </div>
 
                                                 <div className="modal-action">
                                                     <button onClick={() => {
-                                                        editCarCategoryDescription(id, description).then((res) => {
+                                                        editCarCategoryDescription(id, description, nouchi).then((res) => {
                                                             if (res.status === 200) {
                                                                 document.getElementById(`close${item.id}`).click()
                                                                 dispatch(getCategory({ page: 0, param: '', size: 10 }))
                                                                 toast.success('Description modifiée ')
                                                             }
-                                                        })
+                                                        }).catch((err) => console.log(err))
+
                                                     }} className="btn btn-md bg-blue-900 text-white hover:bg-blue-900">Modifier</button>
                                                 </div>
                                             </div>
@@ -150,7 +164,8 @@ export const ListeCategorieVehicule = () => {
                                 ))
                             }
                         </div>
-                    ) : <LoadingCar />}
+                    ) : <LoadingCar />
+                }
 
                 {
                     loading ? null :
@@ -166,7 +181,7 @@ export const ListeCategorieVehicule = () => {
                         </div>
                 }
 
-            </div>
+            </div >
 
             <dialog id="delete_categorie" className="modal">
                 <div className="modal-box rounded-lg max-w-md">
@@ -214,6 +229,6 @@ export const ListeCategorieVehicule = () => {
                     </div>
                 </div>
             </dialog>
-        </div>
+        </div >
     );
 };

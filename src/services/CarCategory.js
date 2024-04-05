@@ -7,10 +7,9 @@ export const getCarCategory = async (params) => {
   );
 };
 
-export const editCarCategoryDescription = async (id, text) => {
-  return clientAxios.post(`${EDIT_CATEGORY_CAR}?id=${id}`, text, {
-    headers: {
-      "Content-Type": "text/plain",
-    },
-  });
+export const editCarCategoryDescription = async (id, description, nouchi) => {
+  return clientAxios.post(
+    `${EDIT_CATEGORY_CAR}/${id}?description=${description}&nouchi=${nouchi}`,
+    {}
+  );
 };

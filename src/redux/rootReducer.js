@@ -5,7 +5,9 @@ import customer from "./store/customer";
 import driver from "./store/driver";
 import order from "./store/order";
 import partner from "./store/partner";
+import stats from "./store/stats";
 import user from "./store/user";
+
 const rootReducer = {
   auth,
   customer,
@@ -15,6 +17,7 @@ const rootReducer = {
   user,
   driver,
   car,
+  stats,
 };
 
 export default rootReducer;

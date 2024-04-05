@@ -143,9 +143,8 @@ export const ChauffeurCommande = () => {
 
     return (
         <div>
-            <div className="flex items-start">
-                <div className='sticky top-0 left-0 bg-white w-64 min-h-screen z-50'>
-
+            <div className="lg:flex items-start">
+                <div className='lg:sticky top-0 left-0 bg-white lg:w-64 lg:min-h-screen z-50'>
                     <div className='my-3 rounded-lg px-4'>
                         <div className="flex items-center justify-between mb-12">
                             <button onClick={() => window.history.back()}
@@ -165,7 +164,7 @@ export const ChauffeurCommande = () => {
                             <div className='rounded-full w-20 h-20' style={{ background: `url("${BASE_URL}/webfree/partenaire/fichier/${InfoDriver?.photo?.id}") no-repeat center/cover` }}>
                             </div>
                         </div>
-                        <div className="relative my-6 h-[430px]">
+                        <div className="relative my-6 pb-3 lg:h-[430px]">
                             <div>
                                 <p className="text-sm font-semibold">Nom et prenoms</p>
                                 <p className="text-xs text-gray-600 font-medium mt-1">
@@ -210,7 +209,7 @@ export const ChauffeurCommande = () => {
                                 </div>
 
                             </div> */}
-                            <div className="absolute bottom-0">
+                            <div className="lg:absolute bottom-0">
                                 <button onClick={() => {
                                     deleteCarDriver(id, InfoDriver?.vehicule?.id).then((res) => {
                                         toast.success('Vehicule rétiré')
@@ -229,7 +228,8 @@ export const ChauffeurCommande = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-4/5 px-3 relative mt-2">
+
+                <div className="lg:w-4/5 px-3 relative mt-2">
                     <h1 className='font-medium mt-3 text-gray-400 text-lg '>Chauffeur</h1>
                     <div className='mt-2 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-2'>
                         {/* <div className="flex bg-white w-full p-4 rounded-lg shadow">
@@ -263,12 +263,12 @@ export const ChauffeurCommande = () => {
                             </div>
                         </div> */}
                         <div className="p-4 drop-shadow-sm border border-dashed bg-white rounded-lg flex flex-col">
-                            <div className="flex">
+                            <div className="">
                                 <p className=' text-2xl font-semibold'>{
                                     !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                                        : InfoDriver?.solde
-                                }{"  "}</p>
-                                Fcfa
+                                        : new Intl.NumberFormat('fr', { style: 'currency', currency: 'XOF' }).format(InfoDriver?.solde)
+                                }</p>
+
                             </div>
                             <p className="text-sm text-gray-400 font-medium truncate">Solde</p>
                         </div>

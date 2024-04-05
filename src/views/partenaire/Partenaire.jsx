@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router';
+import { status } from "../../Utils/Utils";
 import { BASE_URL } from "../../Utils/constant";
 import { MobileMenu } from "../../components/Menu/MobileMenu";
 import { AddPartnerSidebar } from '../../components/Partenaire/AddPartnerSidebar';
 import { LoadingPatner } from "../../components/Partenaire/LoadingPatner";
 import { ShowPartnerSideBar } from "../../components/Partenaire/ShowPartnerSideBar";
 import { UpdatePartnerSidebar } from "../../components/Partenaire/UpdatePartnerSidebar";
+import { Tabs } from "../../components/Widget/Tab";
 import { document, getAllPartner } from "../../redux/store/partner";
 import { disablePartner } from "../../services/PartenaireService";
 
@@ -23,19 +25,14 @@ export const Partenaire = () => {
     const [rowData, setRowData] = useState();
     const [openSidebarModal, setOpenSidebarModal] = useState(false);
     const [showMenu, setShowMenu] = useState(false)
-    const [search, setSearch] = useState();
-    const [userInfo, setUserInfo] = useState({
-        nom: "",
-        prenoms: "",
-        email: "",
-        telephone: "",
-    });
+    const [active, setActive] = useState({ index: 0, value: 'EN_COURS' });
+
     const partner = useSelector((state) => state.partner.partner);
     const loading = useSelector((state) => state.partner.isloading);
 
     useEffect(() => {
-        dispatch(getAllPartner({ page: 0, param: '', size: 10 }))
-    }, [dispatch])
+        dispatch(getAllPartner({ page: 0, param: active.value, size: 10 }))
+    }, [dispatch, active])
 
     const toggleDrawer = (newOpen) => () => {
         setOpenSide(newOpen);
@@ -48,7 +45,7 @@ export const Partenaire = () => {
     const handleDisableAccount = () => {
         disablePartner(idPartner).then((res) => {
             if (res.status === 200) {
-                dispatch(getAllPartner({ page: 0, param: '', size: 10 }))
+                dispatch(getAllPartner({ page: 0, param: active.value, size: 10 }))
                 toast.success('Compte desactivé')
             }
         }).catch((err) => {
@@ -57,7 +54,7 @@ export const Partenaire = () => {
     }
 
     const more = async (page) => {
-        dispatch(getAllPartner({ page: page - 1, param: '', size: 10 }))
+        dispatch(getAllPartner({ page: page - 1, param: active.value, size: 10 }))
     }
 
     return (
@@ -88,19 +85,19 @@ export const Partenaire = () => {
                                             </span>
                                         </div>
                                         <input
-                                            onChange={(e) => setSearch(e.target.value)}
+                                            onChange={(e) => {
+                                                dispatch(getAllPartner({ page: 0, param: e.target.value, size: 10 }))
+                                            }}
                                             type="text"
                                             placeholder="Rechercher un élément..."
                                             className="input input-bordered w-full h-10 text-sm"
                                         />
                                     </label>
-                                    <button onClick={() => {
-                                        dispatch(getAllPartner({ page: 0, param: search, size: 10 }))
-                                    }} className="btn btn-sm w-fit h-10 px-4 rounded-md bg-main text-white text-sm font-semibold">
-                                        Rechercher
-                                    </button>
+
                                 </div>
                             </div>
+                            <Tabs tabsData={status} setActive={setActive} active={active} />
+
                             {partner.partenaires?.length === 0 || (partner.length === 0 && !loading) ?
                                 (
                                     <div className="py-3 flex justify-center">
