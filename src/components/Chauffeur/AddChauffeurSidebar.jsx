@@ -93,7 +93,7 @@ export const AddChauffeurSidebar = ({ setOpenSide, openSide }) => {
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
-                <div className='bg-white w-[480px] px-8 mt-4'>
+                <div className='bg-white w-[420px] px-8 mt-4'>
                     <h1 className='text-lg font-semibold'>Ajouter un chauffeur</h1>
                     <div>
                         {errors.assurance && <span className="text-sm text-rose-600">Renseignez tout les champs</span>}

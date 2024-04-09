@@ -132,7 +132,6 @@ export const Commande = () => {
                         <div>
                             <button className="btn btn-sm" onClick={() => {
                                 setSelectRow(row);
-                                console.log(row);
                                 setOpenSide(true)
                             }}>
                                 <Eye size={15} />
@@ -173,12 +172,19 @@ export const Commande = () => {
                         </button>
 
                     </div>
-                    <div className="">
+                    <div className="border rounded-[10px]">
                         <DataTable
                             columns={OrdersColumns}
                             data={order.courses}
-                            className='border'
                             progressPending={loading}
+                            customStyles={{
+                                headCells: {
+                                    style: {
+                                        fontSize: 12,
+                                        fontWeight: 'bold'
+                                    },
+                                },
+                            }}
                             progressComponent={
 
                                 <span class="loading loading-spinner loading-lg"></span>

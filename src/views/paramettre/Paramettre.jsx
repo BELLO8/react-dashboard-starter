@@ -1,46 +1,82 @@
-import { UploadIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { addOrEditParamettre, getParametre } from '../../services/paramettre';
+import { tabConfigs } from '../../Utils/Utils';
+import { Configuration } from '../../components/Configurations/Configuration';
+import { SonConfig } from '../../components/Configurations/SonConfig';
+import { Tabs } from '../../components/Widget/Tab';
+import { getParametre } from '../../services/paramettre';
+import { Avis } from '../avis/Avis';
 
 export const Paramettre = () => {
-    const [isSubmit, setIsSubmit] = useState(false);
-    const [son, setSon] = useState();
     const [param, setParam] = useState();
-    const [distance, setDistance] = useState();
-    const [frenquence, setFrequence] = useState();
-    const [version, setVersion] = useState();
-
-    const handleChangeSon = (e) => {
-        const selectedFiles = e.target.files;
-        if (son !== undefined) {
-            const newFiles = Array.from(selectedFiles)
-            setSon(newFiles)
-        } else {
-            const newFiles = Array.from(selectedFiles)
-            setSon(newFiles)
-        }
-        console.log(son);
-    }
+    const [active, setActive] = useState({ index: 0, value: 'DISTANCE_LOCALISATION' });
+    const [data, setData] = useState([])
 
     useEffect(() => {
+
         const getParams = async () => {
-            const responses = await getParametre();
-            setParam(responses.data)
+            try {
+                const responses = await getParametre();
+                setParam(responses.data)
+            } catch (error) {
+                console.log(error);
+            }
+
         }
-
         getParams()
-    }, [])
 
+        setData(config.filter((item) => {
+            return item.param === active.value
+        }))
+
+    }, [active.value])
+    console.log(data);
+    const config = [
+        {
+            id: 1,
+            description: 'Distance de localisation ( Kilomettres )',
+            param: 'DISTANCE_LOCALISATION',
+            defaultValue: param?.distanceLocalisationDriver,
+            message: 'Distance de localisation appliquée'
+        },
+        {
+            id: 2,
+            description: 'frequence de localisation ( Seconds )',
+            param: 'FREQUENCE_LOCALISATION',
+            defaultValue: param?.frequenceLocalisation,
+            message: 'Frequence de localisation appliquée'
+        },
+        {
+            id: 3,
+            description: 'Version en cours de deploiement',
+            param: 'VERSION_DEPLOIEMENT',
+            defaultValue: param?.versionDriverEnCoursDeploiement,
+            message: 'Version de deploiement appliquée'
+        }
+    ]
 
 
     return (
         <div className='p-3 pt-7'>
-            <h1 className="text-center text-2xl font-semibold leading-tight tracking-tight text-gray-900">
-                Modification des paramettre de configuration
+            <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-900">
+                Configurations
             </h1>
-            <div className="flex flex-col items-center justify-center my-2 lg:py-0">
-                <div className="bg-white w-[500px] rounded-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <Tabs tabsData={tabConfigs} setActive={setActive} active={active} />
+
+            <div className="my-8 lg:py-0">
+                {
+                    data.map((item) => (
+                        <Configuration key={item.id}
+                            description={item.description}
+                            message={item.message}
+                            defaultValue={item.defaultValue}
+                            param={item.param} />
+                    ))
+                }
+                {
+                    active.value === 'SON' ? (<SonConfig />) : active.value === 'AVIS' ? (<Avis />) : null
+                }
+
+                {/* <div className="bg-white w-[500px] rounded-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="space-y-4 md:space-y-6 sm:p-8">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -174,9 +210,10 @@ export const Paramettre = () => {
                         </button>
 
                     </div>
-                </div>
+                </div> */}
 
-                <div className="mt-3 bg-white w-[500px] rounded-xl dark:border  sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+
+                {/* <div className="mt-3 bg-white w-[500px] rounded-xl dark:border  sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="space-y-4 md:space-y-6 sm:p-8">
 
                         <div>
@@ -253,7 +290,7 @@ export const Paramettre = () => {
                         </button>
 
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

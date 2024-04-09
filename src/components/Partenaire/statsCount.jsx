@@ -1,12 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 export const StatsCount = ({ count, label }) => {
+    console.log(count);
     return (
         <>
             <div className="px-3 py-3 border border-dashed bg-white shadow-sm rounded-lg">
                 <p className=" text-2xl font-semibold">
                     {
                         count
+
                     }
 
                 </p>

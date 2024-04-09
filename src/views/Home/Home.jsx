@@ -68,6 +68,7 @@ export const Home = () => {
 
     const [selected, setSelected] = useState('MOIS');
     const [select, setSelect] = useState('ANNEE');
+    const [isSelect, setIsSelect] = useState('MOIS');
 
     const currentDate = new Date();
     const currentMonthName = months[currentDate.getMonth()]
@@ -406,7 +407,7 @@ export const Home = () => {
                             <p className='text-xs font-medium text-gray-500'>Statistique des courses</p>
                             <div className='flex gap-x-2'>
                                 <select onChange={(e) => {
-                                    setSelected(e.target.value)
+                                    setIsSelect(e.target.value)
                                 }} className="my-2 select select-bordered custom-select h-8">
                                     <option disabled >
                                         Periode
@@ -415,7 +416,7 @@ export const Home = () => {
                                     <option value='ANNEE'>Filtre par années</option>
                                 </select>
                                 {
-                                    selected === 'MOIS' ? (
+                                    isSelect === 'MOIS' ? (
                                         <select onChange={(e) => {
                                             statsCourses({ periode: selected, mois: e.target.value, status: '' }).then((res) => {
                                                 setDataCourses(res.data)

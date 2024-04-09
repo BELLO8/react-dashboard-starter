@@ -3,7 +3,7 @@ import React from 'react';
 export const Tabs = ({ tabsData, active, setActive }) => {
     return (
         <>
-            <div className="shadow-sm mt-2 bg-white w-fit px-2 py-1 rounded-lg space-x-4">
+            <div className="shadow-sm mt-2 bg-white border w-fit px-2 py-1 rounded-lg space-x-4">
                 {
                     tabsData.map((item, index) => (
                         <button onClick={() => {

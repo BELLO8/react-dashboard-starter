@@ -32,14 +32,28 @@ export const years = [{ name: "2024" }, { name: "2023" }, { name: "2022" }];
 
 export const tab = [
   {
-    value: "VEHICULE",
-    link: "Vehicule",
+    value: "VEHICULES",
+    link: "Vehicules",
   },
   {
-    value: "CHAUFFEUR",
-    link: "Chauffeur",
+    value: "CHAUFFEURS",
+    link: "Chauffeurs",
   },
   { value: "COURSES", link: "Courses" },
+];
+
+export const tabConfigs = [
+  {
+    value: "DISTANCE_LOCALISATION",
+    link: "Distance",
+  },
+  {
+    value: "FREQUENCE_LOCALISATION",
+    link: "Frequence",
+  },
+  { value: "VERSION_DEPLOIEMENT", link: "Version" },
+  { value: "SON", link: "Sonnerie" },
+  { value: "AVIS", link: "Avis" },
 ];
 
 export const status = [
@@ -50,9 +64,9 @@ export const status = [
   },
   {
     value: "TERMINE",
-    link: "Valider",
+    link: "Validé",
   },
-  { value: "REJETER", link: "Rejeter" },
+  { value: "REJETER", link: "Rejeté" },
 ];
 
 export const statusCar = [
@@ -64,5 +78,5 @@ export const statusCar = [
     value: "TERMINE",
     link: "Valider",
   },
-  { value: "REJETER", link: "Rejeter" },
+  { value: "REJETER", link: "Rejeté" },
 ];

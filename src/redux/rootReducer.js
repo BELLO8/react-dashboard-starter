@@ -1,4 +1,5 @@
 import auth from "./auth";
+import avis from "./store/avis";
 import car from "./store/car";
 import categoryCar from "./store/categoryCar";
 import customer from "./store/customer";
@@ -18,6 +19,7 @@ const rootReducer = {
   driver,
   car,
   stats,
+  avis,
 };
 
 export default rootReducer;

@@ -71,14 +71,9 @@ export const Client = () => {
         }
     };
 
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-
-
-    // }, [dispatch, currentPage]);
+    const more = async (page) => {
+        dispatch(getAllCustomer({ page: page - 1, param: '', size: 10 }))
+    }
 
     return (
         <div className="p-3 pt-7">
@@ -217,7 +212,8 @@ export const Client = () => {
                 {
                     loading ? null : (
                         <div className='my-3 flex justify-end'>
-                            <Pagination count={customer.totalPages} variant="outlined" color='primary' shape="rounded" />
+                            <Pagination onChange={(event, newValue) => more(newValue)}
+                                onSelect={selectedPage => more(selectedPage)} count={customer.totalPages} variant="outlined" color='primary' shape="rounded" />
                         </div>
                     )
                 }

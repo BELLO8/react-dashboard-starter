@@ -9,7 +9,7 @@ import { BASE_URL } from '../../Utils/constant';
 import { getMoreDrivers } from '../../redux/store/driver';
 import { changerStatus } from '../../services/Driver';
 
-export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
+export const ShowDriverSideBar = ({ setOpenSide, openSide, data, action }) => {
 
     const [raison, setRaison] = useState();
     const dispatch = useDispatch();
@@ -163,7 +163,7 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data }) => {
                                     }).then((res) => {
                                         if (res.status === 200) {
                                             setOpenSide(false)
-                                            dispatch(getMoreDrivers({ page: 0, param: '', size: 10 }))
+                                            action()
                                             toast.success('Compte validé ')
                                         }
                                     })

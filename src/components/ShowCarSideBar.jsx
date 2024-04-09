@@ -9,7 +9,7 @@ import { BASE_URL } from '../Utils/constant';
 import { getCars } from '../redux/store/car';
 import { changerStatus } from '../services/CarService';
 
-export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
+export const ShowCarSideBar = ({ setOpenSide, openSide, id, status, action }) => {
 
     const [raison, setRaison] = useState();
     const dispatch = useDispatch();
@@ -141,7 +141,7 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status }) => {
                                     }).then((res) => {
                                         if (res.status === 200) {
                                             setOpenSide(false)
-                                            dispatch(getCars({ page: 0, param: '', size: 10 }))
+                                            action()
                                             toast.success('Vehicule validé ')
                                         }
                                     })

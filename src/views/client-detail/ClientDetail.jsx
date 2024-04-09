@@ -1,12 +1,11 @@
-import { Drawer, Pagination, Skeleton } from '@mui/material'
-import { APIProvider, Map } from '@vis.gl/react-google-maps'
-import { BadgeSwissFranc, ChevronLeft, Clock, Eye, MapIcon, MinusCircle, PenLine } from 'lucide-react'
+import { Pagination, Skeleton } from '@mui/material'
+import { ChevronLeft, Eye, MinusCircle, PenLine } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
-import Directions from '../../components/GoogleMap/Direction'
+import { CourseSideBar } from '../../components/Commande/CourseSideBar'
 import { StatsCount } from '../../components/Partenaire/statsCount'
 import { customerInfo, getAllCustomerOrder } from '../../redux/store/customer'
 import { disableAccount } from '../../services/CustomerService'
@@ -146,7 +145,7 @@ export const ClientDetail = () => {
   return (
     <div>
       <div className="lg:flex items-start">
-        
+
         <div className='lg:sticky lg:top-0 lg:left-0 bg-white lg:w-64 lg:min-h-screen z-50'>
           <div className='my-3 rounded-lg px-4'>
             <div className="flex items-center justify-between mb-12">
@@ -221,9 +220,9 @@ export const ClientDetail = () => {
         <div className="lg:w-4/5 px-3 relative mt-2">
           <h1 className='font-medium mt-3 text-gray-400 text-lg '>Client</h1>
           <div className='mt-2 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2'>
-            <StatsCount count={customer.depenses + ' Fcfa' ?? 0} label={"Depenses"} />
-            <StatsCount count={customer?.nombreCourseEffectuees} label={"Nombres de courses effectuées"} />
-            <StatsCount count={customer?.nombreCourseAnnulees} label={"Nombres de courses annulé"} />
+            <StatsCount count={customer?.depenses !== undefined ? customer?.depenses + ' FCFA' : 0} label={"Depenses"} />
+            <StatsCount count={customer?.nombreCourseEffectuees ?? 0} label={"Nombres de courses effectuées"} />
+            <StatsCount count={customer?.nombreCourseAnnulees ?? 0} label={"Nombres de courses annulé"} />
           </div>
           <h1 className='mt-5 text-lg text-gray-400 font-medium'>Historique de commandes</h1>
           <div className='mt-2 bg-white rounded-lg p-4 shadow border border-[#E2E8F0] '>
@@ -244,86 +243,8 @@ export const ClientDetail = () => {
               <Pagination onChange={(event, newValue) => more(newValue)}
                 onSelect={selectedPage => more(selectedPage)} count={order?.totalPages} variant="outlined" color='primary' shape="rounded" />
             </div>
-            <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='right'>
-              <div className="w-[580px] mx-2 my-6">
-                <div className="h-60 bg-slate-200" style={{ borderRadius: 20 }}>
-                  <APIProvider apiKey={"AIzaSyCTM4-__zorpLJu4DFe0HJNYta_lFVlvVQ"}>
-                    <Map
-                      disableDefaultUI={true}
-                      zoom={14}
-                      center={defaultProps.center}
-                      mapId={'<Your custom MapId here>'}>
-                    </Map>
-                    <Directions origin={selectRow?.lieuDepart} destination={selectRow?.lieuDestination} />
-                  </APIProvider>
-                </div>
-                <div className="grid grid-cols-3 my-2 gap-1">
-                  <div class="text-left text-sm  bg-muted">
-                    <div class=" gap-1">
-                      <div class="p-3 rounded-lg bg-gray-200 font-semibold flex gap-1 text-xs"><MapIcon size={17} /> Trajet  de la course</div>
-                      <div class="px-3 text-xs font-medium my-2">
-                        <div>
-                          <div className="flex items-center ">
-                            <div className="rounded-full w-3 h-3 bg-indigo-700">
-                            </div>
-                            <div className="ml-2">
-                              <p className="text-sm font-semibold">{selectRow?.lieuDepart}</p>
-                              <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateDebutCourse).toLocaleString() : ''}</p>
-                            </div>
-                          </div>
+            <CourseSideBar openSide={openSide} handleclose={() => setOpenSide(false)} selectRow={selectRow} />
 
-                          <div className="w-1 h-4 border-r-2  px-[3px] border-indigo-700"></div>
-                          <div className="flex items-center ">
-                            <div className="rounded-full w-3 h-3 bg-indigo-700">
-                            </div>
-                            <div className="ml-2">
-                              <p className="text-sm font-semibold">{selectRow?.lieuDestination}</p>
-                              <p className="text-sm text-gray-400">{selectRow?.dateDebutCourse !== null ? new Date(selectRow?.dateFinCourse).toLocaleString() : ''}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-left text-sm  bg-muted">
-                    <div class=" gap-1">
-                      <div class="rounded-lg bg-gray-200 p-3 font-semibold flex gap-1 text-xs"><Clock size={17} />Durée de la course</div>
-                      <div class="px-3 text-lg font-semibold my-2">
-                        {selectRow?.duree}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="text-left text-sm  bg-muted">
-                    <div class=" gap-1">
-                      <div class="text-xs font-semibold flex rounded-lg bg-gray-200 p-3 gap-1"><BadgeSwissFranc size={17} />Prix de la course</div>
-                      <div class="px-3 text-lg font-semibold my-2">
-                        {selectRow?.montant + ' Fr'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="px-3 py-6">
-                  <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
-                  <div>
-                    <p className="text-xs font-semibold">Nom et prenoms</p>
-                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
-                  </div>
-
-                  <div className="my-3">
-                    <p className="text-xs font-semibold">Email</p>
-                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
-                  </div>
-
-                  <div className="">
-                    <p className="text-xs font-semibold">Contact</p>
-                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
-                  </div>
-                </div>
-              </div>
-
-            </Drawer>
           </div>
         </div>
       </div>

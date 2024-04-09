@@ -98,7 +98,8 @@ export const Chauffeur = () => {
                             }
 
                         </div>
-                        <ShowDriverSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} />
+                        <ShowDriverSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} data={rowData} action={() => dispatch(getMoreDrivers({ page: 0, param: '', size: 10 }))
+                        } />
 
                         <Drawer
                             anchor={"right"}

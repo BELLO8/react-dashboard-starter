@@ -71,7 +71,7 @@ export const ListeVehicules = () => {
                             </div>
                         ) : <LoadingCar />}
 
-                    <ShowCarSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} id={vehicule?.id} status={vehicule?.status} />
+                    <ShowCarSideBar openSide={openSideUpdate} setOpenSide={setOpenSideUpdate} id={vehicule?.id} status={vehicule?.status} action={() => dispatch(getCars({ page: 0, param: '', size: 10 }))} />
 
                     {
                         loading ? null : (

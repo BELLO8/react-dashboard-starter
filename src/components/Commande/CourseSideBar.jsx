@@ -131,24 +131,28 @@ export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
                             <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
                         </div>
                     </div>
+                    {
+                        selectRow?.client === undefined ? null : (
+                            <div className="px-3 py-6">
+                                <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
+                                <div>
+                                    <p className="text-xs font-semibold">Nom et prenoms</p>
+                                    <p className="text-md text-gray-900 font-bold  mt-1">{selectRow?.client?.nom + " " + selectRow?.client?.prenoms}</p>
+                                </div>
 
-                    <div className="px-3 py-6">
-                        <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
-                        <div>
-                            <p className="text-xs font-semibold">Nom et prenoms</p>
-                            <p className="text-md text-gray-900 font-bold  mt-1">{selectRow?.client?.nom + " " + selectRow?.client?.prenoms}</p>
-                        </div>
+                                <div className="my-3">
+                                    <p className="text-xs font-semibold">Email</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.email}</p>
+                                </div>
 
-                        <div className="my-3">
-                            <p className="text-xs font-semibold">Email</p>
-                            <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.email}</p>
-                        </div>
+                                <div className="my-3">
+                                    <p className="text-sm font-semibold">Contact</p>
+                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.numero}</p>
+                                </div>
+                            </div>
+                        )
+                    }
 
-                        <div className="my-3">
-                            <p className="text-sm font-semibold">Contact</p>
-                            <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.numero}</p>
-                        </div>
-                    </div>
                 </div>
 
             </Drawer>
