@@ -83,7 +83,7 @@ export const ShowPartnerSideBar = ({ setOpenSide, openSide, data }) => {
 
                     </div>
                     {
-                        data?.statusEnregistrement === 'TERMINE' || data?.statusEnregistrement === 'REJETER' ? null : (
+                        data?.statusEnregistrement === 'TERMINE' ? null : (
                             <div className='flex space-x-1 justify-center my-2'>
                                 <button onClick={() => {
                                     changerStatusPartner(data.id, {

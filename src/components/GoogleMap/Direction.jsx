@@ -22,8 +22,8 @@ export default function Directions({ origin, destination }) {
 
         directionsService
             .route({
-                origin: origin ?? 'feraille, Rue Abougnan Aboua, Marcory',
-                destination: destination ?? "Place In'challah, Koumassi",
+                origin: origin,
+                destination: destination,
                 travelMode: window.google.maps.TravelMode.DRIVING,
                 provideRouteAlternatives: true
             })

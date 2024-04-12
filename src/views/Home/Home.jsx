@@ -69,7 +69,8 @@ export const Home = () => {
     const [selected, setSelected] = useState('MOIS');
     const [select, setSelect] = useState('ANNEE');
     const [isSelect, setIsSelect] = useState('MOIS');
-
+    const [mois, setMois] = useState("");
+    const [annee, setAnnee] = useState("");
     const currentDate = new Date();
     const currentMonthName = months[currentDate.getMonth()]
     const sales = {
@@ -135,8 +136,6 @@ export const Home = () => {
                 <div className="lg:flex gap-x-2 ">
                     <button onClick={() => setOpenSide(true)} className='lg:hidden btn btn-sm'><Menu /></button>
                     <h1 className="lg:text-2xl font-extrabold text-black sm:text-lg my-auto">Salut  </h1><h1 className='lg:text-3xl text-black my-auto text-indigo-900 font-medium'>{user?.nom}</h1>
-
-                    {/* <input type="date" placeholder="Type here" className="absolute right-4 my-auto input input-bordered input-sm my-4 w-50" /> */}
                 </div>
                 <p className="">Bienvenue sur votre tableau de bord ! 🎉 </p>
                 <div className='lg:absolute top-6 right-4 my-auto lg:flex gap-x-2'>
@@ -197,40 +196,21 @@ export const Home = () => {
                         count={counters?.totalClients ?? 0}
                         text={"+2 par rapport au mois dernier"} />
 
-
                     <Counter icon={<img src={Driver} alt="" className="w-6 h-6" />} label={"Chauffeur actifs"}
                         count={counters?.statDrivers?.nbreDriverActives ?? 0}
                         text={"+2 par rapport au mois dernier"} />
 
-                    {/* <div className="p-4 border border-dashed bg-white shadow rounded-md flex flex-col">
-                        <p className="text-sm text-gray-400 font-medium truncate ">Montant des courses</p>
-                        {
-                            !loading ? (<Skeleton variant='text' width={80} height={40} animation="wave" />
-                            ) : (
-                                <div className="flex">
-                                    <p className=' text-2xl font-semibold'>{
-                                        !loading ? <Skeleton animation='wave' variant='text' width={130} />
-                                            : counters.statsCourses.montantTotalCourses
-                                    }{"  "}</p>
-                                    Fcfa
-                                </div>
-                            )
-                        }
-                    </div> */}
-
                 </div>
-                <div className='grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2'>
 
+                <div className='grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2'>
                     <div className="bg-white p-4 rounded-xl my-3 ">
                         <p className='text-sm mb-2 font-medium'>Statistique global détaillé des courses </p>
                         <div className='grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2'>
                             <div className="p-3 border border-dashed bg-sky-50 rounded-[15px] flex flex-col">
                                 <p className="text-sm text-gray-400 font-medium truncate">Courses</p>
-
                                 <div className='flex gap-x-4 mt-1'>
                                     <div>
                                         <p className="text-[10px] font-medium text-gray-400 truncate">Courses aucune reponse</p>
-
                                         {
                                             !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
                                             ) : (<p className="text-md font-bold">{counters?.statsCourses?.nbreCouresAucuneReponses ?? 0}</p>
@@ -254,7 +234,7 @@ export const Home = () => {
 
                                 <div className='flex gap-x-4 mt-1'>
                                     <div>
-                                        <p className="text-[10px] font-medium text-gray-400 truncate">Courses en cours</p>
+                                        <p className="text-[10px] font-medium text-gray-400 truncate">Courses demarré</p>
 
                                         {
                                             !loading ? (<Skeleton variant='text' width={55} height={20} animation="wave" />
@@ -335,12 +315,9 @@ export const Home = () => {
 
                 </div>
 
-
-
             </div>
 
             <div className='my-8'>
-                {/* <h1 className='mb-3 text-lg font-bold'>Statistiques global</h1> */}
                 <div className='grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-1'>
                     <div className='rounded-xl border bg-white shadow '>
                         <div className='px-4 py-2'>
@@ -418,7 +395,8 @@ export const Home = () => {
                                 {
                                     isSelect === 'MOIS' ? (
                                         <select onChange={(e) => {
-                                            statsCourses({ periode: selected, mois: e.target.value, status: '' }).then((res) => {
+                                            setMois(e.target.value)
+                                            statsCourses({ periode: isSelect, mois: e.target.value, status: '' }).then((res) => {
                                                 setDataCourses(res.data)
                                             }).catch((err) => console.log(err))
                                         }} className="my-2 select select-bordered custom-select h-8">
@@ -433,7 +411,8 @@ export const Home = () => {
                                         </select>
                                     ) : (
                                         <select onChange={(e) => {
-                                            statsCourses({ periode: selected, annee: e.target.value, status: '' }).then((res) => {
+                                            setAnnee(e.target.value)
+                                            statsCourses({ periode: isSelect, annee: e.target.value, status: '' }).then((res) => {
                                                 setDataCourses(res.data)
                                                 console.log(res.data.data);
                                             }).catch((err) => console.log(err))
@@ -450,6 +429,19 @@ export const Home = () => {
                                     )
                                 }
 
+                                <select onChange={(e) => {
+                                    statsCourses({ periode: isSelect, annee: annee, mois: mois, status: e.target.value }).then((res) => {
+                                        setDataCourses(res.data)
+                                        console.log(res.data.data);
+                                    }).catch((err) => console.log(err))
+                                }} className="my-2 select select-bordered custom-select h-8">
+                                    <option disabled selected>
+                                        Status de la course
+                                    </option>
+                                    <option value='ATTENTE_DE_VALIDATION' >En cours</option>
+                                    <option value='TERMINE'>Terminé</option>
+                                    <option value='ANNULE'>Annulé</option>
+                                </select>
                             </div>
 
                         </div>

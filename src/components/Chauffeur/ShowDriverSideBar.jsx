@@ -154,7 +154,7 @@ export const ShowDriverSideBar = ({ setOpenSide, openSide, data, action }) => {
 
                     </div>
                     {
-                        data?.statusEnregistrement === 'TERMINE' || data?.statusEnregistrement === 'REJETER' ? null : (
+                        data?.statusEnregistrement === 'TERMINE' ? null : (
                             <div className='flex space-x-1 justify-center my-2'>
                                 <button onClick={() => {
                                     changerStatus(data.id, {

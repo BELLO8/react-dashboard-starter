@@ -127,12 +127,10 @@ export const ShowCarSideBar = ({ setOpenSide, openSide, id, status, action }) =>
                             <p className='mt-8 mx-auto text-sm'>Aucun chauffeur associé</p>
                         )}
 
-
-
-
                     </div>
+                    
                     {
-                        status === 'TERMINE' || status === 'REJETER' ? null : (
+                        status === 'TERMINE' ? null : (
                             <div className='flex space-x-1 my-12'>
                                 <button onClick={() => {
                                     changerStatus(id, {

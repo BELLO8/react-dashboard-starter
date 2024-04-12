@@ -4,7 +4,7 @@ import React from 'react'
 export const LoadingPatner = () => {
     return (
         <>
-            <div className="mt-10 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
+            <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
                     <div
                         key={index}

@@ -28,7 +28,14 @@ export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
                                 center={defaultProps.center}
                                 mapId={'<Your custom MapId here>'}>
                             </Map>
-                            <Directions origin={selectRow?.lieuDepart} destination={selectRow?.lieuDestination} />
+                            <Directions origin={{
+                                lat: selectRow && selectRow.latitudeDepart,
+                                lng: selectRow && selectRow.longitudeDepart,
+
+                            }} destination={{
+                                lat: selectRow && selectRow.latitudeDestination,
+                                lng: selectRow && selectRow.longitudeDestination
+                            }} />
                         </APIProvider>
                     </div>
                     <div className="grid grid-cols-3 my-2 gap-1">
@@ -116,20 +123,29 @@ export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
                     </div>
                     <div className="px-3 py-6">
                         <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
-                        <div>
-                            <p className="text-xs font-semibold">Nom et prenoms</p>
-                            <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
-                        </div>
+                        {
+                            selectRow?.driver === null ? (
+                                <p className='text-xs'>La course est en attente de validaton par le chauffeur</p>
+                            ) : (
+                                <div>
+                                    <div>
+                                        <p className="text-xs font-semibold">Nom et prenoms</p>
+                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
+                                    </div>
 
-                        <div className="my-3">
-                            <p className="text-xs font-semibold">Email</p>
-                            <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
-                        </div>
+                                    <div className="my-3">
+                                        <p className="text-xs font-semibold">Email</p>
+                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
+                                    </div>
 
-                        <div className="">
-                            <p className="text-xs font-semibold">Contact</p>
-                            <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
-                        </div>
+                                    <div className="">
+                                        <p className="text-xs font-semibold">Contact</p>
+                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
+                                    </div>
+                                </div>
+                            )
+                        }
+
                     </div>
                     {
                         selectRow?.client === undefined ? null : (

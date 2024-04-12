@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.19:8081/treizetaxi-api";
+export const BASE_URL = "http://192.168.1.14:8081/treizetaxi-api";
 export const API_KEY = "AIzaSyBgXQpRjyiTbmjJBuzSvplp0jfp35u1DNc";
 export const LOGIN_ENDPOINT = "/webfree/userback/signin";
 export const DISABLE_USER_ACCOUNT = "/superadmin/userback/desactiver";
@@ -63,8 +63,9 @@ export const PARTNER_CHANGE_STATUS = "/superadmin/partenaire/modifierstatus";
 export const PARTNER_DOC = "/superadmin/partenaire/rechercherpieces";
 export const STATS_COUNTER = "/superadmin/userback/rechercherdata";
 export const NOUCHI_WORD_EDIT = "/superadmin/categorievehicule/modifiernouchi";
-export const GRAPH_STATS_SALES = "/webfree/course/recherchergrapheglobal";
+export const GRAPH_STATS_SALES = "/superadmin/course/recherchergrapheglobal";
 export const GRAPH_STATS_COURSES =
-  "/webfree/course/recherchergraphetotalcourse";
+  "/superadmin/course/recherchergraphetotalcourse";
 export const AVIS = "/superadmin/avis/listavis";
 export const ADD_AVIS = "/webfree/avis/enregistrer";
+export const DELETE_AVIS = "/superadmin/supprimer";

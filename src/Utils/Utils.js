@@ -59,10 +59,6 @@ export const tabConfigs = [
 export const status = [
   { value: "EN_COURS", link: "En cours" },
   {
-    value: "ATTENTE_DE_VALIDATION",
-    link: "En attente",
-  },
-  {
     value: "TERMINE",
     link: "Validé",
   },
@@ -76,7 +72,7 @@ export const statusCar = [
   },
   {
     value: "TERMINE",
-    link: "Valider",
+    link: "Validé",
   },
   { value: "REJETER", link: "Rejeté" },
 ];

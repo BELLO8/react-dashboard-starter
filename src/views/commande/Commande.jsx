@@ -110,7 +110,7 @@ export const Commande = () => {
                 loading ? (
                     <Skeleton animation="wave" variant="text" width={80} />
                 ) : (
-                    <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : 'en attente'}</p>
+                    <p className={`text-xs  ${row?.status === 'TERMINE' ? 'bg-green-100 text-green-800 font-semibold' : row?.status === 'ANNULE' ? 'bg-rose-100 text-rose-800 font-semibold' : row?.status === 'DEMARRE' ? 'bg-orange-400 text-white' : 'bg-orange-100 text-orange-800 font-semibold'}  rounded-lg px-2 py-1`}>{row?.status === 'TERMINE' ? 'terminé' : row?.status === 'ANNULE' ? 'annulé' : row?.status === 'DEMARRE' ? 'demarré' : 'en attente'}</p>
                 ),
         },
         {
@@ -163,6 +163,8 @@ export const Commande = () => {
                                 <option disabled selected>
                                     Staut d'activié
                                 </option>
+                                <option value='ATTENTE_DE_VALIDATION'>Attente de validation</option>
+                                <option value='DEMARRE'>Demarré</option>
                                 <option value='TERMINE'>Terminé</option>
                                 <option value='ANNULE'>Annulé</option>
                             </select>

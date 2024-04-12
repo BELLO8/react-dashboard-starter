@@ -9,16 +9,15 @@ export const Car = ({ handleClick, item }) => {
                     <div style={{ backgroundImage: `url("https://www.hyundai.com/content/dam/hyundai/in/en/data/find-a-car/i20/Highlights/pc/i20_Modelpc.png")`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className="bg-gray-200 rounded w-32 h-14 border-2 mb-2">
                     </div>
                     <div className='mx-2 space-y-1'>
-                        <p className='text-sm font-semibold truncate'>
+                        <p className='text-sm font-semibold truncate w-36'>
                             {
                                 item.marque + ' ' + item.modele
                             }
                         </p>
-                        <p className='text-xs text-gray-300 text-gray-400 truncate'>
+                        <p className='text-xs text-gray-400 truncate w-36'>
                             {
                                 item.numeroMatriculation ?? ''
                             }
-
                         </p>
                         <p className="text-xs  text-gray-500 text-center font-medium">
                             <div className="flex space-x-1">
