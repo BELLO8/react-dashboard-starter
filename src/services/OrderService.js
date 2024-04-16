@@ -9,6 +9,6 @@ export const getOrders = async (params) => {
 
 export const getOrdersByDriver = async (params) => {
   return await clientAxios.get(
-    `${DRIVER_ORDER_HISTORY}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}`
+    `${DRIVER_ORDER_HISTORY}/${params.id}?page=${params.page}&param=${params.param}&size=${params.size}&dateDebut=null&dateFin=null`
   );
 };

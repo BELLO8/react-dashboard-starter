@@ -3,6 +3,8 @@ import { Drawer } from '@mui/material'
 import { APIProvider, Map } from '@vis.gl/react-google-maps'
 import React from 'react'
 import { API_KEY } from '../../Utils/constant'
+import { DriverCard } from '../Chauffeur/DriverCard'
+import { ClientCard } from '../Client/ClientCard'
 import Directions from '../GoogleMap/Direction'
 
 export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
@@ -121,28 +123,14 @@ export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
                                     </div> */}
                         </div>
                     </div>
+
                     <div className="px-3 py-6">
                         <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
                         {
                             selectRow?.driver === null ? (
                                 <p className='text-xs'>La course est en attente de validaton par le chauffeur</p>
                             ) : (
-                                <div>
-                                    <div>
-                                        <p className="text-xs font-semibold">Nom et prenoms</p>
-                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.nom} {selectRow?.driver?.prenoms}</p>
-                                    </div>
-
-                                    <div className="my-3">
-                                        <p className="text-xs font-semibold">Email</p>
-                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.email}</p>
-                                    </div>
-
-                                    <div className="">
-                                        <p className="text-xs font-semibold">Contact</p>
-                                        <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.driver?.numero}</p>
-                                    </div>
-                                </div>
+                                <DriverCard item={selectRow?.driver} />
                             )
                         }
 
@@ -151,20 +139,7 @@ export const CourseSideBar = ({ openSide, handleclose, selectRow }) => {
                         selectRow?.client === undefined ? null : (
                             <div className="px-3 py-6">
                                 <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
-                                <div>
-                                    <p className="text-xs font-semibold">Nom et prenoms</p>
-                                    <p className="text-md text-gray-900 font-bold  mt-1">{selectRow?.client?.nom + " " + selectRow?.client?.prenoms}</p>
-                                </div>
-
-                                <div className="my-3">
-                                    <p className="text-xs font-semibold">Email</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.email}</p>
-                                </div>
-
-                                <div className="my-3">
-                                    <p className="text-sm font-semibold">Contact</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectRow?.client?.numero}</p>
-                                </div>
+                                <ClientCard item={selectRow?.client} />
                             </div>
                         )
                     }

@@ -158,7 +158,7 @@ export const Partenaire = () => {
                                                 </p>
 
                                                 {
-                                                    item.statusEnregistrement === 'EN_COURS' ? (
+                                                    item.statusEnregistrement === 'EN_COURS' || item.statusEnregistrement === 'REJETER' ? (
                                                         <button
                                                             className="btn btn-sm bg-main/10 w-full h-8 text-xs text-main font-semibold rounded-lg flex items-center justify-center mt-4"
                                                             onClick={() => {

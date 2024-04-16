@@ -43,7 +43,17 @@ export const Avis = () => {
                         <div className="label">
                             <span className="label-text text-sm font-semibold">Nombres d'étoiles</span>
                         </div>
-                        <input onChange={(e) => setEtoile(e.target.value)} type="number" className="input input-bordered w-full h-12 font-medium" min={0} max={5} required />
+                        <select onChange={(e) => {
+                            setEtoile(Number(e.target.value ?? 0))
+                        }} className="select select-bordered custom-select w-full h-10 ">
+                            <option disabled selected>
+                                Nombre d'etoile
+                            </option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='5'>5</option>
+                        </select>
+                        {/* <input onChange={(e) => setEtoile(e.target.value)} type="number" className="input input-bordered w-full h-12 font-medium" min={0} max={5} required /> */}
                     </label>
 
                     <label className="form-control w-full">

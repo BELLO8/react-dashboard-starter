@@ -10,8 +10,9 @@ export const Car = ({ handleClick, item }) => {
                     </div>
                     <div className='mx-2 space-y-1'>
                         <p className='text-sm font-semibold truncate w-36'>
+                            {item.marque}
                             {
-                                item.marque + ' ' + item.modele
+                                item.modele === null ? "" : item.modele
                             }
                         </p>
                         <p className='text-xs text-gray-400 truncate w-36'>

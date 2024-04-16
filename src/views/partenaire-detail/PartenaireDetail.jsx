@@ -8,9 +8,11 @@ import { NavLink, useParams } from 'react-router-dom';
 import { status, statusCar, tab } from "../../Utils/Utils";
 import { API_KEY, BASE_URL } from "../../Utils/constant";
 import { AddChauffeurSidebar } from "../../components/Chauffeur/AddChauffeurSidebar";
+import { DriverCard } from "../../components/Chauffeur/DriverCard";
 import { LoadingDriver } from "../../components/Chauffeur/LoadingDriving";
 import { ShowDriverSideBar } from "../../components/Chauffeur/ShowDriverSideBar";
 import { UpdateChauffeurSidebar } from "../../components/Chauffeur/UpdateChauffeurSidebar";
+import { ClientCard } from "../../components/Client/ClientCard";
 import Directions from "../../components/GoogleMap/Direction";
 import { StatsCount } from "../../components/Partenaire/statsCount";
 import { ShowCarSideBar } from "../../components/ShowCarSideBar";
@@ -28,7 +30,7 @@ import { disablePartner } from "../../services/PartenaireService";
 const PartenaireDetail = () => {
   const [active, setActive] = useState({ index: 0, value: 'VEHICULE' });
   const [activeStatus, setActiveStatus] = useState({ index: 1, value: 'TERMINE' });
-  const [activeStatusDriver, setActiveStatusDriver] = useState({ index: 2, value: 'TERMINE' });
+  const [activeStatusDriver, setActiveStatusDriver] = useState({ index: 1, value: 'TERMINE' });
   const [openSide, setOpenSide] = useState(false)
   const [openSideUpdate, setOpenSideUpdate] = useState(false)
   const [openSideAddCar, setOpenSideAddCar] = useState(false);
@@ -216,26 +218,21 @@ const PartenaireDetail = () => {
                       </Drawer>
 
                       <div className="flex items-end gap-x-3">
-                        <label className="form-control w-60">
+                        <label className="form-control w-64">
                           <div className="label">
                             <span className="label-text text-xs font-medium -mb-1">
                               Rechercher
                             </span>
                           </div>
                           <input
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) => dispatch(getAllPartnerCar({ id: id, page: 0, param: e.target.value, size: 10 }))
+                            }
                             type="text"
                             placeholder="Rechercher un élément..."
-                            className="input input-bordered w-60 h-8 text-sm"
+                            className="input input-bordered w-72 h-8 text-sm"
                           />
                         </label>
-                        <button
-                          onClick={() => {
-                            dispatch(getAllPartnerCar({ id: id, page: 0, param: search, size: 10 }))
-                          }}
-                          className="w-fit h-8 px-4 rounded-lg bg-main text-white text-xs font-medium">
-                          Rechercher
-                        </button>
+
                       </div>
                       <Tabs tabsData={statusCar} setActive={setActiveStatus} active={activeStatus} />
 
@@ -285,21 +282,21 @@ const PartenaireDetail = () => {
                         </div>
                       </div>
                       <div className="flex items-end gap-x-3">
-                        <label className="form-control w-60">
+                        <label className="form-control w-64">
                           <div className="label">
                             <span className="label-text text-xs font-medium -mb-1">
                               Rechercher
                             </span>
                           </div>
                           <input
+                            onChange={(e) => {
+                              dispatch(getAllPartnerDriver({ id: id, page: 0, param: e.target.value, size: 10 }))
+                            }}
                             type="text"
                             placeholder="Rechercher un élément..."
                             className="input input-bordered w-60 h-8 text-sm"
                           />
                         </label>
-                        <button className="w-fit h-8 px-4 rounded-lg bg-main text-white text-xs font-medium">
-                          Rechercher
-                        </button>
                       </div>
                       <Tabs tabsData={status} setActive={setActiveStatusDriver} active={activeStatusDriver} />
 
@@ -532,6 +529,9 @@ const PartenaireDetail = () => {
                             </span>
                           </div>
                           <input
+                            onChange={(e) => {
+                              dispatch(getAllPartnerOrder({ id: id, page: 0, param: e.target.value, size: 10 }))
+                            }}
                             type="text"
                             placeholder="Rechercher un élément..."
                             className="input input-bordered w-full h-8 text-sm"
@@ -546,6 +546,7 @@ const PartenaireDetail = () => {
                           <select
                             onChange={(e) => {
                               dispatch(getAllPartnerOrder({ id: id, page: 0, param: e.target.value, size: 10 }))
+                              setSelectedRow("")
                             }}
                             className="text-xs select select-bordered custom-select w-full h-8 font-semibold">
                             <option disabled selected>
@@ -556,9 +557,7 @@ const PartenaireDetail = () => {
                             <option value='ANNULE'>Annulé</option>
                           </select>
                         </label>
-                        <button className="w-fit h-8 px-4 rounded-md bg-main text-white text-xs font-medium">
-                          Rechercher
-                        </button>
+
                       </div>
                       <div className="flex items-start">
                         <div className="cursor-pointer mt-6 grid grid-row-3 gap-2 bg-gray-50 w-80 p-4 h-[500px] overflow-y-scroll rounded-lg">
@@ -636,7 +635,14 @@ const PartenaireDetail = () => {
                                       center={defaultProps.center}
                                       mapId={'<Your custom MapId here>'}>
                                     </Map>
-                                    <Directions origin={selectedRow?.lieuDepart} destination={selectedRow?.lieuDestination} />
+                                    <Directions origin={{
+                                      lat: selectedRow.latitudeDepart,
+                                      lng: selectedRow.longitudeDepart,
+
+                                    }} destination={{
+                                      lat: selectedRow.latitudeDestination,
+                                      lng: selectedRow.longitudeDestination
+                                    }} />
                                   </APIProvider>
                                 </div>
 
@@ -705,41 +711,20 @@ const PartenaireDetail = () => {
                                 </div>
                                 <div className="px-3 py-6">
                                   <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Conducteur</p>
-                                  <div>
-                                    <p className="text-xs font-semibold">Nom et prenoms</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.nom} {selectedRow?.driver?.prenoms}</p>
-                                  </div>
-
-                                  <div className="my-3">
-                                    <p className="text-xs font-semibold">Email</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.email}</p>
-                                  </div>
-
-                                  <div className="">
-                                    <p className="text-xs font-semibold">Contact</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.driver?.numero}</p>
-                                  </div>
+                                  {
+                                    selectedRow?.driver === null ? (
+                                      <p className='text-xs'>La course est en attente de validaton par le chauffeur</p>
+                                    ) : (
+                                      <DriverCard item={selectedRow?.driver} />
+                                    )
+                                  }
                                 </div>
 
                                 <div className="px-3 py-6">
                                   <p className="bg-gray-200 px-2 py-2 rounded-lg text-sm mb-2 font-semibold">Client</p>
-                                  <div>
-                                    <p className="text-xs font-semibold">Nom et prenoms</p>
-                                    <p className="text-md text-gray-900 font-bold  mt-1">{selectedRow?.client?.nom + " " + selectedRow?.client?.prenoms}</p>
-                                  </div>
-
-                                  <div className="my-3">
-                                    <p className="text-xs font-semibold">Email</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.client?.email}</p>
-                                  </div>
-
-                                  <div className="my-3">
-                                    <p className="text-sm font-semibold">Contact</p>
-                                    <p className="text-md text-gray-900 font-bold mt-1">{selectedRow?.client?.numero}</p>
-                                  </div>
+                                  <ClientCard item={selectedRow?.client} />
                                 </div>
                               </div>
-
                             )
                           }
 

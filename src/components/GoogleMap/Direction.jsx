@@ -15,7 +15,8 @@ export default function Directions({ origin, destination }) {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
-    }, [routesLibrary, map]);
+    }, [routesLibrary, map, origin,
+        destination]);
 
     useEffect(() => {
         if (!directionsService || !directionsRenderer) return;

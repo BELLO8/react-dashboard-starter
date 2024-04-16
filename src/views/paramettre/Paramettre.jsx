@@ -7,6 +7,7 @@ import { getParametre } from '../../services/paramettre';
 import { Avis } from '../avis/Avis';
 
 export const Paramettre = () => {
+
     const [param, setParam] = useState();
     const [active, setActive] = useState({ index: 0, value: 'DISTANCE_LOCALISATION' });
     const [data, setData] = useState([])
@@ -30,6 +31,7 @@ export const Paramettre = () => {
 
     }, [active.value])
     console.log(data);
+
     const config = [
         {
             id: 1,

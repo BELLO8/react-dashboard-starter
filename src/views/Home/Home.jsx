@@ -323,7 +323,6 @@ export const Home = () => {
                         <div className='px-4 py-2'>
                             <p className='text-sm font-semibold'>Chiffres d'affaires</p>
                             <p className='text-xs font-medium text-gray-500'>Statistique des chiffres d'affaire</p>
-
                             <div className='flex gap-x-2'>
                                 <select onChange={(e) => {
                                     setSelected(e.target.value)

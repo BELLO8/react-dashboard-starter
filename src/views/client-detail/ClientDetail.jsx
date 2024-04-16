@@ -5,10 +5,14 @@ import DataTable from 'react-data-table-component'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
+import { BASE_URL } from '../../Utils/constant'
+import car from '../../assets/icons/car.svg'
+import wallet from '../../assets/icons/walley.svg'
 import { CourseSideBar } from '../../components/Commande/CourseSideBar'
-import { StatsCount } from '../../components/Partenaire/statsCount'
+import { Counter } from '../../components/Stats/Counter'
 import { customerInfo, getAllCustomerOrder } from '../../redux/store/customer'
 import { disableAccount } from '../../services/CustomerService'
+
 
 export const ClientDetail = () => {
   const [selectRow, setSelectRow] = useState();
@@ -165,7 +169,13 @@ export const ClientDetail = () => {
             </div>
 
             <div className="w-26">
-              <div className='rounded-full w-20 h-20' style={{ background: "url('https://www.shutterstock.com/image-photo/new-car-cheerful-black-man-260nw-1746419990.jpg') no-repeat center/cover" }}>
+              <div className="bg-gray-200 rounded-full w-16 h-16">
+                <img
+                  src={customer.photo != null ? `${BASE_URL}/webfree/partenaire/fichier/${customer.photo.id}` : `https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg`}
+                  alt=""
+                  className="rounded-full"
+                />
+
               </div>
             </div>
             <div className="relative my-6 p-3 lg:h-[430px]">
@@ -220,9 +230,22 @@ export const ClientDetail = () => {
         <div className="lg:w-4/5 px-3 relative mt-2">
           <h1 className='font-medium mt-3 text-gray-400 text-lg '>Client</h1>
           <div className='mt-2 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2'>
-            <StatsCount count={customer?.depenses !== undefined ? customer?.depenses + ' FCFA' : 0} label={"Depenses"} />
-            <StatsCount count={customer?.nombreCourseEffectuees ?? 0} label={"Nombres de courses effectuées"} />
-            <StatsCount count={customer?.nombreCourseAnnulees ?? 0} label={"Nombres de courses annulé"} />
+            <Counter icon={<img src={wallet} alt="" className="w-6 h-6" />} label={"Les depenses"}
+              count={new Intl.NumberFormat('fr', { style: 'currency', currency: 'XOF' }).format(customer?.depenses !== undefined ? customer?.depenses : 0)}
+              text={""} />
+
+            <Counter icon={<img src={car} alt="" className="w-6 h-6" />} label={"Nombres de courses effectuées"}
+              count={customer?.nombreCourseEffectuees ?? 0}
+              text={""} />
+
+            <Counter icon={<img src={car} alt="" className="w-6 h-6" />} label={"Nombres de courses annulées"}
+              count={customer?.nombreCourseAnnulees ?? 0}
+              text={""} />
+
+            {/* <StatsCount count={customer?.depenses !== undefined ? customer?.depenses + ' FCFA' : 0} label={"Depenses"} /> */}
+            {/* <StatsCount count={customer?.nombreCourseEffectuees ?? 0} label={"Nombres de courses effectuées"} />
+            <StatsCount count={customer?.nombreCourseAnnulees ?? 0} label={"Nombres de courses annulé"} /> */}
+
           </div>
           <h1 className='mt-5 text-lg text-gray-400 font-medium'>Historique de commandes</h1>
           <div className='mt-2 bg-white rounded-lg p-4 shadow border border-[#E2E8F0] '>
