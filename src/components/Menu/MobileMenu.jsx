@@ -1,24 +1,18 @@
 import { Drawer } from '@mui/material';
 import React from 'react';
 import 'react-photo-view/dist/react-photo-view.css';
-import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { getUserProfil } from '../../Utils/Utils';
-import AvatarIcon from '../../assets/icons/avatar.svg';
-import LockIcon from '../../assets/icons/lock.svg';
-import LogoutIcon from '../../assets/icons/logout.svg';
+import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images/logo/logo.png';
-import { handleLogout } from '../../redux/auth';
 import { navs } from './SideBarMenu';
 
 export const MobileMenu = ({ setOpenSide, openSide }) => {
-    const user = getUserProfil();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const user = getUserProfil();
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
     return (
         <>
             <Drawer open={openSide} onClose={() => setOpenSide(false)} anchor='left'>
-                <div className='bg-[#01192e] px-4 py-4 h-full'>
+                <div className='bg-white px-4 py-4 h-full'>
                     <div className="">
                         <div className="flex gap-x-3">
                             <img
@@ -42,7 +36,7 @@ export const MobileMenu = ({ setOpenSide, openSide }) => {
                                     </NavLink>
                                 </div>
                             ))}
-                            <div className="mt-1 w-52 rounded-xl bg-white/50">
+                            {/* <div className="mt-1 w-52 rounded-xl bg-white/50">
                                 <div className="tooltip absolute right-12" data-tip="Modifier identifiant">
                                     <NavLink to={'/modification-identifiant'} className="bg-gray-200 w-7 h-7 rounded-full flex items-center justify-center">
                                         <img src={LockIcon} alt="" className="w-5 h-5" />
@@ -60,7 +54,7 @@ export const MobileMenu = ({ setOpenSide, openSide }) => {
                                     <img src={LogoutIcon} alt="" className="w-6 h-6" />
                                     Déconnexion
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
 
 
