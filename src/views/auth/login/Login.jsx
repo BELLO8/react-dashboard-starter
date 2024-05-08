@@ -1,19 +1,18 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProfil, isLoggedIn } from "../../../Utils/Utils";
+import { getUserProfil } from "../../../Utils/Utils";
 import logo from "../../../assets/images/logo/logo.png";
 import { LoginForm } from "../../../components/Auth/LoginForm";
 
 export const Login = () => {
   const navigate = useNavigate();
   const user = getUserProfil();
-  useEffect(() => {
-    if (isLoggedIn()) {
-      navigate('/')
-    } else {
-      navigate('/login')
-    }
-  }, [user, navigate])
+  // useEffect(() => {
+  //   if (isLoggedIn()) {
+  //     navigate('/')
+  //   } else {
+  //     navigate('/login')
+  //   }
+  // }, [user, navigate])
 
   return (
 

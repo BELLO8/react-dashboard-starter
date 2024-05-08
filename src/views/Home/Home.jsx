@@ -8,7 +8,6 @@ import {
 } from 'chart.js';
 import { Menu } from 'lucide-react';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { MobileMenu } from '../../components/Menu/MobileMenu';
 
 ChartJS.register(
@@ -51,51 +50,6 @@ export const Home = () => {
 
     const [loading, setLoading] = useState(false)
     const [openSide, setOpenSide] = useState(false);
-    const dispatch = useDispatch();
-
-    // const sales = {
-    //     labels: dataSales?.labels,
-    //     datasets: [
-    //         {
-    //             label: "Chiffres d'affaires",
-    //             data: dataSales?.data,
-    //             backgroundColor: '#08225B',
-    //             barThickness: 35,
-    //             borderColor: 'white',
-    //             borderRadius: {
-    //                 topLeft: 8,
-    //                 topRight: 8,
-    //                 bottomLeft: 8,
-    //                 bottomRight: 8
-    //             },
-    //             borderSkipped: false,
-    //         },
-
-    //     ],
-    // };
-
-    // const data = {
-    //     labels: dataCourses?.labels,
-    //     datasets: [
-    //         {
-    //             label: "Nombre courses",
-    //             data: dataCourses?.data,
-    //             backgroundColor: '#5086d4',
-    //             borderColor: 'white',
-    //             barThickness: 35,
-    //             borderRadius: {
-    //                 topLeft: 8,
-    //                 topRight: 8,
-    //                 bottomLeft: 8,
-    //                 bottomRight: 8
-    //             },
-    //             borderSkipped: false,
-    //         },
-
-    //     ],
-    // };
-    // const user = getUserProfil()
-
 
     return (
         <div className="p-3 pt-7">

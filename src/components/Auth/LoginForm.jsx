@@ -1,40 +1,36 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { handleLogin } from "../../redux/auth";
-import { loginUser } from "../../services/LoginService";
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate()
-  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    setIsSubmit(true)
-    loginUser(data).then((res) => {
-      const Token = res.data.accessToken
-      if (res.data) {
-        const data = {
-          ...res.data,
-          accessToken: Token,
-        }
-        dispatch(handleLogin(data))
-        navigate('/')
-      }
-    }).catch((err) => {
-      console.log(err);
-      setIsSubmit(false)
-      if (err.code === "ERR_BAD_REQUEST") {
-        toast.error('Verifier vos identifiants')
-      } else if (err.code === "ERR_NETWORK") {
-        toast.error('Problème de connexion')
-      } else {
-        toast.error("Une erreur s'est produite")
-      }
-    })
+    navigate('/')
+    // setIsSubmit(true)
+    // loginUser(data).then((res) => {
+    //   const Token = res.data.accessToken
+    //   if (res.data) {
+    //     const data = {
+    //       ...res.data,
+    //       accessToken: Token,
+    //     }
+    //     dispatch(handleLogin(data))
+    //     navigate('/')
+    //   }
+    // }).catch((err) => {
+    //   console.log(err);
+    //   setIsSubmit(false)
+    //   if (err.code === "ERR_BAD_REQUEST") {
+    //     toast.error('Verifier vos identifiants')
+    //   } else if (err.code === "ERR_NETWORK") {
+    //     toast.error('Problème de connexion')
+    //   } else {
+    //     toast.error("Une erreur s'est produite")
+    //   }
+    // })
 
   };
   return (
